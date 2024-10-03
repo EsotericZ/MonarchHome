@@ -5,9 +5,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import Cookies from 'universal-cookie';
 
 import PuffLoader from 'react-spinners/PuffLoader';
-
-import { Icon } from 'react-icons-kit';
-import { check } from 'react-icons-kit/entypo/check';
+import CheckIcon from '@mui/icons-material/Check';
 import RefreshIcon from '@mui/icons-material/Refresh';
 
 import getAllJobs from '../../services/engineering/getAllJobs';
@@ -371,6 +369,7 @@ export const Engineering = () => {
             <Tab label={future} sx={{ width: '15%', '&.Mui-selected': { color: 'red' }, '&:focus': { outline: 'none' } }} />
             <Tab label={repeat} sx={{ width: '15%', '&.Mui-selected': { color: 'red' }, '&:focus': { outline: 'none' } }} />
             <Tab label={outsource} sx={{ width: '15%', '&.Mui-selected': { color: 'red' }, '&:focus': { outline: 'none' } }} />
+            <Tab label={active} sx={{ width: '15%', '&.Mui-selected': { color: 'red' }, '&:focus': { outline: 'none' } }} />
           </Tabs>
 
 {/* TBR JOBS */}
@@ -496,7 +495,7 @@ export const Engineering = () => {
                               <TableCell align='center' sx={{ fontSize: '15px' }}>{job.QuoteNo}</TableCell>
                               <TableCell align='center' sx={{ fontSize: '15px' }}>
                                 <IconButton onClick={() => toggleModel(job)}>
-                                  {job.dataValues.model && <Icon icon={check} />}
+                                  {job.dataValues.model && <CheckIcon />}
                                 </IconButton>
                               </TableCell>
 
@@ -680,7 +679,7 @@ export const Engineering = () => {
                                 <TableCell align='center' sx={{ fontSize: '15px' }}>{job.QuoteNo}</TableCell>
                                 <TableCell align='center' sx={{ fontSize: '15px' }}>
                                   <IconButton onClick={() => toggleModel(job)}>
-                                    {job.dataValues.model && <Icon icon={check} />}
+                                    {job.dataValues.model && <CheckIcon />}
                                   </IconButton>
                                 </TableCell>
 
@@ -713,6 +712,114 @@ export const Engineering = () => {
                               </TableRow>
                             )
                           }
+                        })
+                      }
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+
+                <IconButton onClick={fetchFutureData} sx={{ backgroundColor: '#111827', color: 'white', height: '52.5px', width: '52.5px', zIndex: 1000, position: 'fixed', bottom: '20px', right: '20px','&:hover': { backgroundColor: '#374151', }, }}>
+                  <RefreshIcon fontSize='large' />
+                </IconButton>
+                <Snackbar
+                  open={showToast}
+                  autoHideDuration={3000}
+                  onClose={() => setShowToast(false)}
+                  anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                  sx={{ marginRight: '100px' }}
+                >
+                  <Alert
+                    onClose={() => setShowToast(false)}
+                    severity='success'
+                    sx={{ width: '100%' }}
+                  >
+                    <strong>{partCopy} Copied To Clipboard</strong>
+                  </Alert>
+                </Snackbar>
+              </Box>
+            )}
+          </Box>
+
+{/* REPEAT JOBS */}
+
+          <Box>
+            {selectedTab === 2 && (
+              <Box sx={{ padding: '12px' }}>
+                <TableContainer component={Paper}>
+                  <Table>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell align='center' sx={{ width: '7%' }}><input type='text' placeholder='Job No' value={searchedValueJobNo || ''} onChange={(e) => setSearchedValueJobNo(e.target.value)} style={{ width: '100%', fontWeight: 'bold', fontSize: '15px', border: 'none', outline: 'none', background: 'transparent', color: '#000', textAlign: 'center' }} /></TableCell>
+                        <TableCell align='center' sx={{ fontWeight: 'bold', width: '5%', fontSize: '15px' }}>Step No</TableCell>
+                        <TableCell align='center' sx={{ width: '20%' }}><input type='text' placeholder='Part No' value={searchedValuePartNo || ''} onChange={(e) => setSearchedValuePartNo(e.target.value)} style={{ width: '100%', fontWeight: 'bold', fontSize: '15px', border: 'none', outline: 'none', background: 'transparent', color: '#000', textAlign: 'center' }} /></TableCell>
+                        <TableCell align='center' sx={{ fontWeight: 'bold', width: '5%', fontSize: '15px' }}>Revision</TableCell>
+                        <TableCell align='center' sx={{ fontWeight: 'bold', width: '5%', fontSize: '15px' }}>Qty</TableCell>
+                        <TableCell align='center' sx={{ fontWeight: 'bold', width: '6%', fontSize: '15px' }}>Due Date</TableCell>
+                        <TableCell align='center' sx={{ width: '14%' }}><input type='text' placeholder='Customer' value={searchedValueCustomer || ''} onChange={(e) => setSearchedValueCustomer(e.target.value)} style={{ width: '100%', fontWeight: 'bold', fontSize: '15px', border: 'none', outline: 'none', background: 'transparent', color: '#000', textAlign: 'center' }} /></TableCell>
+                        <TableCell align='center' sx={{ fontWeight: 'bold', width: '6%', fontSize: '15px' }}>Type</TableCell>
+                        <TableCell align='center' sx={{ width: '10%' }}><input type='text' placeholder='Next Step' value={searchedValueStep || ''} onChange={(e) => setSearchedValueStep(e.target.value)} style={{ width: '100%', fontWeight: 'bold', fontSize: '15px', border: 'none', outline: 'none', background: 'transparent', color: '#000', textAlign: 'center' }} /></TableCell>
+                        <TableCell align='center' sx={{ fontWeight: 'bold', width: '5%', fontSize: '15px' }}>Print</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {fullRepeats
+                        .filter(row => typeof row.JobNo !== 'undefined')
+                        .filter((row) => 
+                          !searchedValueJobNo || row.JobNo
+                            .toString()
+                            .toLowerCase()
+                            .includes(searchedValueJobNo.toString().toLowerCase())
+                        )
+                        .filter((row) => 
+                          !searchedValuePartNo || row.PartNo
+                            .toString()
+                            .toLowerCase()
+                            .includes(searchedValuePartNo.toString().toLowerCase())
+                        )
+                        .filter((row) => 
+                          !searchedValueCustomer || row.CustCode
+                            .toString()
+                            .toLowerCase()
+                            .includes(searchedValueCustomer.toString().toLowerCase())
+                        )
+                        .filter((row) => 
+                          !searchedValueType || row.User_Text3
+                            .toString()
+                            .toLowerCase()
+                            .includes(searchedValueType.toString().toLowerCase())
+                        )
+                        .filter((row) => {
+                          if (!searchedValueStep) { return true; }
+                          if (!row || !row.WorkCntr) { return false; }
+                          
+                          return row.WorkCntr
+                            .toString() 
+                            .toLowerCase()                                           
+                            .includes(searchedValueStep.toString().toLowerCase())
+                        })
+                        .map((job, index) => {
+                          return (
+                            <TableRow key={index} sx={{ backgroundColor: index % 2 === 0 ? '#f0f0f0' : '#fff' }}>
+                              <TableCell align='center' sx={{ fontWeight: 'bold', fontSize: '15px', padding: 0 }}>{job.JobNo}</TableCell>
+                              <TableCell align='center' sx={{ fontSize: '15px', padding: 0 }}>{job.StepNo}</TableCell>
+                              <TableCell align='center' sx={{ fontSize: '15px', padding: 0 }}>
+                                <CopyToClipboard text={job.PartNo} onCopy={() => { setShowToast(true); setPartCopy(`${job.PartNo}`); }}>
+                                  <span>{job.PartNo}</span>
+                                </CopyToClipboard>
+                              </TableCell>
+                              <TableCell align='center' sx={{ fontSize: '15px', padding: 0 }}>{job.Revision}</TableCell>
+                              <TableCell align='center' sx={{ fontSize: '15px', padding: 0 }}>{job.EstimQty}</TableCell>
+                              <TableCell align='center' sx={{ fontSize: '15px', padding: 0 }}>{job.DueDate.split('-')[1] + '/' + job.DueDate.split('-')[2].split('T')[0]}</TableCell>
+                              <TableCell align='center' sx={{ fontSize: '15px', padding: 0 }}>{job.CustCode}</TableCell>
+                              <TableCell align='center' sx={{ fontSize: '15px', padding: 0 }}>{job.User_Text3}</TableCell>
+                              <TableCell align='center' sx={{ fontSize: '15px', padding: 0 }}>{job.WorkCntr}</TableCell>
+                              <TableCell align='center' sx={{ fontSize: '15px', padding: 0 }}>
+                                <IconButton>
+                                  {job.DocNumber && <CheckIcon />}
+                                </IconButton>
+                              </TableCell>
+                            </TableRow>
+                          )
                         })
                       }
                     </TableBody>
