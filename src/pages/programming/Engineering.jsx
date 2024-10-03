@@ -1,16 +1,14 @@
 import { useEffect, useState } from 'react';
-import { Dropdown, DropdownButton, Toast, ToastContainer } from 'react-bootstrap';
-import { Container, Tabs, Tab, TableContainer, Table, TableHead, TableBody, TableRow, TableCell, Paper, Button, IconButton, Typography, Box } from '@mui/material';
+// import { Dropdown, DropdownButton, Toast, ToastContainer } from 'react-bootstrap';
+import { Box, Divider, FormControl, IconButton, InputLabel, MenuItem, Paper, Select, Tab, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tabs } from '@mui/material';
 
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import Cookies from 'universal-cookie';
-// import { decode as jwt_decode } from 'jwt-decode';
 
-import PuffLoader from "react-spinners/PuffLoader";
+import PuffLoader from 'react-spinners/PuffLoader';
 
 import { Icon } from 'react-icons-kit';
 import { check } from 'react-icons-kit/entypo/check';
-import { refresh } from 'react-icons-kit/fa/refresh';
 import RefreshIcon from '@mui/icons-material/Refresh';
 
 import getAllJobs from '../../services/engineering/getAllJobs';
@@ -27,6 +25,7 @@ import updateModel from '../../services/engineering/updateModel';
 import updateExpedite from '../../services/engineering/updateExpedite';
 import updateEngineer from '../../services/engineering/updateEngineer';
 import updateJobStatus from '../../services/engineering/updateJobStatus';
+import './engineering.css';
 
 export const Engineering = () => {
   const cookies = new Cookies();
@@ -361,94 +360,243 @@ export const Engineering = () => {
   }, []);
 
   return (
-  
-    //     // <Box sx={{ width: '100%', overflowX: 'hidden', padding: 2, border: '1px solid green' }}>
-    //     <Box sx={{ width: '95%', overflowX: 'hidden', padding: 2 }}>
-    //       <Tabs
-    //         value={selectedTab}
-    //         onChange={handleTabChange}
-    //         centered
-    //         indicatorColor="primary"
-    //         textColor="primary"
-    //       >
-    //         <Tab label={tbr} />
-    //         <Tab label={future} />
-    //         <Tab label={repeat} />
-    //         <Tab label={outsource} />
-    //       </Tabs>
-
-    //       <Box sx={{ width: '100%', overflowX: 'hidden', padding: 2 }}>
-    //         {selectedTab === 0 && (
-    //           <Box sx={{ maxWidth: '100%', overflowX: 'auto' }}>
-    //             <TableContainer component={Paper}>
-    //               <Table>
-    //                 <TableHead>
-    //                   <TableRow>
-    //                     <TableCell align="center"><input placeholder='Job No' /></TableCell>
-    //                     <TableCell align="center">Step No</TableCell>
-    //                     <TableCell align="center"><input placeholder='Part No' /></TableCell>
-    //                     <TableCell align="center">Revision</TableCell>
-    //                     <TableCell align="center">Qty</TableCell>
-    //                     <TableCell align="center">Due Date</TableCell>
-    //                     <TableCell align="center"><input placeholder='Customer' /></TableCell>
-    //                     <TableCell align="center"><input placeholder='Type' /></TableCell>
-    //                     <TableCell align="center"><input placeholder='Engineer' /></TableCell>
-    //                     <TableCell align="center">Model</TableCell>
-    //                     <TableCell align="center"><input placeholder='Status' /></TableCell>
-    //                   </TableRow>
-    //                 </TableHead>
-    //                 <TableBody>
-    //                   {searchedTBR.map((job, index) => (
-    //                     <TableRow key={index}>
-    //                       <TableCell align="center">{job.JobNo}</TableCell>
-    //                       <TableCell align="center">{job.StepNo}</TableCell>
-    //                       <TableCell align="center">
-    //                         <CopyToClipboard text={job.PartNo}>
-    //                           <span>{job.PartNo}</span>
-    //                         </CopyToClipboard>
-    //                       </TableCell>
-    //                       <TableCell align="center">{job.Revision}</TableCell>
-    //                       <TableCell align="center">{job.EstimQty}</TableCell>
-    //                       <TableCell align="center">{job.DueDate.split('-')[1] + '/' + job.DueDate.split('-')[2].split('T')[0]}</TableCell>
-    //                       <TableCell align="center">{job.CustCode}</TableCell>
-    //                       <TableCell align="center">{job.User_Text3}</TableCell>
-    //                       <TableCell align="center">
-    //                         <IconButton onClick={() => toggleModel(job)}>
-    //                           {job.model && <Icon icon={check} />}
-    //                         </IconButton>
-    //                       </TableCell>
-    //                       <TableCell align="center">{job.Status}</TableCell>
-    //                     </TableRow>
-    //                   ))}
-    //                 </TableBody>
-    //               </Table>
-    //             </TableContainer>
-
-    //             <IconButton onClick={fetchTBRData} className="refreshBtn">
-    //               <RefreshIcon fontSize="large" />
-    //             </IconButton>
-    //           </Box>
-    //         )}
-    //       </Box>
-    //     </Box>
-    //   )}
-    // </Box>
-    <Box sx={{ width: '100%', height: '100%', border: '1px solid red' }}>
+    <Box sx={{ width: '100%', height: '100%' }}>
       {loading ? (
         <Box>
-          <PuffLoader color="red" />
+          <PuffLoader color='red' />
         </Box>
       ) : (
-        // <Box sx={{ width: '100%', border: '1px solid green' }}>
-        //   <Tabs centered>
-        //     <Tab label={tbr} sx={{ width: '50%' }}/>
-        //     <Tab label={future} sx={{ width: '50%' }}/>
-        //     <Tab label={repeat} sx={{ width: '50%' }}/>
-        //     <Tab label={outsource} sx={{ width: '50%' }}/>
-        //   </Tabs>
-        // </Box>
-        <h1>w</h1>
+        <Box sx={{ width: '100%' }}>
+          <Tabs value={selectedTab} onChange={handleTabChange} centered>
+            <Tab label={tbr} sx={{ width: '15%' }}/>
+            <Tab label={future} sx={{ width: '15%' }}/>
+            <Tab label={repeat} sx={{ width: '15%' }}/>
+            <Tab label={outsource} sx={{ width: '15%' }}/>
+          </Tabs>
+
+          <Box>
+            {selectedTab === 0 && (
+              <Box>
+                <TableContainer component={Paper}>
+                  <Table>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell align='center'><input placeholder='Job No' /></TableCell>
+                        <TableCell align='center'>Step No</TableCell>
+                        <TableCell align='center'><input placeholder='Part No' /></TableCell>
+                        <TableCell align='center'>Revision</TableCell>
+                        <TableCell align='center'>Qty</TableCell>
+                        <TableCell align='center'>Due Date</TableCell>
+                        <TableCell align='center'><input placeholder='Customer' /></TableCell>
+                        <TableCell align='center'><input placeholder='Type' /></TableCell>
+                        <TableCell align='center'><input placeholder='Engineer' /></TableCell>
+                        <TableCell align='center'>Model</TableCell>
+                        <TableCell align='center'><input placeholder='Status' /></TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {searchedTBR.map((job, index) => (
+                        <TableRow key={index}>
+                          <TableCell align='center'>{job.JobNo}</TableCell>
+                          <TableCell align='center'>{job.StepNo}</TableCell>
+                          <TableCell align='center'>
+                            <CopyToClipboard text={job.PartNo}>
+                              <span>{job.PartNo}</span>
+                            </CopyToClipboard>
+                          </TableCell>
+                          <TableCell align='center'>{job.Revision}</TableCell>
+                          <TableCell align='center'>{job.EstimQty}</TableCell>
+                          <TableCell align='center'>{job.DueDate.split('-')[1] + '/' + job.DueDate.split('-')[2].split('T')[0]}</TableCell>
+                          <TableCell align='center'>{job.CustCode}</TableCell>
+                          <TableCell align='center'>{job.User_Text3}</TableCell>
+                          <TableCell align='center'>
+                            <IconButton onClick={() => toggleModel(job)}>
+                              {job.model && <Icon icon={check} />}
+                            </IconButton>
+                          </TableCell>
+                          <TableCell align='center'>{job.Status}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+
+                <IconButton onClick={fetchTBRData} className='refreshBtn'>
+                  <RefreshIcon fontSize='large' />
+                </IconButton>
+              </Box>
+            )}
+          </Box>
+
+          <Box>
+            {selectedTab === 1 && (
+              <Box sx={{ padding: '12px' }}>
+                <TableContainer component={Paper}>
+                  <Table>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell align='center' sx={{ width: '7%' }}><input type='text' placeholder='Job No' value={searchedValueJobNo || ''} onChange={(e) => setSearchedValueJobNo(e.target.value)} style={{ width: '100%', fontWeight: 'bold', fontSize: '14px', padding: '8px', border: 'none', outline: 'none', background: 'transparent', color: '#000', textAlign: 'center' }} /></TableCell>
+                        <TableCell align='center' sx={{ fontWeight: 'bold', width: '5%' }}>Step No</TableCell>
+                        <TableCell align='center' sx={{ width: '20%' }}><input type='text' placeholder='Part No' value={searchedValuePartNo || ''} onChange={(e) => setSearchedValuePartNo(e.target.value)} style={{ width: '100%', fontWeight: 'bold', fontSize: '14px', padding: '8px', border: 'none', outline: 'none', background: 'transparent', color: '#000', textAlign: 'center' }} /></TableCell>
+                        <TableCell align='center' sx={{ fontWeight: 'bold', width: '5%' }}>Revision</TableCell>
+                        <TableCell align='center' sx={{ fontWeight: 'bold', width: '5%' }}>Qty</TableCell>
+                        <TableCell align='center' sx={{ fontWeight: 'bold', width: '6%' }}>Due Date</TableCell>
+                        <TableCell align='center' sx={{ width: '14%' }}><input type='text' placeholder='Customer' value={searchedValueCustomer || ''} onChange={(e) => setSearchedValueCustomer(e.target.value)} style={{ width: '100%', fontWeight: 'bold', fontSize: '14px', padding: '8px', border: 'none', outline: 'none', background: 'transparent', color: '#000', textAlign: 'center' }} /></TableCell>
+                        <TableCell align='center' sx={{ width: '7%' }}><input type='text' placeholder='Type' value={searchedValueType || ''} onChange={(e) => setSearchedValueType(e.target.value)} style={{ width: '100%', fontWeight: 'bold', fontSize: '14px', padding: '8px', border: 'none', outline: 'none', background: 'transparent', color: '#000', textAlign: 'center' }} /></TableCell>
+                        <TableCell align='center' sx={{ width: '10%' }}><input type='text' placeholder='Engineer' value={searchedValueEngineer || ''} onChange={(e) => setSearchedValueEngineer(e.target.value)} style={{ width: '100%', fontWeight: 'bold', fontSize: '14px', padding: '8px', border: 'none', outline: 'none', background: 'transparent', color: '#000', textAlign: 'center' }} /></TableCell>
+                        <TableCell align='center' sx={{ width: '6%' }}><input type='text' placeholder='Quote' value={searchedValueQuote || ''} onChange={(e) => setSearchedValueQuote(e.target.value)} style={{ width: '100%', fontWeight: 'bold', fontSize: '14px', padding: '8px', border: 'none', outline: 'none', background: 'transparent', color: '#000', textAlign: 'center' }} /></TableCell>
+                        <TableCell align='center' sx={{ fontWeight: 'bold', width: '5%' }}>Model</TableCell>
+                        <TableCell align='center' sx={{ width: '10%' }}><input type='text' placeholder='Status' value={searchedValueStatus || ''} onChange={(e) => setSearchedValueStatus(e.target.value)} style={{ width: '100%', fontWeight: 'bold', fontSize: '14px', padding: '8px', border: 'none', outline: 'none', background: 'transparent', color: '#000', textAlign: 'center' }} /></TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {searchedFuture
+                        .filter(row => typeof row.JobNo !== 'undefined')
+                        .filter((row) => 
+                          !searchedValueJobNo || row.JobNo
+                            .toString()
+                            .toLowerCase()
+                            .includes(searchedValueJobNo.toString().toLowerCase())
+                        )
+                        .filter((row) => 
+                          !searchedValuePartNo || row.PartNo
+                            .toString()
+                            .toLowerCase()
+                            .includes(searchedValuePartNo.toString().toLowerCase())
+                        )
+                        .filter((row) => 
+                          !searchedValueCustomer || row.CustCode
+                            .toString()
+                            .toLowerCase()
+                            .includes(searchedValueCustomer.toString().toLowerCase())
+                        )
+                        .filter((row) => 
+                          !searchedValueType || row.User_Text3
+                            .toString()
+                            .toLowerCase()
+                            .includes(searchedValueType.toString().toLowerCase())
+                        )
+                        .filter((row) => {
+                          if (!searchedValueEngineer) { return true; }
+                          if (!row || !row.dataValues || !row.dataValues.engineer) { return false; }
+                          
+                          return row.dataValues.engineer
+                            .toString()
+                            .toLowerCase()                                           
+                            .includes(searchedValueEngineer.toString().toLowerCase())
+                        })
+                        .filter((row) => {
+                          if (!searchedValueQuote) { return true; }
+                          if (!row || !row.QuoteNo ) { return false; }
+                          
+                          return row.QuoteNo
+                            .toString()
+                            .toLowerCase()                                           
+                            .includes(searchedValueQuote.toString().toLowerCase())
+                        })
+                        .filter((row) => {
+                          if (!searchedValueStatus) { return true; }
+                          if (!row || !row.dataValues || !row.dataValues.jobStatus) { return false; }
+                          
+                          return row.dataValues.jobStatus
+                            .toString()
+                            .toLowerCase()                                           
+                            .includes(searchedValueStatus.toString().toLowerCase())
+                        })
+                        .map((job, index) => {
+                          if (job.User_Text3 != 'REPEAT' && job.User_Text2 != '6. OUTSOURCE') {
+                            const rowClass = job.WorkCode == 'HOT' ? 'expedite-row' : '';
+                            const qcClass = qcData.includes(job.CustCode) ? 'qc-row' : '';
+                            const dropdownFutureTitle = dropdownFutureTitles[job.JobNo] || job.dataValues.engineer;
+                            const dropdownFutureStatus = dropdownFutureStatuses[job.JobNo] || job.dataValues.jobStatus;
+                            return (
+                              <TableRow key={index} sx={{ backgroundColor: index % 2 === 0 ? '#f0f0f0' : '#fff' }} className={`${rowClass} ${qcClass}`}>
+                                <TableCell align='center' sx={{ fontWeight: 'bold' }}>{job.JobNo}</TableCell>
+                                <TableCell align='center'>{job.StepNo}</TableCell>
+                                <TableCell align='center'>
+                                  <CopyToClipboard text={job.PartNo}>
+                                    <span>{job.PartNo}</span>
+                                  </CopyToClipboard>
+                                </TableCell>
+                                <TableCell align='center'>{job.Revision}</TableCell>
+                                <TableCell align='center'>{job.EstimQty}</TableCell>
+                                <TableCell align='center'>{job.DueDate.split('-')[1] + '/' + job.DueDate.split('-')[2].split('T')[0]}</TableCell>
+                                <TableCell align='center'>{job.CustCode}</TableCell>
+                                <TableCell align='center'>{job.User_Text3}</TableCell>
+                                
+                                {cookieData.engineering ?
+                                  <TableCell align='center'>
+                                    <FormControl variant='standard' fullWidth>
+                                      <Select
+                                        value={dropdownFutureTitle || ''}
+                                        onChange={(e) => handleFutureEngineer(job, e.target.value)}
+                                        disableUnderline
+                                        sx={{ fontSize: '14px', padding: '0', color: '#000', textAlign: 'center' }}
+                                      >
+                                        {engineeringUsers.map((user, n) => (
+                                          <MenuItem key={n} value={user}>
+                                            {user}
+                                          </MenuItem>
+                                        ))}
+                                        <Divider />
+                                        <MenuItem value=''>None</MenuItem>
+                                      </Select>
+                                    </FormControl>
+                                  </TableCell>
+                                :
+                                  <TableCell align='center'>{job.dataValues.engineer}</TableCell>
+                                }
+
+                                <TableCell align='center'>{job.QuoteNo}</TableCell>
+                                <TableCell align='center'>
+                                  <IconButton onClick={() => toggleModel(job)}>
+                                    {job.dataValues.model && <Icon icon={check} />}
+                                  </IconButton>
+                                </TableCell>
+
+                                {cookieData.engineering ?
+                                  <TableCell align='center'>
+                                    <FormControl variant='standard' fullWidth>
+                                      <Select
+                                        value={dropdownFutureStatus}
+                                        onChange={(e) => handleFutureJobStatus(job, e.target.value)}
+                                        disableUnderline
+                                        sx={{ fontSize: '14px', padding: '0', color: '#000', textAlign: 'center' }}
+                                      >
+                                        <MenuItem value='WIP'>WIP</MenuItem>
+                                        <MenuItem value='FORMING'>FORMING</MenuItem>
+                                        <MenuItem value='FINALIZE'>FINALIZE</MenuItem>
+                                        <MenuItem value='TLASER'>TLASER</MenuItem>
+                                        <MenuItem value='QC'>QC</MenuItem>
+                                        <MenuItem value='REWORK'>REWORK</MenuItem>
+                                        <MenuItem value='HOLD'>HOLD</MenuItem>
+                                        <MenuItem value='PROTO'>PROTO</MenuItem>
+                                        <MenuItem value='DONE'>DONE</MenuItem>
+                                        <Divider />
+                                        <MenuItem value='CLOCK'>CLOCK</MenuItem>
+                                      </Select>
+                                    </FormControl>
+                                  </TableCell>
+                                :
+                                  <TableCell align='center'>{job.dataValues.jobStatus}</TableCell>
+                                }
+                              </TableRow>
+                            )
+                          }
+                        })
+                      }
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+
+                <IconButton onClick={fetchFutureData} sx={{ backgroundColor: '#111827', color: 'white', height: '52.5px', width: '52.5px', zIndex: 1000, position: 'fixed', bottom: '20px', right: '20px','&:hover': { backgroundColor: '#374151', }, }}>
+                  <RefreshIcon fontSize='large' />
+                </IconButton>
+              </Box>
+            )}
+          </Box>
+        </Box>
       )}
-    </Box >
+    </Box>
   );
 }
