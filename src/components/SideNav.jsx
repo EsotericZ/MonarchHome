@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Box, CssBaseline, Divider, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
+import { Box, createTheme, CssBaseline, Divider, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, ThemeProvider, Tooltip } from '@mui/material';
 import MuiDrawer from '@mui/material/Drawer';
 import { styled, useTheme } from '@mui/material/styles';
 
@@ -57,6 +57,19 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
   }),
 );
 
+const darkTheme = createTheme({
+  palette: {
+    mode: 'dark',
+    primary: {
+      main: '#90caf9',
+    },
+    background: {
+      default: '#121212',
+      paper: '#1e1e1e',
+    },
+  },
+});
+
 export const SideNav = ({ children }) => {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
@@ -69,33 +82,39 @@ export const SideNav = ({ children }) => {
   return (
     <Box sx={{ display: 'flex', height: '100vh', width: '100vw' }}>
       <CssBaseline />
-      <Drawer variant="permanent" open={open}>
-        <DrawerHeader sx={{ justifyContent: 'flex-start', paddingLeft: '16px' }}>
-          <IconButton onClick={handleDrawerToggle}>
-            {open ? (theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />) : <ChevronRightIcon />}
-          </IconButton>
-        </DrawerHeader>
+      <ThemeProvider theme={darkTheme}>
+        <Drawer variant='permanent' open={open}>
+          <DrawerHeader sx={{ justifyContent: 'flex-start', paddingLeft: '16px' }}>
+            <IconButton onClick={handleDrawerToggle}>
+              {open ? (theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />) : <ChevronRightIcon />}
+            </IconButton>
+          </DrawerHeader>
 
-        <Divider />
+          <Divider />
 
-        <List>
-          <ListItem disablePadding>
-            <ListItemButton onClick={() => navigate('/dashboard')}>
-              <ListItemIcon><InboxIcon /></ListItemIcon>
-              <ListItemText primary="Dashboard" />
-            </ListItemButton>
-          </ListItem>
-          <ListItem disablePadding>
-            <ListItemButton onClick={() => navigate('/engineering')}>
-              <ListItemIcon><MailIcon /></ListItemIcon>
-              <ListItemText primary="Engineering" />
-            </ListItemButton>
-          </ListItem>
-        </List>
+          <List>
+            <ListItem disablePadding>
+              <Tooltip title='Dashboard' placement='right' arrow>
+                <ListItemButton onClick={() => navigate('/dashboard')}>
+                  <ListItemIcon><InboxIcon /></ListItemIcon>
+                  <ListItemText primary='Dashboard' />
+                </ListItemButton>
+              </Tooltip>
+            </ListItem>
+            <ListItem disablePadding>
+              <Tooltip title='Engineering' placement='right' arrow>
+                <ListItemButton onClick={() => navigate('/engineering')}>
+                  <ListItemIcon><MailIcon /></ListItemIcon>
+                  <ListItemText primary='Engineering' />
+                </ListItemButton>
+              </Tooltip>
+            </ListItem>
+          </List>
 
-      </Drawer>
+        </Drawer>
+      </ThemeProvider>
       <Box
-        component="main"
+        component='main'
         sx={{
           flexGrow: 1,
           width: open ? `calc(100vw - ${drawerWidth}px)` : '100vw',
