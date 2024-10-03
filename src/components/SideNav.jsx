@@ -1,134 +1,113 @@
-import { useMemo, useState } from 'react';
-import PropTypes from 'prop-types';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Box, CssBaseline, Divider, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
+import MuiDrawer from '@mui/material/Drawer';
+import { styled, useTheme } from '@mui/material/styles';
 
-import { Box, Button, createTheme, Typography } from '@mui/material';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { AppProvider } from '@toolpad/core/AppProvider';
-import { DashboardLayout } from '@toolpad/core/DashboardLayout';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import InboxIcon from '@mui/icons-material/MoveToInbox';
+import MailIcon from '@mui/icons-material/Mail';
 
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import BarChartIcon from '@mui/icons-material/BarChart';
-import DescriptionIcon from '@mui/icons-material/Description';
-import LayersIcon from '@mui/icons-material/Layers';
+const drawerWidth = 240;
 
+const openedMixin = (theme) => ({
+  width: drawerWidth,
+  transition: theme.transitions.create('width', {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.enteringScreen,
+  }),
+  overflowX: 'hidden',
+});
 
-const navigation = [
-  {
-    kind: 'header',
-    title: 'Main items',
-  },
-  {
-    segment: 'dashboard',
-    title: 'Dashboard',
-    icon: <DashboardIcon />,
-    link: '/',
-  },
-  {
-    segment: 'engineering',
-    title: 'Engineering',
-    icon: <ShoppingCartIcon />,
-    link: '/engineering',
-  },
-  {
-    kind: 'divider',
-  },
-  {
-    kind: 'header',
-    title: 'Analytics',
-  },
-  {
-    segment: 'reports',
-    title: 'Reports',
-    icon: <BarChartIcon />,
-    children: [
-      {
-        segment: 'sales',
-        title: 'Sales',
-        icon: <DescriptionIcon />,
-      },
-      {
-        segment: 'traffic',
-        title: 'Traffic',
-        icon: <DescriptionIcon />,
-      },
-    ],
-  },
-  {
-    segment: 'integrations',
-    title: 'Integrations',
-    icon: <LayersIcon />,
-  },
-];
-
-const CustomToolbarAccount = () => (
-  <Box>
-    <Button variant="outlined" color="secondary">
-      Profile
-    </Button>
-  </Box>
-);
-
-const theme = createTheme({
-  cssVariables: {
-    colorSchemeSelector: 'data-toolpad-color-scheme',
-  },
-  colorSchemes: { light: true, dark: true },
-  breakpoints: {
-    values: {
-      xs: 0,
-      sm: 600,
-      md: 600,
-      lg: 1200,
-      xl: 1536,
-    },
+const closedMixin = (theme) => ({
+  transition: theme.transitions.create('width', {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+  overflowX: 'hidden',
+  width: `calc(${theme.spacing(7)} + 1px)`,
+  [theme.breakpoints.up('sm')]: {
+    width: `calc(${theme.spacing(8)} + 1px)`,
   },
 });
 
-export const SideNav = (props) => {
-  const { window, children } = props;
-  const location = useLocation();
+const DrawerHeader = styled('div')(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'flex-end',
+  padding: theme.spacing(0, 1),
+  ...theme.mixins.toolbar,
+}));
+
+const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
+  ({ theme, open }) => ({
+    width: drawerWidth,
+    flexShrink: 0,
+    whiteSpace: 'nowrap',
+    boxSizing: 'border-box',
+    ...(open && {
+      ...openedMixin(theme),
+      '& .MuiDrawer-paper': openedMixin(theme),
+    }),
+    ...(!open && {
+      ...closedMixin(theme),
+      '& .MuiDrawer-paper': closedMixin(theme),
+    }),
+  }),
+);
+
+export const SideNav = ({ children }) => {
+  const theme = useTheme();
+  const [open, setOpen] = useState(false);
   const navigate = useNavigate();
 
-  const [pathname, setPathname] = useState(location.pathname);
-
-  const router = useMemo(() => {
-    return {
-      pathname,
-      searchParams: new URLSearchParams(),
-      navigate: (path) => {
-        setPathname(String(path));
-        navigate(path)
-      },
-    };
-  }, [navigate, pathname]);
-
-  const siteWindow = window !== undefined ? window() : undefined;
+  const handleDrawerToggle = () => {
+    setOpen(!open);
+  };
 
   return (
-    <AppProvider
-      navigation={navigation}
-      branding={{
-        // logo: <img src='' alt='Monarch Metal' />,
-        logo: <img src='' />,
-        title: 'Monarch Metal',
-      }}
-      router={router}
-      theme={theme}
-      window={siteWindow}
-    >
-      <DashboardLayout
-        slots={{
-          toolbarAccount: CustomToolbarAccount,
+    <Box sx={{ display: 'flex', height: '100vh', width: '100vw' }}>
+      <CssBaseline />
+      <Drawer variant="permanent" open={open}>
+        <DrawerHeader sx={{ justifyContent: 'flex-start', paddingLeft: '16px' }}>
+          <IconButton onClick={handleDrawerToggle}>
+            {open ? (theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />) : <ChevronRightIcon />}
+          </IconButton>
+        </DrawerHeader>
+
+        <Divider />
+
+        <List>
+          <ListItem disablePadding>
+            <ListItemButton onClick={() => navigate('/dashboard')}>
+              <ListItemIcon><InboxIcon /></ListItemIcon>
+              <ListItemText primary="Dashboard" />
+            </ListItemButton>
+          </ListItem>
+          <ListItem disablePadding>
+            <ListItemButton onClick={() => navigate('/engineering')}>
+              <ListItemIcon><MailIcon /></ListItemIcon>
+              <ListItemText primary="Engineering" />
+            </ListItemButton>
+          </ListItem>
+        </List>
+
+      </Drawer>
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          width: open ? `calc(100vw - ${drawerWidth}px)` : '100vw',
+          transition: theme.transitions.create(['width'], {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen,
+          }),
+          overflow: 'hidden',
         }}
       >
         {children}
-      </DashboardLayout>
-    </AppProvider>
+      </Box>
+    </Box>
   );
-};
-
-SideNav.propTypes = {
-  window: PropTypes.func,
-  children: PropTypes.node,
 };
