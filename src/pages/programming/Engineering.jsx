@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Alert, Box, Divider, FormControl, IconButton, MenuItem, Paper, Select, Snackbar, Tab, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tabs } from '@mui/material';
+import { Alert, Box, Divider, FormControl, IconButton, MenuItem, Paper, Select, Snackbar, Tab, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tabs, Typography } from '@mui/material';
 
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import Cookies from 'universal-cookie';
@@ -19,7 +19,6 @@ import getOutsourcePrints from '../../services/engineering/getOutsourcePrints';
 import getAllUsers from '../../services/users/getAllUsers';
 import getAllQCNotes from '../../services/qcinfo/getAllQCNotes';
 import updateModel from '../../services/engineering/updateModel';
-import updateExpedite from '../../services/engineering/updateExpedite';
 import updateEngineer from '../../services/engineering/updateEngineer';
 import updateJobStatus from '../../services/engineering/updateJobStatus';
 import './engineering.css';
@@ -39,7 +38,6 @@ export const Engineering = () => {
 
   const [searchedValueJobNo, setSearchedValueJobNo] = useState('');
   const [searchedValuePartNo, setSearchedValuePartNo] = useState('');
-  const [searchedValueDueDate, setSearchedValueDueDate] = useState('');
   const [searchedValueCustomer, setSearchedValueCustomer] = useState('');
   const [searchedValueType, setSearchedValueType] = useState('');
   const [searchedValueStep, setSearchedValueStep] = useState('');
@@ -54,11 +52,6 @@ export const Engineering = () => {
   const [searchedEng, setSearchedEng] = useState([]);
   const [searchedTBR, setSearchedTBR] = useState([]);
   const [searchedFuture, setSearchedFuture] = useState([]);
-  const [searchedRepeat, setSearchedRepeat] = useState([]);
-  const [searchedOutsource, setSearchedOutsource] = useState([]);
-  const [searchedNextStep, setSearchedNextStep] = useState([]);
-  const [searchedPrints, setSearchedPrints] = useState([]);
-  const [searchedOutsourcePrints, setSearchedOutsourcePrints] = useState([]);
   const [fullRepeats, setFullRepeats] = useState([]);
   const [fullOutsource, setFullOutsource] = useState([]);
   const [engineeringUsers, setEngineeringUsers] = useState([]);
@@ -101,11 +94,6 @@ export const Engineering = () => {
       let futureCount = futureRes.filter(row => typeof row.JobNo !== 'undefined' && row.User_Text3 !== 'REPEAT').length;
       setFuture(futureCount > 0 ? `Future (${futureCount})` : 'Future');
 
-      setSearchedNextStep(nextStepRes);
-
-      setSearchedPrints(printsRes);
-
-      setSearchedRepeat(repeatRes);
       let repeatCount = repeatRes.length;
       setRepeat(repeatCount > 0 ? `Repeat (${repeatCount})` : 'Repeat');
 
@@ -123,9 +111,6 @@ export const Engineering = () => {
         })
       );
 
-      setSearchedOutsourcePrints(outsourcePrintsRes);
-
-      setSearchedOutsource(outsourceRes);
       let outsourceCount = outsourceRes.length;
       setOutsource(outsourceCount > 0 ? `Outsource (${outsourceCount})` : 'Outsource');
 
@@ -189,11 +174,6 @@ export const Engineering = () => {
         getRepeatJobs(),
       ]);
 
-      setSearchedNextStep(nextStepRes);
-
-      setSearchedPrints(printsRes);
-
-      setSearchedRepeat(repeatRes);
       let repeatCount = repeatRes.length;
       setRepeat(repeatCount > 0 ? `Repeat (${repeatCount})` : 'Repeat');
 
@@ -225,9 +205,6 @@ export const Engineering = () => {
         getOutsourceJobs(),
       ]);
 
-      setSearchedOutsourcePrints(outsourcePrintsRes);
-
-      setSearchedOutsource(outsourceRes);
       let outsourceCount = outsourceRes.length;
       setOutsource(outsourceCount > 0 ? `Outsource (${outsourceCount})` : 'Outsource');
 
@@ -281,11 +258,6 @@ export const Engineering = () => {
     } finally {
       setUpdate(`Model ${job.dataValues.jobNo}`)
     }
-  }
-
-  const toggleExpedite = async (job) => {
-    updateExpedite(job.dataValues.id);
-    setUpdate(`Expedite ${job.dataValues.jobNo}`)
   }
 
   const handleTBREngineer = async (job, engineer) => {
@@ -357,13 +329,17 @@ export const Engineering = () => {
   }, []);
 
   return (
-    <Box sx={{ width: '100%', height: '100%' }}>
+    <Box sx={{ width: '100%', textAlign: 'center', height: '100%' }}>
       {loading ? (
         <Box>
-          <PuffLoader color='red' />
+          <Typography variant="h4" sx={{ fontWeight: 'bold', margin: '16px' }}>Engineering</Typography>
+          <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginTop: '100px' }}>
+            <PuffLoader color='red' />
+          </Box>
         </Box>
       ) : (
         <Box sx={{ width: '100%' }}>
+          <Typography variant="h4" sx={{ fontWeight: 'bold', margin: '16px' }}>Engineering</Typography>
           <Tabs value={selectedTab} onChange={handleTabChange} centered  TabIndicatorProps={{ style: {backgroundColor: 'red'} }}>
             <Tab label={tbr} sx={{ width: '15%', '&.Mui-selected': { color: 'red' }, '&:focus': { outline: 'none' } }} />
             <Tab label={future} sx={{ width: '15%', '&.Mui-selected': { color: 'red' }, '&:focus': { outline: 'none' } }} />

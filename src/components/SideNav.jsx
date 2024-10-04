@@ -1,13 +1,16 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Box, createTheme, CssBaseline, Divider, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, ThemeProvider, Tooltip } from '@mui/material';
-import MuiDrawer from '@mui/material/Drawer';
+import { Box, createTheme, CssBaseline, Collapse, Divider, Drawer as MuiDrawer, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, ThemeProvider, Tooltip } from '@mui/material';
+import { 
+  ChevronLeft as ChevronLeftIcon, 
+  ChevronRight as ChevronRightIcon, 
+  Dashboard as DashboardIcon,
+  Home as HomeIcon,
+  ExpandLess, 
+  ExpandMore, 
+  LabelImportant as LabelImportantIcon,
+} from '@mui/icons-material';
 import { styled, useTheme } from '@mui/material/styles';
-
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
 
 const drawerWidth = 240;
 
@@ -73,10 +76,15 @@ const darkTheme = createTheme({
 export const SideNav = ({ children }) => {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
+  const [programmingOpen, setProgrammingOpen] = useState(false);
   const navigate = useNavigate();
 
   const handleDrawerToggle = () => {
     setOpen(!open);
+  };
+
+  const handleProgrammingClick = () => {
+    setProgrammingOpen(!programmingOpen);
   };
 
   return (
@@ -92,23 +100,45 @@ export const SideNav = ({ children }) => {
 
           <Divider />
 
+{/* DASHBOARD */}
           <List>
             <ListItem disablePadding>
               <Tooltip title='Dashboard' placement='right' arrow>
-                <ListItemButton onClick={() => navigate('/dashboard')}>
-                  <ListItemIcon><InboxIcon /></ListItemIcon>
+                <ListItemButton onClick={() => { navigate('/dashboard'); setOpen(false); }}>
+                  <ListItemIcon><HomeIcon /></ListItemIcon>
                   <ListItemText primary='Dashboard' />
                 </ListItemButton>
               </Tooltip>
             </ListItem>
+          
+{/* PROGRAMMING */}
             <ListItem disablePadding>
-              <Tooltip title='Engineering' placement='right' arrow>
-                <ListItemButton onClick={() => navigate('/engineering')}>
-                  <ListItemIcon><MailIcon /></ListItemIcon>
-                  <ListItemText primary='Engineering' />
+              <Tooltip title="Programming" placement="right" arrow>
+                <ListItemButton>
+                  <ListItemIcon onClick={() => { navigate('/programming'); setOpen(false) }} sx={{ cursor: 'pointer' }}>
+                    <DashboardIcon />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary="Programming"
+                    onClick={() => { navigate('/programming'); setOpen(false); }}
+                    sx={{ cursor: 'pointer' }}
+                  />
+                  <IconButton onClick={handleProgrammingClick}>
+                    {programmingOpen ? <ExpandLess /> : <ExpandMore />}
+                  </IconButton>
                 </ListItemButton>
               </Tooltip>
             </ListItem>
+            <Collapse in={programmingOpen} timeout="auto" unmountOnExit>
+              <List component="div" disablePadding sx={{ paddingLeft: 7 }}>
+                <ListItem disablePadding>
+                  <ListItemButton onClick={() => { navigate('/engineering'); setOpen(false); }}>
+                    {/* <ListItemIcon><LabelImportantIcon /></ListItemIcon> */}
+                    <ListItemText primary="Engineering" />
+                  </ListItemButton>
+                </ListItem>
+              </List>
+            </Collapse>
           </List>
 
         </Drawer>
