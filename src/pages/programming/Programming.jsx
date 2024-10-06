@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import Cookies from 'universal-cookie';
+import { jwtDecode } from "jwt-decode";
 import { Box, Typography } from '@mui/material';
 import { DepartmentCard } from '../../components/DepartmentCard';
 
@@ -7,7 +8,7 @@ export const Programming = () => {
   const cookies = new Cookies();
   let cookieData;
   try {
-    cookieData = jwt_decode(cookies.get('jwt'));
+    cookieData = jwtDecode(cookies.get('jwt'));
   } catch {
     cookieData = {
       name: '',
@@ -84,7 +85,7 @@ export const Programming = () => {
   }, []);
 
   return (
-    <Box sx={{ width: '100%', textAlign: 'center', height: '100%' }}>
+    <Box sx={{ width: '100%', textAlign: 'center', overflowY: 'auto', height: '100vh' }}>
       <Box sx={{ display: 'block', width: '100%', padding: 2 }}>
         <Typography variant="h4" sx={{ fontWeight: 'bold', margin: '16px' }}>
           Programming

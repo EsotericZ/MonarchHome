@@ -3,6 +3,8 @@ import { SideNav } from './components/SideNav';
 
 import { Dashboard } from './pages/dashboard/Dashboard';
 import { Engineering } from './pages/programming/Engineering';
+import { Login } from './pages/login/Login';
+import { Profile } from './pages/profile/Profile';
 import { Programming } from './pages/programming/Programming';
 
 export const App = () => {
@@ -13,6 +15,8 @@ export const App = () => {
           <Route path='/' element={<Dashboard />} />
           <Route path='/dashboard' element={<Dashboard />} />
           <Route path='/engineering' element={<Engineering />} />
+          <Route path='/login' element={<Login />} />
+          <Route path='/profile' element={<Profile />} />
           <Route path='/programming' element={<Programming />} />
         </Routes>
       </SideNav>

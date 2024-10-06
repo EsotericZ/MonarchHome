@@ -3,6 +3,7 @@ import { Alert, Box, Divider, FormControl, IconButton, MenuItem, Paper, Select, 
 
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import Cookies from 'universal-cookie';
+import { jwtDecode } from "jwt-decode";
 
 import PuffLoader from 'react-spinners/PuffLoader';
 import CheckIcon from '@mui/icons-material/Check';
@@ -27,7 +28,7 @@ export const Engineering = () => {
   const cookies = new Cookies();
   let cookieData
   try {
-    cookieData = jwt_decode(cookies.get('jwt'));
+    cookieData = jwtDecode(cookies.get('jwt'));
   } catch {
     cookieData = {
       'name': '',
@@ -329,7 +330,7 @@ export const Engineering = () => {
   }, []);
 
   return (
-    <Box sx={{ width: '100%', textAlign: 'center', height: '100%' }}>
+    <Box sx={{ width: '100%', textAlign: 'center', overflowY: 'auto', height: '100vh' }}>
       {loading ? (
         <Box>
           <Typography variant="h4" sx={{ fontWeight: 'bold', margin: '16px' }}>Engineering</Typography>
@@ -479,7 +480,7 @@ export const Engineering = () => {
                                 <TableCell align='center' sx={{ fontSize: '15px' }}>
                                   <FormControl variant='standard' fullWidth>
                                     <Select
-                                      value={dropdownTBRStatus}
+                                      value={dropdownTBRStatus || ''}
                                       onChange={(e) => handleTBRJobStatus(job, e.target.value)}
                                       disableUnderline
                                       sx={{ fontSize: '15px', padding: '0', color: '#000', textAlign: 'center' }}
@@ -663,7 +664,7 @@ export const Engineering = () => {
                                   <TableCell align='center' sx={{ fontSize: '15px' }}>
                                     <FormControl variant='standard' fullWidth>
                                       <Select
-                                        value={dropdownFutureStatus}
+                                        value={dropdownFutureStatus || ''}
                                         onChange={(e) => handleFutureJobStatus(job, e.target.value)}
                                         disableUnderline
                                         sx={{ fontSize: '15px', padding: '0', color: '#000', textAlign: 'center' }}

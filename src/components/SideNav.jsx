@@ -1,16 +1,20 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Box, createTheme, CssBaseline, Collapse, Divider, Drawer as MuiDrawer, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, ThemeProvider, Tooltip } from '@mui/material';
 import { 
   ChevronLeft as ChevronLeftIcon, 
   ChevronRight as ChevronRightIcon, 
   Dashboard as DashboardIcon,
-  Home as HomeIcon,
   ExpandLess, 
   ExpandMore, 
-  LabelImportant as LabelImportantIcon,
+  Home as HomeIcon,
+  Login as LoginIcon,
+  Person as PersonIcon,
 } from '@mui/icons-material';
 import { styled, useTheme } from '@mui/material/styles';
+
+import Cookies from 'universal-cookie';
+import { jwtDecode } from 'jwt-decode';
 
 const drawerWidth = 240;
 
@@ -74,10 +78,15 @@ const darkTheme = createTheme({
 });
 
 export const SideNav = ({ children }) => {
+  const cookies = new Cookies();
   const theme = useTheme();
+  const [name, setName] = useState('');
+  const [admin, setAdmin] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
   const [programmingOpen, setProgrammingOpen] = useState(false);
   const navigate = useNavigate();
+  let userData
 
   const handleDrawerToggle = () => {
     setOpen(!open);
@@ -87,59 +96,119 @@ export const SideNav = ({ children }) => {
     setProgrammingOpen(!programmingOpen);
   };
 
+  const setData = () => {
+    try {
+      userData = (jwtDecode(cookies.get('jwt')))
+      setName(userData.name.split(' ')[0]);
+      userData.role == 'admin' && setAdmin(true);
+      setLoading(false)
+    } catch {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    setData();
+  }, [])
+
   return (
     <Box sx={{ display: 'flex', height: '100vh', width: '100vw' }}>
       <CssBaseline />
       <ThemeProvider theme={darkTheme}>
-        <Drawer variant='permanent' open={open}>
-          <DrawerHeader sx={{ justifyContent: 'flex-start', paddingLeft: '16px' }}>
-            <IconButton onClick={handleDrawerToggle}>
-              {open ? (theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />) : <ChevronRightIcon />}
-            </IconButton>
-          </DrawerHeader>
+        <Drawer variant='permanent' open={open} sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100vh' }}>
+          <Box>
+            <DrawerHeader sx={{ justifyContent: 'flex-start', paddingLeft: '10px' }}>
+              <IconButton onClick={handleDrawerToggle}>
+                {open ? (theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />) : <ChevronRightIcon />}
+              </IconButton>
+            </DrawerHeader>
 
-          <Divider />
+            <Divider />
 
 {/* DASHBOARD */}
-          <List>
-            <ListItem disablePadding>
-              <Tooltip title='Dashboard' placement='right' arrow>
-                <ListItemButton onClick={() => { navigate('/dashboard'); setOpen(false); }}>
-                  <ListItemIcon><HomeIcon /></ListItemIcon>
-                  <ListItemText primary='Dashboard' />
-                </ListItemButton>
-              </Tooltip>
-            </ListItem>
+            <List>
+              <ListItem disablePadding>
+                <Tooltip title='Dashboard' placement='right' arrow>
+                  <ListItemButton onClick={() => { navigate('/dashboard'); setOpen(false); }}>
+                    <ListItemIcon><HomeIcon /></ListItemIcon>
+                    <ListItemText primary='Dashboard' />
+                  </ListItemButton>
+                </Tooltip>
+              </ListItem>
           
 {/* PROGRAMMING */}
-            <ListItem disablePadding>
-              <Tooltip title="Programming" placement="right" arrow>
-                <ListItemButton>
-                  <ListItemIcon onClick={() => { navigate('/programming'); setOpen(false) }} sx={{ cursor: 'pointer' }}>
-                    <DashboardIcon />
-                  </ListItemIcon>
-                  <ListItemText
-                    primary="Programming"
-                    onClick={() => { navigate('/programming'); setOpen(false); }}
-                    sx={{ cursor: 'pointer' }}
-                  />
-                  <IconButton onClick={handleProgrammingClick}>
-                    {programmingOpen ? <ExpandLess /> : <ExpandMore />}
-                  </IconButton>
-                </ListItemButton>
-              </Tooltip>
-            </ListItem>
-            <Collapse in={programmingOpen} timeout="auto" unmountOnExit>
-              <List component="div" disablePadding sx={{ paddingLeft: 7 }}>
-                <ListItem disablePadding>
-                  <ListItemButton onClick={() => { navigate('/engineering'); setOpen(false); }}>
-                    {/* <ListItemIcon><LabelImportantIcon /></ListItemIcon> */}
-                    <ListItemText primary="Engineering" />
+              <ListItem disablePadding>
+                <Tooltip title="Programming" placement="right" arrow>
+                  <ListItemButton>
+                    <ListItemIcon onClick={() => { navigate('/programming'); setOpen(false) }} sx={{ cursor: 'pointer' }}>
+                      <DashboardIcon />
+                    </ListItemIcon>
+                    <ListItemText
+                      primary="Programming"
+                      onClick={() => { navigate('/programming'); setOpen(false); }}
+                      sx={{ cursor: 'pointer' }}
+                    />
+                    <IconButton onClick={handleProgrammingClick}>
+                      {programmingOpen ? <ExpandLess /> : <ExpandMore />}
+                    </IconButton>
                   </ListItemButton>
+                </Tooltip>
+              </ListItem>
+              <Collapse in={programmingOpen} timeout="auto" unmountOnExit>
+                <List component="div" disablePadding sx={{ paddingLeft: 7 }}>
+                  <ListItem disablePadding>
+                    <ListItemButton onClick={() => { navigate('/engineering'); setOpen(false); }}>
+                      {/* <ListItemIcon><LabelImportantIcon /></ListItemIcon> */}
+                      <ListItemText primary="Engineering" />
+                    </ListItemButton>
+                  </ListItem>
+                </List>
+              </Collapse>
+            </List>
+
+            <Divider />
+
+{/* LOGIN / PROFILE */}
+            <List>
+              {name ? (
+                <ListItem disablePadding>
+                  <Tooltip title='Profile' placement='right' arrow>
+                    <ListItemButton onClick={() => { navigate('/profile'); setOpen(false); }}>
+                      <ListItemIcon><PersonIcon /></ListItemIcon>
+                      <ListItemText primary='Profile' />
+                    </ListItemButton>
+                  </Tooltip>
                 </ListItem>
-              </List>
-            </Collapse>
-          </List>
+              ) : (
+                <ListItem disablePadding>
+                  <Tooltip title='Login' placement='right' arrow>
+                    <ListItemButton onClick={() => { navigate('/login'); setOpen(false); }}>
+                      <ListItemIcon><LoginIcon /></ListItemIcon>
+                      <ListItemText primary='Login' />
+                    </ListItemButton>
+                  </Tooltip>
+                </ListItem>
+              )}
+            </List>
+          </Box>
+
+{/* USER INFO */} 
+          <Box sx={{ marginTop: 'auto', paddingBottom: 2 }}>
+            <List>
+              <ListItem disablePadding>
+                <ListItemText 
+                  primary={name ? name : 'Guest'} 
+                  sx={{
+                    textAlign: open ? 'center' : 'center',
+                    transition: theme.transitions.create(['padding-left', 'text-align'], {
+                      easing: theme.transitions.easing.sharp,
+                      duration: theme.transitions.duration.enteringScreen,
+                    }), 
+                  }}
+                />
+              </ListItem>
+            </List>
+          </Box>
 
         </Drawer>
       </ThemeProvider>
