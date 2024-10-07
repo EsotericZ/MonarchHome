@@ -107,6 +107,11 @@ export const SideNav = ({ children }) => {
     }
   }
 
+  const handleCloseAll = () => {
+    setOpen(false); 
+    setProgrammingOpen(false);
+  }
+
   useEffect(() => {
     setData();
   }, [])
@@ -129,7 +134,7 @@ export const SideNav = ({ children }) => {
             <List>
               <ListItem disablePadding>
                 <Tooltip title='Dashboard' placement='right' arrow>
-                  <ListItemButton onClick={() => { navigate('/dashboard'); setOpen(false); }}>
+                  <ListItemButton onClick={() => { navigate('/dashboard'); handleCloseAll(); }}>
                     <ListItemIcon><HomeIcon /></ListItemIcon>
                     <ListItemText primary='Dashboard' />
                   </ListItemButton>
@@ -145,7 +150,7 @@ export const SideNav = ({ children }) => {
                     </ListItemIcon>
                     <ListItemText
                       primary="Programming"
-                      onClick={() => { navigate('/programming'); setOpen(false); }}
+                      onClick={() => { navigate('/programming'); handleCloseAll(); }}
                       sx={{ cursor: 'pointer' }}
                     />
                     <IconButton onClick={handleProgrammingClick}>
@@ -157,22 +162,29 @@ export const SideNav = ({ children }) => {
               <Collapse in={programmingOpen} timeout="auto" unmountOnExit>
                 <List component="div" disablePadding sx={{ paddingLeft: 7 }}>
                   <ListItem disablePadding>
-                    <ListItemButton onClick={() => { navigate('/engineering'); setOpen(false); }}>
+                    <ListItemButton onClick={() => { navigate('/engineering'); handleCloseAll(); }}>
                       <ListItemText primary="Engineering" />
                     </ListItemButton>
                   </ListItem>
                 </List>
                 <List component="div" disablePadding sx={{ paddingLeft: 7 }}>
                   <ListItem disablePadding>
-                    <ListItemButton onClick={() => { navigate('/quality'); setOpen(false); }}>
+                    <ListItemButton onClick={() => { navigate('/quality'); handleCloseAll(); }}>
                       <ListItemText primary="Quality" />
                     </ListItemButton>
                   </ListItem>
                 </List>
                 <List component="div" disablePadding sx={{ paddingLeft: 7 }}>
                   <ListItem disablePadding>
-                    <ListItemButton onClick={() => { navigate('/qualityInfo'); setOpen(false); }}>
+                    <ListItemButton onClick={() => { navigate('/qualityInfo'); handleCloseAll(); }}>
                       <ListItemText primary="Quality Info" />
+                    </ListItemButton>
+                  </ListItem>
+                </List>
+                <List component="div" disablePadding sx={{ paddingLeft: 7 }}>
+                  <ListItem disablePadding>
+                    <ListItemButton onClick={() => { navigate('/bendDeduction'); handleCloseAll(); }}>
+                      <ListItemText primary="Bend Deduction" />
                     </ListItemButton>
                   </ListItem>
                 </List>
@@ -186,7 +198,7 @@ export const SideNav = ({ children }) => {
               {name ? (
                 <ListItem disablePadding>
                   <Tooltip title='Profile' placement='right' arrow>
-                    <ListItemButton onClick={() => { navigate('/profile'); setOpen(false); }}>
+                    <ListItemButton onClick={() => { navigate('/profile'); handleCloseAll(); }}>
                       <ListItemIcon><PersonIcon /></ListItemIcon>
                       <ListItemText primary='Profile' />
                     </ListItemButton>
@@ -195,7 +207,7 @@ export const SideNav = ({ children }) => {
               ) : (
                 <ListItem disablePadding>
                   <Tooltip title='Login' placement='right' arrow>
-                    <ListItemButton onClick={() => { navigate('/login'); setOpen(false); }}>
+                    <ListItemButton onClick={() => { navigate('/login'); handleCloseAll(); }}>
                       <ListItemIcon><LoginIcon /></ListItemIcon>
                       <ListItemText primary='Login' />
                     </ListItemButton>
