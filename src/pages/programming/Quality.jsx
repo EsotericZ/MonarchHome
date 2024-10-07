@@ -13,6 +13,7 @@ import getAllJobs from '../../services/engineering/getAllJobs';
 import getTBRJobs from '../../services/engineering/getTBRJobs';
 import getFutureJobs from '../../services/engineering/getFutureJobs';
 import getAllUsers from '../../services/users/getAllUsers';
+import getAllQCNotes from '../../services/qcinfo/getAllQCNotes';
 import updateInspector from '../../services/quality/updateInspector';
 import updateStatus from '../../services/quality/updateStatus';
 import './engineering.css';
@@ -45,6 +46,7 @@ export const Quality = () => {
   const [searchedTBR, setSearchedTBR] = useState([]);
   const [searchedFuture, setSearchedFuture] = useState([]);
   const [qualityUsers, setQualityUsers] = useState([]);
+  const [qcData, setQCData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedTab, setSelectedTab] = useState(0);
 
@@ -59,11 +61,12 @@ export const Quality = () => {
 
   const fetchData = async () => {
     try {
-      const [allRes, tbrRes, futureRes, userRes] = await Promise.all([
+      const [allRes, tbrRes, futureRes, userRes, qcRes] = await Promise.all([
         getAllJobs(),
         getTBRJobs(),
         getFutureJobs(),
         getAllUsers(),
+        getAllQCNotes(),
       ]);
 
       setSearchedEng(allRes);
@@ -80,6 +83,9 @@ export const Quality = () => {
       (futureCount > 0) ? setFuture(`Future (${futureCount})`) : setFuture('Future');
 
       setQualityUsers(userRes.data.filter(user => user.quality).map(user => user.name.split(' ')[0]));
+
+      const custCodes = qcRes.data.map(item => item.custCode);
+      setQCData(custCodes);
 
     } catch (err) {
       console.error(err);
@@ -152,24 +158,6 @@ export const Quality = () => {
       fetchData();
   }, [loading]);
 
-  let qcCustomers = [
-    'AIRC',
-    'FAT',
-    'JFT',
-    'JUWI',
-    'MBI',
-    'MSM',
-    'NFT',
-    'PROVISION',
-    'PVM',
-    'QL',
-    'SFAB',
-    'STONEAGE',
-    'THS',
-    'TRELL',
-    'VERIS'
-];
-
   return (
     <Box sx={{ width: '100%', textAlign: 'center', overflowY: 'auto', height: '100vh' }}>
       {loading ? (
@@ -199,14 +187,14 @@ export const Quality = () => {
                       <TableRow>
                         <TableCell align='center' sx={{ width: '7%' }}><input type='text' placeholder='Job No' value={searchedValueJobNo || ''} onChange={(e) => setSearchedValueJobNo(e.target.value)} style={{ width: '100%', fontWeight: 'bold', fontSize: '15px', border: 'none', outline: 'none', background: 'transparent', color: '#000', textAlign: 'center' }} /></TableCell>
                         <TableCell align='center' sx={{ width: '20%' }}><input type='text' placeholder='Part No' value={searchedValuePartNo || ''} onChange={(e) => setSearchedValuePartNo(e.target.value)} style={{ width: '100%', fontWeight: 'bold', fontSize: '15px', border: 'none', outline: 'none', background: 'transparent', color: '#000', textAlign: 'center' }} /></TableCell>
-                        <TableCell align='center' sx={{ fontWeight: 'bold', width: '5%', fontSize: '15px' }}>Revision</TableCell>
-                        <TableCell align='center' sx={{ fontWeight: 'bold', width: '5%', fontSize: '15px' }}>Qty</TableCell>
-                        <TableCell align='center' sx={{ fontWeight: 'bold', width: '6%', fontSize: '15px' }}>Due Date</TableCell>
-                        <TableCell align='center' sx={{ width: '14%' }}><input type='text' placeholder='Customer' value={searchedValueCustomer || ''} onChange={(e) => setSearchedValueCustomer(e.target.value)} style={{ width: '100%', fontWeight: 'bold', fontSize: '15px', border: 'none', outline: 'none', background: 'transparent', color: '#000', textAlign: 'center' }} /></TableCell>
-                        <TableCell align='center' sx={{ width: '7%' }}><input type='text' placeholder='Type' value={searchedValueType || ''} onChange={(e) => setSearchedValueType(e.target.value)} style={{ width: '100%', fontWeight: 'bold', fontSize: '15px', border: 'none', outline: 'none', background: 'transparent', color: '#000', textAlign: 'center' }} /></TableCell>
+                        <TableCell align='center' sx={{ fontWeight: 'bold', width: '7%', fontSize: '15px' }}>Revision</TableCell>
+                        <TableCell align='center' sx={{ fontWeight: 'bold', width: '7%', fontSize: '15px' }}>Qty</TableCell>
+                        <TableCell align='center' sx={{ fontWeight: 'bold', width: '8%', fontSize: '15px' }}>Due Date</TableCell>
+                        <TableCell align='center' sx={{ width: '10%' }}><input type='text' placeholder='Customer' value={searchedValueCustomer || ''} onChange={(e) => setSearchedValueCustomer(e.target.value)} style={{ width: '100%', fontWeight: 'bold', fontSize: '15px', border: 'none', outline: 'none', background: 'transparent', color: '#000', textAlign: 'center' }} /></TableCell>
+                        <TableCell align='center' sx={{ width: '5%' }}><input type='text' placeholder='Type' value={searchedValueType || ''} onChange={(e) => setSearchedValueType(e.target.value)} style={{ width: '100%', fontWeight: 'bold', fontSize: '15px', border: 'none', outline: 'none', background: 'transparent', color: '#000', textAlign: 'center' }} /></TableCell>
                         <TableCell align='center' sx={{ width: '10%' }}><input type='text' placeholder='Engineer' value={searchedValueEngineer || ''} onChange={(e) => setSearchedValueEngineer(e.target.value)} style={{ width: '100%', fontWeight: 'bold', fontSize: '15px', border: 'none', outline: 'none', background: 'transparent', color: '#000', textAlign: 'center' }} /></TableCell>
                         <TableCell align='center' sx={{ width: '10%' }}><input type='text' placeholder='Inspector' value={searchedValueInspector || ''} onChange={(e) => setSearchedValueInspector(e.target.value)} style={{ width: '100%', fontWeight: 'bold', fontSize: '15px', border: 'none', outline: 'none', background: 'transparent', color: '#000', textAlign: 'center' }} /></TableCell>
-                        <TableCell align='center' sx={{ fontWeight: 'bold', width: '5%', fontSize: '15px' }}>Model</TableCell>
+                        <TableCell align='center' sx={{ fontWeight: 'bold', width: '6%', fontSize: '15px' }}>Model</TableCell>
                         <TableCell align='center' sx={{ width: '10%' }}><input type='text' placeholder='Status' value={searchedValueStatus || ''} onChange={(e) => setSearchedValueStatus(e.target.value)} style={{ width: '100%', fontWeight: 'bold', fontSize: '15px', border: 'none', outline: 'none', background: 'transparent', color: '#000', textAlign: 'center' }} /></TableCell>
                       </TableRow>
                     </TableHead>
@@ -267,7 +255,7 @@ export const Quality = () => {
                         .map((job, index) => {
                           if (job.dataValues.jobStatus == 'QC' || job.dataValues.jobStatus == 'CHECKING') {
                             const rowClass = job.WorkCode == 'HOT' ? 'expedite-row' : '';
-                            const qcClass = qcCustomers.includes(job.CustCode) ? 'qc-row' : '';
+                            const qcClass = qcData.includes(job.CustCode) ? 'qc-row' : '';
                             const dropdownTBRTitle = dropdownTBRTitles[job.JobNo] || job.dataValues.inspector;
                             const dropdownTBRStatus = dropdownTBRStatuses[job.JobNo] || job.dataValues.jobStatus;
                             return (
@@ -412,14 +400,14 @@ export const Quality = () => {
                       <TableRow>
                         <TableCell align='center' sx={{ width: '7%' }}><input type='text' placeholder='Job No' value={searchedValueJobNo || ''} onChange={(e) => setSearchedValueJobNo(e.target.value)} style={{ width: '100%', fontWeight: 'bold', fontSize: '15px', border: 'none', outline: 'none', background: 'transparent', color: '#000', textAlign: 'center' }} /></TableCell>
                         <TableCell align='center' sx={{ width: '20%' }}><input type='text' placeholder='Part No' value={searchedValuePartNo || ''} onChange={(e) => setSearchedValuePartNo(e.target.value)} style={{ width: '100%', fontWeight: 'bold', fontSize: '15px', border: 'none', outline: 'none', background: 'transparent', color: '#000', textAlign: 'center' }} /></TableCell>
-                        <TableCell align='center' sx={{ fontWeight: 'bold', width: '5%', fontSize: '15px' }}>Revision</TableCell>
-                        <TableCell align='center' sx={{ fontWeight: 'bold', width: '5%', fontSize: '15px' }}>Qty</TableCell>
-                        <TableCell align='center' sx={{ fontWeight: 'bold', width: '6%', fontSize: '15px' }}>Due Date</TableCell>
-                        <TableCell align='center' sx={{ width: '14%' }}><input type='text' placeholder='Customer' value={searchedValueCustomer || ''} onChange={(e) => setSearchedValueCustomer(e.target.value)} style={{ width: '100%', fontWeight: 'bold', fontSize: '15px', border: 'none', outline: 'none', background: 'transparent', color: '#000', textAlign: 'center' }} /></TableCell>
-                        <TableCell align='center' sx={{ width: '7%' }}><input type='text' placeholder='Type' value={searchedValueType || ''} onChange={(e) => setSearchedValueType(e.target.value)} style={{ width: '100%', fontWeight: 'bold', fontSize: '15px', border: 'none', outline: 'none', background: 'transparent', color: '#000', textAlign: 'center' }} /></TableCell>
+                        <TableCell align='center' sx={{ fontWeight: 'bold', width: '7%', fontSize: '15px' }}>Revision</TableCell>
+                        <TableCell align='center' sx={{ fontWeight: 'bold', width: '7%', fontSize: '15px' }}>Qty</TableCell>
+                        <TableCell align='center' sx={{ fontWeight: 'bold', width: '8%', fontSize: '15px' }}>Due Date</TableCell>
+                        <TableCell align='center' sx={{ width: '10%' }}><input type='text' placeholder='Customer' value={searchedValueCustomer || ''} onChange={(e) => setSearchedValueCustomer(e.target.value)} style={{ width: '100%', fontWeight: 'bold', fontSize: '15px', border: 'none', outline: 'none', background: 'transparent', color: '#000', textAlign: 'center' }} /></TableCell>
+                        <TableCell align='center' sx={{ width: '5%' }}><input type='text' placeholder='Type' value={searchedValueType || ''} onChange={(e) => setSearchedValueType(e.target.value)} style={{ width: '100%', fontWeight: 'bold', fontSize: '15px', border: 'none', outline: 'none', background: 'transparent', color: '#000', textAlign: 'center' }} /></TableCell>
                         <TableCell align='center' sx={{ width: '10%' }}><input type='text' placeholder='Engineer' value={searchedValueEngineer || ''} onChange={(e) => setSearchedValueEngineer(e.target.value)} style={{ width: '100%', fontWeight: 'bold', fontSize: '15px', border: 'none', outline: 'none', background: 'transparent', color: '#000', textAlign: 'center' }} /></TableCell>
                         <TableCell align='center' sx={{ width: '10%' }}><input type='text' placeholder='Inspector' value={searchedValueInspector || ''} onChange={(e) => setSearchedValueInspector(e.target.value)} style={{ width: '100%', fontWeight: 'bold', fontSize: '15px', border: 'none', outline: 'none', background: 'transparent', color: '#000', textAlign: 'center' }} /></TableCell>
-                        <TableCell align='center' sx={{ fontWeight: 'bold', width: '5%', fontSize: '15px' }}>Model</TableCell>
+                        <TableCell align='center' sx={{ fontWeight: 'bold', width: '6%', fontSize: '15px' }}>Model</TableCell>
                         <TableCell align='center' sx={{ width: '10%' }}><input type='text' placeholder='Status' value={searchedValueStatus || ''} onChange={(e) => setSearchedValueStatus(e.target.value)} style={{ width: '100%', fontWeight: 'bold', fontSize: '15px', border: 'none', outline: 'none', background: 'transparent', color: '#000', textAlign: 'center' }} /></TableCell>
                       </TableRow>
                     </TableHead>
@@ -480,7 +468,7 @@ export const Quality = () => {
                         .map((job, index) => {
                           if (job.User_Text3 != 'REPEAT' && job.User_Text2 != '6. OUTSOURCE' && job.dataValues.jobStatus == 'QC' || job.dataValues.jobStatus == 'CHECKING') {
                             const rowClass = job.WorkCode == 'HOT' ? 'expedite-row' : '';
-                            const qcClass = qcCustomers.includes(job.CustCode) ? 'qc-row' : '';
+                            const qcClass = qcData.includes(job.CustCode) ? 'qc-row' : '';
                             const dropdownFutureTitle = dropdownFutureTitles[job.JobNo] || job.dataValues.inspector;
                             const dropdownFutureStatus = dropdownFutureStatuses[job.JobNo] || job.dataValues.jobStatus;
                             return (
@@ -623,13 +611,13 @@ export const Quality = () => {
                   <Table>
                     <TableHead>
                       <TableRow>
-                        <TableCell align='center' sx={{ width: '7%' }}><input type='text' placeholder='Job No' value={searchedValueJobNo || ''} onChange={(e) => setSearchedValueJobNo(e.target.value)} style={{ width: '100%', fontWeight: 'bold', fontSize: '15px', border: 'none', outline: 'none', background: 'transparent', color: '#000', textAlign: 'center' }} /></TableCell>
+                        <TableCell align='center' sx={{ width: '10%' }}><input type='text' placeholder='Job No' value={searchedValueJobNo || ''} onChange={(e) => setSearchedValueJobNo(e.target.value)} style={{ width: '100%', fontWeight: 'bold', fontSize: '15px', border: 'none', outline: 'none', background: 'transparent', color: '#000', textAlign: 'center' }} /></TableCell>
                         <TableCell align='center' sx={{ width: '20%' }}><input type='text' placeholder='Part No' value={searchedValuePartNo || ''} onChange={(e) => setSearchedValuePartNo(e.target.value)} style={{ width: '100%', fontWeight: 'bold', fontSize: '15px', border: 'none', outline: 'none', background: 'transparent', color: '#000', textAlign: 'center' }} /></TableCell>
-                        <TableCell align='center' sx={{ fontWeight: 'bold', width: '5%', fontSize: '15px' }}>Revision</TableCell>
-                        <TableCell align='center' sx={{ fontWeight: 'bold', width: '5%', fontSize: '15px' }}>Qty</TableCell>
-                        <TableCell align='center' sx={{ fontWeight: 'bold', width: '6%', fontSize: '15px' }}>Due Date</TableCell>
-                        <TableCell align='center' sx={{ width: '14%' }}><input type='text' placeholder='Customer' value={searchedValueCustomer || ''} onChange={(e) => setSearchedValueCustomer(e.target.value)} style={{ width: '100%', fontWeight: 'bold', fontSize: '15px', border: 'none', outline: 'none', background: 'transparent', color: '#000', textAlign: 'center' }} /></TableCell>
-                        <TableCell align='center' sx={{ width: '7%' }}><input type='text' placeholder='Type' value={searchedValueType || ''} onChange={(e) => setSearchedValueType(e.target.value)} style={{ width: '100%', fontWeight: 'bold', fontSize: '15px', border: 'none', outline: 'none', background: 'transparent', color: '#000', textAlign: 'center' }} /></TableCell>
+                        <TableCell align='center' sx={{ fontWeight: 'bold', width: '10%', fontSize: '15px' }}>Revision</TableCell>
+                        <TableCell align='center' sx={{ fontWeight: 'bold', width: '10%', fontSize: '15px' }}>Qty</TableCell>
+                        <TableCell align='center' sx={{ fontWeight: 'bold', width: '10%', fontSize: '15px' }}>Due Date</TableCell>
+                        <TableCell align='center' sx={{ width: '10%' }}><input type='text' placeholder='Customer' value={searchedValueCustomer || ''} onChange={(e) => setSearchedValueCustomer(e.target.value)} style={{ width: '100%', fontWeight: 'bold', fontSize: '15px', border: 'none', outline: 'none', background: 'transparent', color: '#000', textAlign: 'center' }} /></TableCell>
+                        <TableCell align='center' sx={{ width: '10%' }}><input type='text' placeholder='Type' value={searchedValueType || ''} onChange={(e) => setSearchedValueType(e.target.value)} style={{ width: '100%', fontWeight: 'bold', fontSize: '15px', border: 'none', outline: 'none', background: 'transparent', color: '#000', textAlign: 'center' }} /></TableCell>
                         <TableCell align='center' sx={{ width: '10%' }}><input type='text' placeholder='Area' value={searchedValueArea || ''} onChange={(e) => setSearchedValueArea(e.target.value)} style={{ width: '100%', fontWeight: 'bold', fontSize: '15px', border: 'none', outline: 'none', background: 'transparent', color: '#000', textAlign: 'center' }} /></TableCell>
                         <TableCell align='center' sx={{ width: '10%' }}><input type='text' placeholder='Status' value={searchedValueStatus || ''} onChange={(e) => setSearchedValueStatus(e.target.value)} style={{ width: '100%', fontWeight: 'bold', fontSize: '15px', border: 'none', outline: 'none', background: 'transparent', color: '#000', textAlign: 'center' }} /></TableCell>
                       </TableRow>

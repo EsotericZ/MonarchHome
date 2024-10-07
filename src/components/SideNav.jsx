@@ -169,6 +169,13 @@ export const SideNav = ({ children }) => {
                     </ListItemButton>
                   </ListItem>
                 </List>
+                <List component="div" disablePadding sx={{ paddingLeft: 7 }}>
+                  <ListItem disablePadding>
+                    <ListItemButton onClick={() => { navigate('/qualityInfo'); setOpen(false); }}>
+                      <ListItemText primary="Quality Info" />
+                    </ListItemButton>
+                  </ListItem>
+                </List>
               </Collapse>
             </List>
 

@@ -7,6 +7,7 @@ import { Login } from './pages/login/Login';
 import { Profile } from './pages/profile/Profile';
 import { Programming } from './pages/programming/Programming';
 import { Quality } from './pages/programming/Quality';
+import { QualityInfo } from './pages/programming/QualityInfo';
 
 export const App = () => {
   return (
@@ -20,6 +21,7 @@ export const App = () => {
           <Route path='/profile' element={<Profile />} />
           <Route path='/programming' element={<Programming />} />
           <Route path='/quality' element={<Quality />} />
+          <Route path='/qualityInfo' element={<QualityInfo />} />
         </Routes>
       </SideNav>
     </Router>
