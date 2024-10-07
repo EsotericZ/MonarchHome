@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import { Box, Typography } from "@mui/material";
+import { Box, Typography } from '@mui/material';
 import Cookies from 'universal-cookie';
 import { jwtDecode } from 'jwt-decode';
 
-import PuffLoader from "react-spinners/PuffLoader";
+import PuffLoader from 'react-spinners/PuffLoader';
 
 export const BendDeduction = () => {
   const cookies = new Cookies();
@@ -28,14 +28,14 @@ export const BendDeduction = () => {
     <Box sx={{ width: '100%', textAlign: 'center', overflowY: 'auto', height: '100vh' }}>
       {loading ? (
         <Box>
-          <Typography variant="h4" sx={{ fontWeight: 'bold', margin: '16px' }}>Bend Deduction Chart</Typography>
+          <Typography variant='h4' sx={{ fontWeight: 'bold', margin: '16px' }}>Bend Deduction Chart</Typography>
           <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginTop: '100px' }}>
             <PuffLoader color='red' />
           </Box>
         </Box>
       ) : (
         <Box sx={{ width: '100%' }}>
-          <Typography variant="h4" sx={{ fontWeight: 'bold', margin: '16px' }}>Bend Deduction Chart</Typography>
+          <Typography variant='h4' sx={{ fontWeight: 'bold', margin: '16px' }}>Bend Deduction Chart</Typography>
           <Box sx={{ padding: '12px' }}>
             <Typography>New Site in Progress</Typography>
           </Box>  

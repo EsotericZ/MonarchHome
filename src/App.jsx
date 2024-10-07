@@ -9,6 +9,7 @@ import { Profile } from './pages/profile/Profile';
 import { Programming } from './pages/programming/Programming';
 import { Quality } from './pages/programming/Quality';
 import { QualityInfo } from './pages/programming/QualityInfo';
+import { TapChart } from './pages/programming/TapChart';
 
 export const App = () => {
   return (
@@ -24,6 +25,7 @@ export const App = () => {
           <Route path='/programming' element={<Programming />} />
           <Route path='/quality' element={<Quality />} />
           <Route path='/qualityInfo' element={<QualityInfo />} />
+          <Route path='/tapChart' element={<TapChart />} />
         </Routes>
       </SideNav>
     </Router>

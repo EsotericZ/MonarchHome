@@ -131,6 +131,7 @@ export const SideNav = ({ children }) => {
             <Divider />
 
 {/* DASHBOARD */}
+
             <List>
               <ListItem disablePadding>
                 <Tooltip title='Dashboard' placement='right' arrow>
@@ -142,14 +143,15 @@ export const SideNav = ({ children }) => {
               </ListItem>
           
 {/* PROGRAMMING */}
+
               <ListItem disablePadding>
-                <Tooltip title="Programming" placement="right" arrow>
+                <Tooltip title='Programming' placement='right' arrow>
                   <ListItemButton>
                     <ListItemIcon onClick={() => { navigate('/programming'); setOpen(false) }} sx={{ cursor: 'pointer' }}>
                       <DashboardIcon />
                     </ListItemIcon>
                     <ListItemText
-                      primary="Programming"
+                      primary='Programming'
                       onClick={() => { navigate('/programming'); handleCloseAll(); }}
                       sx={{ cursor: 'pointer' }}
                     />
@@ -159,32 +161,39 @@ export const SideNav = ({ children }) => {
                   </ListItemButton>
                 </Tooltip>
               </ListItem>
-              <Collapse in={programmingOpen} timeout="auto" unmountOnExit>
-                <List component="div" disablePadding sx={{ paddingLeft: 7 }}>
+              <Collapse in={programmingOpen} timeout='auto' unmountOnExit>
+                <List component='div' disablePadding sx={{ paddingLeft: 7 }}>
                   <ListItem disablePadding>
                     <ListItemButton onClick={() => { navigate('/engineering'); handleCloseAll(); }}>
-                      <ListItemText primary="Engineering" />
+                      <ListItemText primary='Engineering' />
                     </ListItemButton>
                   </ListItem>
                 </List>
-                <List component="div" disablePadding sx={{ paddingLeft: 7 }}>
+                <List component='div' disablePadding sx={{ paddingLeft: 7 }}>
                   <ListItem disablePadding>
                     <ListItemButton onClick={() => { navigate('/quality'); handleCloseAll(); }}>
-                      <ListItemText primary="Quality" />
+                      <ListItemText primary='Quality' />
                     </ListItemButton>
                   </ListItem>
                 </List>
-                <List component="div" disablePadding sx={{ paddingLeft: 7 }}>
+                <List component='div' disablePadding sx={{ paddingLeft: 7 }}>
                   <ListItem disablePadding>
                     <ListItemButton onClick={() => { navigate('/qualityInfo'); handleCloseAll(); }}>
-                      <ListItemText primary="Quality Info" />
+                      <ListItemText primary='Quality Info' />
                     </ListItemButton>
                   </ListItem>
                 </List>
-                <List component="div" disablePadding sx={{ paddingLeft: 7 }}>
+                <List component='div' disablePadding sx={{ paddingLeft: 7 }}>
                   <ListItem disablePadding>
                     <ListItemButton onClick={() => { navigate('/bendDeduction'); handleCloseAll(); }}>
-                      <ListItemText primary="Bend Deduction" />
+                      <ListItemText primary='Bend Deduction' />
+                    </ListItemButton>
+                  </ListItem>
+                </List>
+                <List component='div' disablePadding sx={{ paddingLeft: 7 }}>
+                  <ListItem disablePadding>
+                    <ListItemButton onClick={() => { navigate('/tapChart'); handleCloseAll(); }}>
+                      <ListItemText primary='Tap Chart' />
                     </ListItemButton>
                   </ListItem>
                 </List>
@@ -194,6 +203,7 @@ export const SideNav = ({ children }) => {
             <Divider />
 
 {/* LOGIN / PROFILE */}
+
             <List>
               {name ? (
                 <ListItem disablePadding>
@@ -218,6 +228,7 @@ export const SideNav = ({ children }) => {
           </Box>
 
 {/* USER INFO */} 
+
           <Box sx={{ marginTop: 'auto', paddingBottom: 2 }}>
             <List>
               <ListItem disablePadding>

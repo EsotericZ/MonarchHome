@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
-import { Box, Button, Checkbox, Dialog, DialogTitle, DialogContent, DialogActions, FormControlLabel, TextField, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, CircularProgress, Snackbar, Alert, IconButton } from '@mui/material';
+import { Box, Button, Checkbox, Dialog, DialogTitle, DialogContent, DialogActions, FormControlLabel, TextField, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, Snackbar, Alert, IconButton } from '@mui/material';
 
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import Cookies from 'universal-cookie';
 import { jwtDecode } from 'jwt-decode';
 
-import PuffLoader from "react-spinners/PuffLoader";
+import PuffLoader from 'react-spinners/PuffLoader';
 import CheckIcon from '@mui/icons-material/Check';
 import AddIcon from '@mui/icons-material/Add';
 
@@ -71,7 +71,7 @@ export const QualityInfo = () => {
     } finally {
       fetchData();
     }
-  };
+  }
   
   const handleOpenItem = (item) => {
     setId(item.id);
@@ -82,7 +82,7 @@ export const QualityInfo = () => {
     setAddInfo(item.addInfo);
     setNotes(item.notes);
     setShowEdit(true);
-  };
+  }
 
   const handleUpdate = async () => {
     try {
@@ -100,7 +100,7 @@ export const QualityInfo = () => {
     } finally {
       fetchData();
     }
-  };
+  }
   
   const handleCancel = () => {
     setId(0);
@@ -121,14 +121,14 @@ export const QualityInfo = () => {
     <Box sx={{ width: '100%', textAlign: 'center', overflowY: 'auto', height: '100vh' }}>
       {loading ? (
         <Box>
-          <Typography variant="h4" sx={{ fontWeight: 'bold', margin: '16px' }}>Quality Info</Typography>
+          <Typography variant='h4' sx={{ fontWeight: 'bold', margin: '16px' }}>Quality Info</Typography>
           <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginTop: '100px' }}>
             <PuffLoader color='red' />
           </Box>
         </Box>
       ) : (
         <Box sx={{ width: '100%' }}>
-          <Typography variant="h4" sx={{ fontWeight: 'bold', margin: '16px' }}>Quality Info</Typography>
+          <Typography variant='h4' sx={{ fontWeight: 'bold', margin: '16px' }}>Quality Info</Typography>
 
 {/* Add Modal */}
 
@@ -139,27 +139,27 @@ export const QualityInfo = () => {
               </Typography>
             </DialogTitle>
             <DialogContent>
-              <TextField label="Customer Code" fullWidth value={custCode} onChange={(e) => setCustCode(e.target.value)} sx={{ mb: 2, mt: 1 }} />
+              <TextField label='Customer Code' fullWidth value={custCode} onChange={(e) => setCustCode(e.target.value)} sx={{ mb: 2, mt: 1 }} />
               <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                 <FormControlLabel
                   control={<Checkbox checked={coc} onChange={(e) => setCOC(e.target.checked)} />}
-                  label="Certificate of Conformance Required"
+                  label='Certificate of Conformance Required'
                 />
                 <FormControlLabel
                   control={<Checkbox checked={matlCert} onChange={(e) => setMatlCert(e.target.checked)} />}
-                  label="Material Certs Required"
+                  label='Material Certs Required'
                 />
                 <FormControlLabel
                   control={<Checkbox checked={platCert} onChange={(e) => setPlatCert(e.target.checked)} />}
-                  label="Plating Certs Required"
+                  label='Plating Certs Required'
                 />
                 <FormControlLabel
                   control={<Checkbox checked={addInfo} onChange={(e) => setAddInfo(e.target.checked)} />}
-                  label="First Article"
+                  label='First Article'
                 />
               </Box>
               <TextField
-                label="Notes"
+                label='Notes'
                 multiline
                 rows={4}
                 fullWidth
@@ -170,8 +170,8 @@ export const QualityInfo = () => {
             </DialogContent>
             <DialogActions>
               <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', gap: 2, paddingBottom: 2 }}>
-                <Button onClick={handleClose} variant="contained" color='error'>Cancel</Button>
-                <Button onClick={handleSave} variant="contained" color="success">Save</Button>
+                <Button onClick={handleClose} variant='contained' color='error'>Cancel</Button>
+                <Button onClick={handleSave} variant='contained' color='success'>Save</Button>
               </Box>
             </DialogActions>
           </Dialog>
@@ -185,27 +185,27 @@ export const QualityInfo = () => {
               </Typography>  
             </DialogTitle>
             <DialogContent>
-              <TextField label="Customer Code" fullWidth value={custCode} onChange={(e) => setCustCode(e.target.value)} sx={{ mb: 2, mt: 1 }} />
+              <TextField label='Customer Code' fullWidth value={custCode} onChange={(e) => setCustCode(e.target.value)} sx={{ mb: 2, mt: 1 }} />
               <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                 <FormControlLabel
                   control={<Checkbox checked={coc} onChange={(e) => setCOC(e.target.checked)} />}
-                  label="Certificate of Conformance Required"
+                  label='Certificate of Conformance Required'
                 />
                 <FormControlLabel
                   control={<Checkbox checked={matlCert} onChange={(e) => setMatlCert(e.target.checked)} />}
-                  label="Material Certs Required"
+                  label='Material Certs Required'
                 />
                 <FormControlLabel
                   control={<Checkbox checked={platCert} onChange={(e) => setPlatCert(e.target.checked)} />}
-                  label="Plating Certs Required"
+                  label='Plating Certs Required'
                 />
                 <FormControlLabel
                   control={<Checkbox checked={addInfo} onChange={(e) => setAddInfo(e.target.checked)} />}
-                  label="First Article"
+                  label='First Article'
                 />
               </Box>
               <TextField
-                label="Notes"
+                label='Notes'
                 multiline
                 rows={4}
                 fullWidth
@@ -216,8 +216,8 @@ export const QualityInfo = () => {
             </DialogContent>
             <DialogActions>
               <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', gap: 2, paddingBottom: 2 }}>
-                <Button onClick={handleCancel} variant="contained" color="error">Cancel</Button>
-                <Button onClick={handleUpdate} variant="contained" color="success">Save</Button>
+                <Button onClick={handleCancel} variant='contained' color='error'>Cancel</Button>
+                <Button onClick={handleUpdate} variant='contained' color='success'>Save</Button>
               </Box>
             </DialogActions>
           </Dialog>
@@ -229,12 +229,12 @@ export const QualityInfo = () => {
               <Table>
                 <TableHead>
                   <TableRow>
-                    <TableCell align="center" sx={{ fontWeight: 'bold', width: '20%', fontSize: '15px' }}>Customer Code</TableCell>
-                    <TableCell align="center" sx={{ fontWeight: 'bold', width: '10%', fontSize: '15px' }}>COC</TableCell>
-                    <TableCell align="center" sx={{ fontWeight: 'bold', width: '10%', fontSize: '15px' }}>Material Certs</TableCell>
-                    <TableCell align="center" sx={{ fontWeight: 'bold', width: '10%', fontSize: '15px' }}>Plating Certs</TableCell>
-                    <TableCell align="center" sx={{ fontWeight: 'bold', width: '10%', fontSize: '15px' }}>First Article</TableCell>
-                    <TableCell align="center" sx={{ fontWeight: 'bold', width: '40%', fontSize: '15px' }}>Engineering Note</TableCell>
+                    <TableCell align='center' sx={{ width: '20%' }}><input type='text' placeholder='Customer' value={searchedValueCustCode || ''} onChange={(e) => setSearchedValueCustCode(e.target.value)} style={{ width: '100%', fontWeight: 'bold', fontSize: '15px', border: 'none', outline: 'none', background: 'transparent', color: '#000', textAlign: 'center' }} /></TableCell>
+                    <TableCell align='center' sx={{ fontWeight: 'bold', width: '10%', fontSize: '15px' }}>COC</TableCell>
+                    <TableCell align='center' sx={{ fontWeight: 'bold', width: '10%', fontSize: '15px' }}>Material Certs</TableCell>
+                    <TableCell align='center' sx={{ fontWeight: 'bold', width: '10%', fontSize: '15px' }}>Plating Certs</TableCell>
+                    <TableCell align='center' sx={{ fontWeight: 'bold', width: '10%', fontSize: '15px' }}>First Article</TableCell>
+                    <TableCell align='center' sx={{ fontWeight: 'bold', width: '40%', fontSize: '15px' }}>Engineering Note</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -247,12 +247,12 @@ export const QualityInfo = () => {
                     )
                     .map((item, index) => (
                       <TableRow key={index} sx={{ backgroundColor: index % 2 === 0 ? '#f0f0f0' : '#fff' }}>
-                        <TableCell align="center" sx={{ fontSize: '15px' }} onClick={() => handleOpenItem(item)}>{item.custCode}</TableCell>
-                        <TableCell align="center" sx={{ fontSize: '15px', padding: 0 }}>{item.coc && <CheckIcon />}</TableCell>
-                        <TableCell align="center" sx={{ fontSize: '15px', padding: 0 }}>{item.matlCert && <CheckIcon />}</TableCell>
-                        <TableCell align="center" sx={{ fontSize: '15px', padding: 0 }}>{item.platCert && <CheckIcon />}</TableCell>
-                        <TableCell align="center" sx={{ fontSize: '15px', padding: 0 }}>{item.addInfo && <CheckIcon />}</TableCell>
-                        <TableCell align="center" sx={{ fontSize: '15px' }}>
+                        <TableCell align='center' sx={{ fontSize: '15px' }} onClick={() => handleOpenItem(item)}>{item.custCode}</TableCell>
+                        <TableCell align='center' sx={{ fontSize: '15px', padding: 0 }}>{item.coc && <CheckIcon />}</TableCell>
+                        <TableCell align='center' sx={{ fontSize: '15px', padding: 0 }}>{item.matlCert && <CheckIcon />}</TableCell>
+                        <TableCell align='center' sx={{ fontSize: '15px', padding: 0 }}>{item.platCert && <CheckIcon />}</TableCell>
+                        <TableCell align='center' sx={{ fontSize: '15px', padding: 0 }}>{item.addInfo && <CheckIcon />}</TableCell>
+                        <TableCell align='center' sx={{ fontSize: '15px' }}>
                           <CopyToClipboard text={item.notes} onCopy={() => { setShowToast(true); setCopy('Engineering Note Copied'); }}>
                             <Typography>{item.notes}</Typography>
                           </CopyToClipboard>
@@ -265,7 +265,7 @@ export const QualityInfo = () => {
           </Box>
 
           <Snackbar open={showToast} autoHideDuration={3000} onClose={() => setShowToast(false)}>
-            <Alert severity="success" onClose={() => setShowToast(false)}>{copy}</Alert>
+            <Alert severity='success' onClose={() => setShowToast(false)}>{copy}</Alert>
           </Snackbar>
 
           <IconButton onClick={handleShow} sx={{ backgroundColor: '#111827', color: 'white', height: '52.5px', width: '52.5px', zIndex: 1000, position: 'fixed', bottom: '20px', right: '20px','&:hover': { backgroundColor: '#374151', }, }}>
