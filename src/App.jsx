@@ -6,6 +6,7 @@ import { Engineering } from './pages/programming/Engineering';
 import { Login } from './pages/login/Login';
 import { Profile } from './pages/profile/Profile';
 import { Programming } from './pages/programming/Programming';
+import { Quality } from './pages/programming/Quality';
 
 export const App = () => {
   return (
@@ -18,6 +19,7 @@ export const App = () => {
           <Route path='/login' element={<Login />} />
           <Route path='/profile' element={<Profile />} />
           <Route path='/programming' element={<Programming />} />
+          <Route path='/quality' element={<Quality />} />
         </Routes>
       </SideNav>
     </Router>

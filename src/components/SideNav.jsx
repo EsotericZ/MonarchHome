@@ -158,8 +158,14 @@ export const SideNav = ({ children }) => {
                 <List component="div" disablePadding sx={{ paddingLeft: 7 }}>
                   <ListItem disablePadding>
                     <ListItemButton onClick={() => { navigate('/engineering'); setOpen(false); }}>
-                      {/* <ListItemIcon><LabelImportantIcon /></ListItemIcon> */}
                       <ListItemText primary="Engineering" />
+                    </ListItemButton>
+                  </ListItem>
+                </List>
+                <List component="div" disablePadding sx={{ paddingLeft: 7 }}>
+                  <ListItem disablePadding>
+                    <ListItemButton onClick={() => { navigate('/quality'); setOpen(false); }}>
+                      <ListItemText primary="Quality" />
                     </ListItemButton>
                   </ListItem>
                 </List>
