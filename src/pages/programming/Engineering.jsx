@@ -453,7 +453,25 @@ export const Engineering = () => {
                                       value={dropdownTBRTitle || ''}
                                       onChange={(e) => handleTBREngineer(job, e.target.value)}
                                       disableUnderline
-                                      sx={{ fontSize: '15px', padding: '0', color: '#000', textAlign: 'center' }}
+                                      sx={{
+                                        fontSize: '15px',
+                                        padding: '0',
+                                        textAlign: 'center',
+                                        overflowX: 'hidden',
+                                        overflowY: 'hidden',
+                                        '& .MuiSelect-icon': {
+                                          display: dropdownTBRTitle ? 'none' : 'block',
+                                          right: dropdownTBRTitle ? '0' : 'calc(50% - 12px)',
+                                        },
+                                        '& .MuiSelect-select': {
+                                          padding: '0',
+                                          marginRight: '-20px',
+                                          textAlign: 'center',
+                                          display: 'flex',
+                                          justifyContent: 'center',
+                                          alignItems: 'center',
+                                        },
+                                      }}
                                     >
                                       {engineeringUsers.map((user, n) => (
                                         <MenuItem key={n} value={user}>
@@ -483,7 +501,25 @@ export const Engineering = () => {
                                       value={dropdownTBRStatus || ''}
                                       onChange={(e) => handleTBRJobStatus(job, e.target.value)}
                                       disableUnderline
-                                      sx={{ fontSize: '15px', padding: '0', color: '#000', textAlign: 'center' }}
+                                      sx={{
+                                        fontSize: '15px',
+                                        padding: '0',
+                                        textAlign: 'center',
+                                        overflowX: 'hidden',
+                                        overflowY: 'hidden',
+                                        '& .MuiSelect-icon': {
+                                          display: dropdownTBRStatus ? 'none' : 'block',
+                                          right: dropdownTBRStatus ? '0' : 'calc(50% - 12px)',
+                                        },
+                                        '& .MuiSelect-select': {
+                                          padding: '0',
+                                          marginRight: '-20px',
+                                          textAlign: 'center',
+                                          display: 'flex',
+                                          justifyContent: 'center',
+                                          alignItems: 'center',
+                                        },
+                                      }}
                                     >
                                       <MenuItem value='WIP'>WIP</MenuItem>
                                       <MenuItem value='FORMING'>FORMING</MenuItem>
@@ -637,7 +673,25 @@ export const Engineering = () => {
                                         value={dropdownFutureTitle || ''}
                                         onChange={(e) => handleFutureEngineer(job, e.target.value)}
                                         disableUnderline
-                                        sx={{ fontSize: '15px', padding: '0', color: '#000', textAlign: 'center' }}
+                                        sx={{
+                                          fontSize: '15px',
+                                          padding: '0',
+                                          textAlign: 'center',
+                                          overflowX: 'hidden',
+                                          overflowY: 'hidden',
+                                          '& .MuiSelect-icon': {
+                                            display: dropdownFutureTitle ? 'none' : 'block',
+                                            right: dropdownFutureTitle ? '0' : 'calc(50% - 12px)',
+                                          },
+                                          '& .MuiSelect-select': {
+                                            padding: '0',
+                                            marginRight: '-20px',
+                                            textAlign: 'center',
+                                            display: 'flex',
+                                            justifyContent: 'center',
+                                            alignItems: 'center',
+                                          },
+                                        }}
                                       >
                                         {engineeringUsers.map((user, n) => (
                                           <MenuItem key={n} value={user}>
@@ -667,7 +721,25 @@ export const Engineering = () => {
                                         value={dropdownFutureStatus || ''}
                                         onChange={(e) => handleFutureJobStatus(job, e.target.value)}
                                         disableUnderline
-                                        sx={{ fontSize: '15px', padding: '0', color: '#000', textAlign: 'center' }}
+                                        sx={{
+                                          fontSize: '15px',
+                                          padding: '0',
+                                          textAlign: 'center',
+                                          overflowX: 'hidden',
+                                          overflowY: 'hidden',
+                                          '& .MuiSelect-icon': {
+                                            display: dropdownFutureStatus ? 'none' : 'block',
+                                            right: dropdownFutureStatus ? '0' : 'calc(50% - 12px)',
+                                          },
+                                          '& .MuiSelect-select': {
+                                            padding: '0',
+                                            marginRight: '-20px',
+                                            textAlign: 'center',
+                                            display: 'flex',
+                                            justifyContent: 'center',
+                                            alignItems: 'center',
+                                          },
+                                        }}
                                       >
                                         <MenuItem value='WIP'>WIP</MenuItem>
                                         <MenuItem value='FORMING'>FORMING</MenuItem>
