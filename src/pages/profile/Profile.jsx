@@ -8,27 +8,21 @@ import { Box, Button, Typography } from '@mui/material';
 
 import { DepartmentCard } from '../../components/DepartmentCard';
 
-export const Profile = () => {
+export const Profile = ({ loggedIn, handleLogout }) => {
   const cookies = new Cookies();
-
   const [cookieData, setCookieData] = useState('');
-  const [loggedIn, setLoggedIn] = useState(false);
   const [areas, setAreas] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const handleLogout = () => {
-    cookies.remove('jwt', { path: '/', domain: '' });
-    setLoggedIn(false);
-  }
-
   useEffect(() => {
-    try {
-      setCookieData(jwtDecode(cookies.get('jwt')));
-      setLoggedIn(true)
-    } catch {
-      setCookieData('');
+    if (loggedIn) {
+      try {
+        setCookieData(jwtDecode(cookies.get('jwt')));
+      } catch {
+        setCookieData('');
+      }
     }
-  }, [loggedIn])
+  }, [loggedIn]);
 
   useEffect(() => {
     {
@@ -242,7 +236,7 @@ export const Profile = () => {
       ]);
     }
     setLoading(false);
-  }, [loggedIn]);
+  }, [cookieData]);
 
   return (
     <Box sx={{ width: '100%', textAlign: 'center', overflowY: 'auto', height: '100vh' }}>

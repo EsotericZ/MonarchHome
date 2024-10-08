@@ -1,5 +1,7 @@
+import { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { SideNav } from './components/SideNav';
+import Cookies from 'universal-cookie';
 
 import { Admin } from './pages/admin/Admin';
 import { BendDeduction } from './pages/programming/BendDeduction';
@@ -14,9 +16,17 @@ import { QualityInfo } from './pages/programming/QualityInfo';
 import { TapChart } from './pages/programming/TapChart';
 
 export const App = () => {
+  const [loggedIn, setLoggedIn] = useState(!!new Cookies().get('jwt'));
+
+  const handleLogout = () => {
+    const cookies = new Cookies();
+    cookies.remove('jwt', { path: '/', domain: '' });
+    setLoggedIn(false);
+  };
+
   return (
     <Router>
-      <SideNav>
+      <SideNav loggedIn={loggedIn}>
         <Routes>
           <Route path='/' element={<Dashboard />} />
           <Route path='/admin' element={<Admin />} />
@@ -25,7 +35,7 @@ export const App = () => {
           <Route path='/engineering' element={<Engineering />} />
           <Route path='/hardware' element={<Hardware />} />
           <Route path='/login' element={<Login />} />
-          <Route path='/profile' element={<Profile />} />
+          <Route path='/profile' element={<Profile loggedIn={loggedIn} handleLogout={handleLogout} />} />
           <Route path='/programming' element={<Programming />} />
           <Route path='/quality' element={<Quality />} />
           <Route path='/qualityInfo' element={<QualityInfo />} />

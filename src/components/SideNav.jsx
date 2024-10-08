@@ -79,26 +79,15 @@ const darkTheme = createTheme({
   },
 });
 
-export const SideNav = ({ children }) => {
+export const SideNav = ({ children, loggedIn }) => {
   const cookies = new Cookies();
-  let cookieData
-  try {
-    cookieData = jwtDecode(cookies.get('jwt'));
-  } catch {
-    cookieData = {
-      'name': '',
-      'role': 'employee',
-    };
-  }
-
   const theme = useTheme();
+  const navigate = useNavigate();
+
   const [name, setName] = useState('');
   const [admin, setAdmin] = useState(false);
-  const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
   const [programmingOpen, setProgrammingOpen] = useState(false);
-  const navigate = useNavigate();
-  let userData
 
   const handleDrawerToggle = () => {
     setOpen(!open);
@@ -108,25 +97,26 @@ export const SideNav = ({ children }) => {
     setProgrammingOpen(!programmingOpen);
   };
 
-  const setData = () => {
-    try {
-      userData = (jwtDecode(cookies.get('jwt')))
-      setName(userData.name.split(' ')[0]);
-      userData.role == 'admin' && setAdmin(true);
-      setLoading(false)
-    } catch {
-      setLoading(false)
-    }
-  }
-
   const handleCloseAll = () => {
     setOpen(false); 
     setProgrammingOpen(false);
   }
 
   useEffect(() => {
-    setData();
-  }, [])
+    if (loggedIn) {
+      try {
+        const cookieData = jwtDecode(cookies.get('jwt'));
+        setName(cookieData.name.split(' ')[0]);
+        cookieData.role === 'admin' && setAdmin(true);
+      } catch {
+        setName('');
+        setAdmin(false);
+      }
+    } else {
+      setName('');
+      setAdmin(false);
+    }
+  }, [loggedIn]);
 
   return (
     <Box sx={{ display: 'flex', height: '100vh', width: '100vw' }}>
@@ -247,7 +237,7 @@ export const SideNav = ({ children }) => {
 
 {/* ADMIN ONLY */}
             
-            {cookieData.role=='admin' && (
+            {admin && (
               <>
                 <Divider />
                 
