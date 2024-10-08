@@ -2,12 +2,14 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Box, createTheme, CssBaseline, Collapse, Divider, Drawer as MuiDrawer, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, ThemeProvider, Tooltip } from '@mui/material';
 import { 
+  AdminPanelSettings as AdminPanelSettingsIcon,
   ChevronLeft as ChevronLeftIcon, 
   ChevronRight as ChevronRightIcon, 
   Dashboard as DashboardIcon,
   ExpandLess, 
   ExpandMore, 
   Home as HomeIcon,
+  Key as KeyIcon,
   Login as LoginIcon,
   Person as PersonIcon,
 } from '@mui/icons-material';
@@ -79,6 +81,16 @@ const darkTheme = createTheme({
 
 export const SideNav = ({ children }) => {
   const cookies = new Cookies();
+  let cookieData
+  try {
+    cookieData = jwtDecode(cookies.get('jwt'));
+  } catch {
+    cookieData = {
+      'name': '',
+      'role': 'employee',
+    };
+  }
+
   const theme = useTheme();
   const [name, setName] = useState('');
   const [admin, setAdmin] = useState(false);
@@ -192,6 +204,13 @@ export const SideNav = ({ children }) => {
                 </List>
                 <List component='div' disablePadding sx={{ paddingLeft: 7 }}>
                   <ListItem disablePadding>
+                    <ListItemButton onClick={() => { navigate('/hardware'); handleCloseAll(); }}>
+                      <ListItemText primary='Hardware' />
+                    </ListItemButton>
+                  </ListItem>
+                </List>
+                <List component='div' disablePadding sx={{ paddingLeft: 7 }}>
+                  <ListItem disablePadding>
                     <ListItemButton onClick={() => { navigate('/tapChart'); handleCloseAll(); }}>
                       <ListItemText primary='Tap Chart' />
                     </ListItemButton>
@@ -225,6 +244,34 @@ export const SideNav = ({ children }) => {
                 </ListItem>
               )}
             </List>
+
+{/* ADMIN ONLY */}
+            
+            {cookieData.role=='admin' && (
+              <>
+                <Divider />
+                
+                <List>
+                  <ListItem disablePadding>
+                    <Tooltip title='Admin' placement='right' arrow>
+                      <ListItemButton onClick={() => { navigate('/admin'); handleCloseAll(); }}>
+                        <ListItemIcon><AdminPanelSettingsIcon /></ListItemIcon>
+                        <ListItemText primary='Admin' />
+                      </ListItemButton>
+                    </Tooltip>
+                  </ListItem>
+                  <ListItem disablePadding>
+                    <Tooltip title='RFID' placement='right' arrow>
+                      <ListItemButton onClick={() => { navigate('/http://10.0.1.45:3000/'); handleCloseAll(); }}>
+                        <ListItemIcon><KeyIcon /></ListItemIcon>
+                        <ListItemText primary='RFID Site' />
+                      </ListItemButton>
+                    </Tooltip>
+                  </ListItem>
+                </List>
+              </>
+            )}
+
           </Box>
 
 {/* USER INFO */} 

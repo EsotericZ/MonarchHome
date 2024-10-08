@@ -1,9 +1,11 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { SideNav } from './components/SideNav';
 
+import { Admin } from './pages/admin/Admin';
 import { BendDeduction } from './pages/programming/BendDeduction';
 import { Dashboard } from './pages/dashboard/Dashboard';
 import { Engineering } from './pages/programming/Engineering';
+import { Hardware } from './pages/programming/Hardware';
 import { Login } from './pages/login/Login';
 import { Profile } from './pages/profile/Profile';
 import { Programming } from './pages/programming/Programming';
@@ -17,9 +19,11 @@ export const App = () => {
       <SideNav>
         <Routes>
           <Route path='/' element={<Dashboard />} />
+          <Route path='/admin' element={<Admin />} />
           <Route path='/bendDeduction' element={<BendDeduction />} />
           <Route path='/dashboard' element={<Dashboard />} />
           <Route path='/engineering' element={<Engineering />} />
+          <Route path='/hardware' element={<Hardware />} />
           <Route path='/login' element={<Login />} />
           <Route path='/profile' element={<Profile />} />
           <Route path='/programming' element={<Programming />} />
