@@ -9,22 +9,19 @@ import PuffLoader from 'react-spinners/PuffLoader';
 import CheckIcon from '@mui/icons-material/Check';
 import RefreshIcon from '@mui/icons-material/Refresh';
 
-import getAllJobs from '../../services/engineering/getAllJobs';
-import getTBRJobs from '../../services/engineering/getTBRJobs';
-import getFutureJobs from '../../services/engineering/getFutureJobs';
-import getRepeatJobs from '../../services/engineering/getRepeatJobs';
-import getOutsourceJobs from '../../services/engineering/getOutsourceJobs';
+import getAllJobs from '../../services/machining/getAllJobs';
+import getTBRJobs from '../../services/machining/getTBRJobs';
+import getFutureJobs from '../../services/machining/getFutureJobs';
+import getRepeatJobs from '../../services/machining/getRepeatJobs';
 import getNextStep from '../../services/engineering/getNextStep';
 import getPrints from '../../services/engineering/getPrints';
-import getOutsourcePrints from '../../services/engineering/getOutsourcePrints';
 import getAllUsers from '../../services/users/getAllUsers';
-import getAllQCNotes from '../../services/qcinfo/getAllQCNotes';
 import updateModel from '../../services/engineering/updateModel';
 import updateEngineer from '../../services/engineering/updateEngineer';
 import updateJobStatus from '../../services/engineering/updateJobStatus';
 import './engineering.css';
 
-export const Engineering = () => {
+export const Machining = () => {
   const cookies = new Cookies();
   let cookieData
   try {
@@ -33,7 +30,7 @@ export const Engineering = () => {
     cookieData = {
       'name': '',
       'role': 'employee',
-      'engineering': false,
+      'machining': false,
     };
   }
 
@@ -54,9 +51,7 @@ export const Engineering = () => {
   const [searchedTBR, setSearchedTBR] = useState([]);
   const [searchedFuture, setSearchedFuture] = useState([]);
   const [fullRepeats, setFullRepeats] = useState([]);
-  const [fullOutsource, setFullOutsource] = useState([]);
-  const [engineeringUsers, setEngineeringUsers] = useState([]);
-  const [qcData, setQCData] = useState([]);
+  const [machiningUsers, setMachiningUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedTab, setSelectedTab] = useState(0);
 
@@ -68,20 +63,17 @@ export const Engineering = () => {
   const [tbr, setTbr] = useState('');
   const [future, setFuture] = useState('');
   const [repeat, setRepeat] = useState('');
-  const [outsource, setOutsource] = useState('');
   const [active, setActive] = useState('Active');
 
   const fetchData = async () => {
     try {
-      const [engRes, tbrRes, futureRes, nextStepRes, printsRes, repeatRes, outsourcePrintsRes, outsourceRes, userRes] = await Promise.all([
+      const [engRes, tbrRes, futureRes, nextStepRes, printsRes, repeatRes, userRes] = await Promise.all([
         getAllJobs(),
         getTBRJobs(),
         getFutureJobs(),
         getNextStep(),
         getPrints(),
         getRepeatJobs(),
-        getOutsourcePrints(),
-        getOutsourceJobs(),
         getAllUsers(),
       ]);
 
@@ -112,19 +104,7 @@ export const Engineering = () => {
         })
       );
 
-      let outsourceCount = outsourceRes.length;
-      setOutsource(outsourceCount > 0 ? `Outsource (${outsourceCount})` : 'Outsource');
-
-      setFullOutsource(
-        outsourceRes.map(v => {
-          let obj = outsourcePrintsRes.find(x => x.PartNo === v.PartNo);
-          v.DocNumber = obj ? obj.DocNumber : '';
-
-          return v;
-        })
-      );
-
-      setEngineeringUsers(userRes.data.filter(user => user.engineering).map(user => user.name.split(' ')[0]));
+      setMachiningUsers(userRes.data.filter(user => user.machining).map(user => user.name.split(' ')[0]));
 
     } catch (err) {
       console.error(err);
@@ -199,32 +179,6 @@ export const Engineering = () => {
     }
   }
 
-  const fetchOutsourceData = async () => {
-    try {
-      const [outsourcePrintsRes, outsourceRes] = await Promise.all([
-        getOutsourcePrints(),
-        getOutsourceJobs(),
-      ]);
-
-      let outsourceCount = outsourceRes.length;
-      setOutsource(outsourceCount > 0 ? `Outsource (${outsourceCount})` : 'Outsource');
-
-      setFullOutsource(
-        outsourceRes.map(v => {
-          let obj = outsourcePrintsRes.find(x => x.PartNo === v.PartNo);
-          v.DocNumber = obj ? obj.DocNumber : '';
-
-          return v;
-        })
-      );
-
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  }
-
   const fetchActiveData = async () => {
     try {
       const [engRes] = await Promise.all([
@@ -237,16 +191,6 @@ export const Engineering = () => {
       console.error(err);
     } finally {
       setLoading(false);
-    }
-  }
-
-  const fetchQCData = async () => {
-    try {
-      const results = await getAllQCNotes();
-      const custCodes = results.data.map(item => item.custCode);
-      setQCData(custCodes);
-    } catch (err) {
-      console.error(err);
     }
   }
 
@@ -325,27 +269,22 @@ export const Engineering = () => {
     fetchData();
   }, [loading, update]);
 
-  useEffect(() => {
-    fetchQCData();
-  }, []);
-
   return (
     <Box sx={{ width: '100%', textAlign: 'center', overflowY: 'auto', height: '100vh' }}>
       {loading ? (
         <Box>
-          <Typography variant='h4' sx={{ fontWeight: 'bold', margin: '16px' }}>Engineering</Typography>
+          <Typography variant='h4' sx={{ fontWeight: 'bold', margin: '16px' }}>Machining</Typography>
           <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginTop: '100px' }}>
             <PuffLoader color='red' />
           </Box>
         </Box>
       ) : (
         <Box sx={{ width: '100%' }}>
-          <Typography variant='h4' sx={{ fontWeight: 'bold', margin: '16px' }}>Engineering</Typography>
+          <Typography variant='h4' sx={{ fontWeight: 'bold', margin: '16px' }}>Machining</Typography>
           <Tabs value={selectedTab} onChange={handleTabChange} centered  TabIndicatorProps={{ style: {backgroundColor: 'red'} }}>
             <Tab label={tbr} sx={{ width: '15%', '&.Mui-selected': { color: 'red' }, '&:focus': { outline: 'none' } }} />
             <Tab label={future} sx={{ width: '15%', '&.Mui-selected': { color: 'red' }, '&:focus': { outline: 'none' } }} />
             <Tab label={repeat} sx={{ width: '15%', '&.Mui-selected': { color: 'red' }, '&:focus': { outline: 'none' } }} />
-            <Tab label={outsource} sx={{ width: '15%', '&.Mui-selected': { color: 'red' }, '&:focus': { outline: 'none' } }} />
             <Tab label={active} sx={{ width: '15%', '&.Mui-selected': { color: 'red' }, '&:focus': { outline: 'none' } }} />
           </Tabs>
 
@@ -428,11 +367,10 @@ export const Engineering = () => {
                         })
                         .map((job, index) => {
                           const rowClass = job.WorkCode == 'HOT' ? 'expedite-row' : '';
-                          const qcClass = qcData.includes(job.CustCode) ? 'qc-row' : '';
                           const dropdownTBRTitle = dropdownTBRTitles[job.JobNo] || job.dataValues.engineer;
                           const dropdownTBRStatus = dropdownTBRStatuses[job.JobNo] || job.dataValues.jobStatus;
                           return (
-                            <TableRow key={index} sx={{ backgroundColor: index % 2 === 0 ? '#f0f0f0' : '#fff' }} className={`${rowClass} ${qcClass}`}>
+                            <TableRow key={index} sx={{ backgroundColor: index % 2 === 0 ? '#f0f0f0' : '#fff' }} className={`${rowClass}`}>
                               <TableCell align='center' sx={{ fontWeight: 'bold', fontSize: '15px' }}>{job.JobNo}</TableCell>
                               <TableCell align='center' sx={{ fontSize: '15px' }}>{job.StepNo}</TableCell>
                               <TableCell align='center' sx={{ fontSize: '15px' }}>
@@ -446,7 +384,7 @@ export const Engineering = () => {
                               <TableCell align='center' sx={{ fontSize: '15px' }}>{job.CustCode}</TableCell>
                               <TableCell align='center' sx={{ fontSize: '15px' }}>{job.User_Text3}</TableCell>
                               
-                              {cookieData.engineering ?
+                              {cookieData.machining ?
                                 <TableCell align='center' sx={{ fontSize: '15px' }}>
                                   <FormControl variant='standard' fullWidth>
                                     <Select
@@ -473,7 +411,7 @@ export const Engineering = () => {
                                         },
                                       }}
                                     >
-                                      {engineeringUsers.map((user, n) => (
+                                      {machiningUsers.map((user, n) => (
                                         <MenuItem key={n} value={user}>
                                           {user}
                                         </MenuItem>
@@ -494,7 +432,7 @@ export const Engineering = () => {
                                 </IconButton>
                               </TableCell>
 
-                              {cookieData.engineering ?
+                              {cookieData.machining ?
                                 <TableCell align='center' sx={{ fontSize: '15px' }}>
                                   <FormControl variant='standard' fullWidth>
                                     <Select
@@ -648,11 +586,10 @@ export const Engineering = () => {
                         .map((job, index) => {
                           if (job.User_Text3 != 'REPEAT' && job.User_Text2 != '6. OUTSOURCE') {
                             const rowClass = job.WorkCode == 'HOT' ? 'expedite-row' : '';
-                            const qcClass = qcData.includes(job.CustCode) ? 'qc-row' : '';
                             const dropdownFutureTitle = dropdownFutureTitles[job.JobNo] || job.dataValues.engineer;
                             const dropdownFutureStatus = dropdownFutureStatuses[job.JobNo] || job.dataValues.jobStatus;
                             return (
-                              <TableRow key={index} sx={{ backgroundColor: index % 2 === 0 ? '#f0f0f0' : '#fff' }} className={`${rowClass} ${qcClass}`}>
+                              <TableRow key={index} sx={{ backgroundColor: index % 2 === 0 ? '#f0f0f0' : '#fff' }} className={`${rowClass}`}>
                                 <TableCell align='center' sx={{ fontWeight: 'bold', fontSize: '15px' }}>{job.JobNo}</TableCell>
                                 <TableCell align='center' sx={{ fontSize: '15px' }}>{job.StepNo}</TableCell>
                                 <TableCell align='center' sx={{ fontSize: '15px' }}>
@@ -666,7 +603,7 @@ export const Engineering = () => {
                                 <TableCell align='center' sx={{ fontSize: '15px' }}>{job.CustCode}</TableCell>
                                 <TableCell align='center' sx={{ fontSize: '15px' }}>{job.User_Text3}</TableCell>
                                 
-                                {cookieData.engineering ?
+                                {cookieData.machining ?
                                   <TableCell align='center' sx={{ fontSize: '15px' }}>
                                     <FormControl variant='standard' fullWidth>
                                       <Select
@@ -693,7 +630,7 @@ export const Engineering = () => {
                                           },
                                         }}
                                       >
-                                        {engineeringUsers.map((user, n) => (
+                                        {machiningUsers.map((user, n) => (
                                           <MenuItem key={n} value={user}>
                                             {user}
                                           </MenuItem>
@@ -714,7 +651,7 @@ export const Engineering = () => {
                                   </IconButton>
                                 </TableCell>
 
-                                {cookieData.engineering ?
+                                {cookieData.machining ?
                                   <TableCell align='center' sx={{ fontSize: '15px' }}>
                                     <FormControl variant='standard' fullWidth>
                                       <Select
@@ -897,118 +834,10 @@ export const Engineering = () => {
             )}
           </Box>
 
-{/* OUTSOURCE JOBS */}
-
-          <Box>
-            {selectedTab === 3 && (
-              <Box sx={{ padding: '12px' }}>
-                <TableContainer component={Paper}>
-                  <Table>
-                    <TableHead>
-                      <TableRow>
-                        <TableCell align='center' sx={{ width: '10%' }}><input type='text' placeholder='Job No' value={searchedValueJobNo || ''} onChange={(e) => setSearchedValueJobNo(e.target.value)} style={{ width: '100%', fontWeight: 'bold', fontSize: '15px', border: 'none', outline: 'none', background: 'transparent', color: '#000', textAlign: 'center' }} /></TableCell>
-                        <TableCell align='center' sx={{ fontWeight: 'bold', width: '7%', fontSize: '15px' }}>Step No</TableCell>
-                        <TableCell align='center' sx={{ width: '20%' }}><input type='text' placeholder='Part No' value={searchedValuePartNo || ''} onChange={(e) => setSearchedValuePartNo(e.target.value)} style={{ width: '100%', fontWeight: 'bold', fontSize: '15px', border: 'none', outline: 'none', background: 'transparent', color: '#000', textAlign: 'center' }} /></TableCell>
-                        <TableCell align='center' sx={{ fontWeight: 'bold', width: '10%', fontSize: '15px' }}>Revision</TableCell>
-                        <TableCell align='center' sx={{ fontWeight: 'bold', width: '8%', fontSize: '15px' }}>Qty</TableCell>
-                        <TableCell align='center' sx={{ fontWeight: 'bold', width: '10%', fontSize: '15px' }}>Due Date</TableCell>
-                        <TableCell align='center' sx={{ width: '10%' }}><input type='text' placeholder='Customer' value={searchedValueCustomer || ''} onChange={(e) => setSearchedValueCustomer(e.target.value)} style={{ width: '100%', fontWeight: 'bold', fontSize: '15px', border: 'none', outline: 'none', background: 'transparent', color: '#000', textAlign: 'center' }} /></TableCell>
-                        <TableCell align='center' sx={{ width: '10%' }}><input type='text' placeholder='Quote' value={searchedValueQuote || ''} onChange={(e) => setSearchedValueQuote(e.target.value)} style={{ width: '100%', fontWeight: 'bold', fontSize: '15px', border: 'none', outline: 'none', background: 'transparent', color: '#000', textAlign: 'center' }} /></TableCell>
-                        <TableCell align='center' sx={{ width: '10%' }}><input type='text' placeholder='Type' value={searchedValueType || ''} onChange={(e) => setSearchedValueType(e.target.value)} style={{ width: '100%', fontWeight: 'bold', fontSize: '15px', border: 'none', outline: 'none', background: 'transparent', color: '#000', textAlign: 'center' }} /></TableCell>
-                        <TableCell align='center' sx={{ fontWeight: 'bold', width: '5%', fontSize: '15px' }}>Print</TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {fullOutsource
-                        .filter(row => typeof row.JobNo !== 'undefined')
-                        .filter((row) => 
-                          !searchedValueJobNo || row.JobNo
-                            .toString()
-                            .toLowerCase()
-                            .includes(searchedValueJobNo.toString().toLowerCase())
-                        )
-                        .filter((row) => 
-                          !searchedValuePartNo || row.PartNo
-                            .toString()
-                            .toLowerCase()
-                            .includes(searchedValuePartNo.toString().toLowerCase())
-                        )
-                        .filter((row) => 
-                          !searchedValueCustomer || row.CustCode
-                            .toString()
-                            .toLowerCase()
-                            .includes(searchedValueCustomer.toString().toLowerCase())
-                        )
-                        .filter((row) => {
-                          if (!searchedValueQuote) { return true; }
-                          if (!row || !row.QuoteNo ) { return false; }
-                          
-                          return row.QuoteNo
-                            .toString()
-                            .toLowerCase()                                           
-                            .includes(searchedValueQuote.toString().toLowerCase())
-                        })
-                        .filter((row) => 
-                          !searchedValueType || row.User_Text3
-                            .toString()
-                            .toLowerCase()
-                            .includes(searchedValueType.toString().toLowerCase())
-                        )
-                        .map((job, index) => {
-                          return (
-                            <TableRow key={index} sx={{ backgroundColor: index % 2 === 0 ? '#f0f0f0' : '#fff' }}>
-                              <TableCell align='center' sx={{ fontWeight: 'bold', fontSize: '15px' }}>{job.JobNo}</TableCell>
-                              <TableCell align='center' sx={{ fontSize: '15px' }}>{job.StepNo}</TableCell>
-                              <TableCell align='center' sx={{ fontSize: '15px' }}>
-                                <CopyToClipboard text={job.PartNo} onCopy={() => { setShowToast(true); setPartCopy(`${job.PartNo}`); }}>
-                                  <span>{job.PartNo}</span>
-                                </CopyToClipboard>
-                              </TableCell>
-                              <TableCell align='center' sx={{ fontSize: '15px' }}>{job.Revision}</TableCell>
-                              <TableCell align='center' sx={{ fontSize: '15px' }}>{job.EstimQty}</TableCell>
-                              <TableCell align='center' sx={{ fontSize: '15px' }}>{job.DueDate.split('-')[1] + '/' + job.DueDate.split('-')[2].split('T')[0]}</TableCell>
-                              <TableCell align='center' sx={{ fontSize: '15px' }}>{job.CustCode}</TableCell>
-                              <TableCell align='center' sx={{ fontSize: '15px' }}>{job.QuoteNo}</TableCell>
-                              <TableCell align='center' sx={{ fontSize: '15px' }}>{job.User_Text3}</TableCell>
-                              <TableCell align='center' sx={{ fontSize: '15px', padding: 0 }}>
-                                <IconButton>
-                                  {job.DocNumber && <CheckIcon />}
-                                </IconButton>
-                              </TableCell>
-                            </TableRow>
-                          )
-                        })
-                      }
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-
-                <IconButton onClick={fetchOutsourceData} sx={{ backgroundColor: '#111827', color: 'white', height: '52.5px', width: '52.5px', zIndex: 1000, position: 'fixed', bottom: '20px', right: '20px','&:hover': { backgroundColor: '#374151', }, }}>
-                  <RefreshIcon fontSize='large' />
-                </IconButton>
-                <Snackbar
-                  open={showToast}
-                  autoHideDuration={3000}
-                  onClose={() => setShowToast(false)}
-                  anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-                  sx={{ marginRight: '100px' }}
-                >
-                  <Alert
-                    onClose={() => setShowToast(false)}
-                    severity='success'
-                    sx={{ width: '100%' }}
-                  >
-                    <strong>{partCopy} Copied To Clipboard</strong>
-                  </Alert>
-                </Snackbar>
-              </Box>
-            )}
-          </Box>
-        
 {/* ACTIVE JOBS */}
 
           <Box>
-            {selectedTab === 4 && (
+            {selectedTab === 3 && (
               <Box sx={{ padding: '12px' }}>
                 <TableContainer component={Paper}>
                   <Table>

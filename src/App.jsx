@@ -10,6 +10,7 @@ import { Engineering } from './pages/programming/Engineering';
 import { FormingProg } from './pages/programming/FormingProg';
 import { Hardware } from './pages/programming/Hardware';
 import { Login } from './pages/login/Login';
+import { Machining } from './pages/programming/Machining';
 import { Profile } from './pages/profile/Profile';
 import { Programming } from './pages/programming/Programming';
 import { Quality } from './pages/programming/Quality';
@@ -38,6 +39,7 @@ export const App = () => {
           <Route path='/formingProg' element={<FormingProg />} />
           <Route path='/hardware' element={<Hardware />} />
           <Route path='/login' element={<Login />} />
+          <Route path='/machining' element={<Machining />} />
           <Route path='/profile' element={<Profile loggedIn={loggedIn} handleLogout={handleLogout} />} />
           <Route path='/programming' element={<Programming />} />
           <Route path='/quality' element={<Quality />} />

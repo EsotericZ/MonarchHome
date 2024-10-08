@@ -98,7 +98,7 @@ export const FormingProg = () => {
     } catch (err) {
       console.log(err);
     }
-  };
+  }
 
   const handleTBRJobStatus = async (job, formStatus) => {
     setDropdownTBRStatuses(prevState => ({
@@ -112,7 +112,7 @@ export const FormingProg = () => {
     } catch (err) {
       console.log(err);
     }
-  };
+  }
 
   const handleFutureFormProgrammer = async (job, formProgrammer) => {
     setDropdownFutureTitles(prevState => ({
@@ -126,7 +126,7 @@ export const FormingProg = () => {
     } catch (err) {
       console.log(err);
     }
-  };
+  }
 
   const handleFutureJobStatus = async (job, formStatus) => {
     setDropdownFutureStatuses(prevState => ({
@@ -140,7 +140,7 @@ export const FormingProg = () => {
     } catch (err) {
       console.log(err);
     }
-  };
+  }
 
   const handleTabChange = (event, newValue) => {
     setSelectedTab(newValue);
