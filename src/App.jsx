@@ -15,6 +15,7 @@ import { Programming } from './pages/programming/Programming';
 import { Quality } from './pages/programming/Quality';
 import { QualityInfo } from './pages/programming/QualityInfo';
 import { TapChart } from './pages/programming/TapChart';
+import { TubeLaserProg } from './pages/programming/TubeLaserProg';
 
 export const App = () => {
   const [loggedIn, setLoggedIn] = useState(!!new Cookies().get('jwt'));
@@ -42,6 +43,7 @@ export const App = () => {
           <Route path='/quality' element={<Quality />} />
           <Route path='/qualityInfo' element={<QualityInfo />} />
           <Route path='/tapChart' element={<TapChart />} />
+          <Route path='/tubeLaserProg' element={<TubeLaserProg />} />
         </Routes>
       </SideNav>
     </Router>

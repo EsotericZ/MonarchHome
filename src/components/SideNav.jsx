@@ -187,6 +187,13 @@ export const SideNav = ({ children, loggedIn }) => {
                 </List>
                 <List component='div' disablePadding sx={{ paddingLeft: 7 }}>
                   <ListItem disablePadding>
+                    <ListItemButton onClick={() => { navigate('/tubeLaserProg'); handleCloseAll(); }}>
+                      <ListItemText primary='Tube Laser' />
+                    </ListItemButton>
+                  </ListItem>
+                </List>
+                <List component='div' disablePadding sx={{ paddingLeft: 7 }}>
+                  <ListItem disablePadding>
                     <ListItemButton onClick={() => { navigate('/qualityInfo'); handleCloseAll(); }}>
                       <ListItemText primary='Quality Info' />
                     </ListItemButton>
