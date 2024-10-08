@@ -7,6 +7,7 @@ import { Admin } from './pages/admin/Admin';
 import { BendDeduction } from './pages/programming/BendDeduction';
 import { Dashboard } from './pages/dashboard/Dashboard';
 import { Engineering } from './pages/programming/Engineering';
+import { FormingProg } from './pages/programming/FormingProg';
 import { Hardware } from './pages/programming/Hardware';
 import { Login } from './pages/login/Login';
 import { Profile } from './pages/profile/Profile';
@@ -33,6 +34,7 @@ export const App = () => {
           <Route path='/bendDeduction' element={<BendDeduction />} />
           <Route path='/dashboard' element={<Dashboard />} />
           <Route path='/engineering' element={<Engineering />} />
+          <Route path='/formingProg' element={<FormingProg />} />
           <Route path='/hardware' element={<Hardware />} />
           <Route path='/login' element={<Login />} />
           <Route path='/profile' element={<Profile loggedIn={loggedIn} handleLogout={handleLogout} />} />
