@@ -16,8 +16,11 @@ import { Login } from './pages/login/Login';
 import { Machining } from './pages/programming/Machining';
 import { Profile } from './pages/profile/Profile';
 import { Programming } from './pages/programming/Programming';
+import { Punch } from './pages/departments/Punch';
 import { Quality } from './pages/programming/Quality';
 import { QualityInfo } from './pages/programming/QualityInfo';
+import { Saw } from './pages/departments/Saw';
+import { Shear } from './pages/departments/Shear';
 import { StaticLaser } from './pages/departments/StaticLaser';
 import { TapChart } from './pages/programming/TapChart';
 import { TubeLaser } from './pages/departments/TubeLaser';
@@ -50,8 +53,11 @@ export const App = () => {
           <Route path='/machining' element={<Machining />} />
           <Route path='/profile' element={<Profile loggedIn={loggedIn} handleLogout={handleLogout} />} />
           <Route path='/programming' element={<Programming />} />
+          <Route path='/punch' element={<Punch />} />
           <Route path='/quality' element={<Quality />} />
           <Route path='/qualityInfo' element={<QualityInfo />} />
+          <Route path='/saw' element={<Saw />} />
+          <Route path='/shear' element={<Shear />} />
           <Route path='/staticLaser' element={<StaticLaser />} />
           <Route path='/tapChart' element={<TapChart />} />
           <Route path='/tubeLaser' element={<TubeLaser />} />

@@ -88,18 +88,21 @@ export const SideNav = ({ children, loggedIn }) => {
   const [name, setName] = useState('');
   const [admin, setAdmin] = useState(false);
   const [open, setOpen] = useState(false);
-  const [programmingOpen, setProgrammingOpen] = useState(false);
   const [departmentOpen, setDepartmentOpen] = useState(false);
+  const [homeOpen, setHomeOpen] = useState(false);
+  const [programmingOpen, setProgrammingOpen] = useState(false);
 
   const handleDrawerToggle = () => {
     setOpen(!open);
   }
 
   const handleProgrammingClick = () => {
+    closeAllMenus();
     setProgrammingOpen(!programmingOpen);
   }
   
   const handleDepartmentClick = () => {
+    closeAllMenus();
     setDepartmentOpen(!departmentOpen);
   }
 
@@ -107,6 +110,12 @@ export const SideNav = ({ children, loggedIn }) => {
     setOpen(false); 
     setProgrammingOpen(false);
     setDepartmentOpen(false);
+  }
+
+  const closeAllMenus = () => {
+    setDepartmentOpen(false);
+    setHomeOpen(false)
+    setProgrammingOpen(false);
   }
 
   useEffect(() => {
@@ -155,18 +164,29 @@ export const SideNav = ({ children, loggedIn }) => {
 
               <ListItem disablePadding>
                 <Tooltip title='Programming' placement='right' arrow>
-                  <ListItemButton>
-                    <ListItemIcon onClick={() => { navigate('/programming'); setOpen(false) }} sx={{ cursor: 'pointer' }}>
+                  <ListItemButton 
+                    onClick={() => {
+                      if (!open) {
+                        navigate('/programming');
+                        handleCloseAll(); 
+                      }
+                    }}
+                  >
+                    <ListItemIcon sx={{ cursor: 'pointer', py: 0.5 }}>
                       <StreamIcon />
                     </ListItemIcon>
-                    <ListItemText
-                      primary='Programming'
-                      onClick={() => { navigate('/programming'); handleCloseAll(); }}
-                      sx={{ cursor: 'pointer' }}
-                    />
-                    <IconButton onClick={handleProgrammingClick}>
-                      {programmingOpen ? <ExpandLess /> : <ExpandMore />}
-                    </IconButton>
+                    {open && (
+                      <>
+                        <ListItemText
+                          primary='Programming'
+                          onClick={() => { navigate('/programming'); handleCloseAll(); }}
+                          sx={{ cursor: 'pointer' }}
+                        />
+                        <IconButton onClick={handleProgrammingClick}>
+                          {programmingOpen ? <ExpandLess /> : <ExpandMore />}
+                        </IconButton>
+                      </>
+                    )}
                   </ListItemButton>
                 </Tooltip>
               </ListItem>
@@ -240,18 +260,29 @@ export const SideNav = ({ children, loggedIn }) => {
 
               <ListItem disablePadding>
                 <Tooltip title='Departments' placement='right' arrow>
-                  <ListItemButton>
-                    <ListItemIcon onClick={() => { navigate('/departments'); setOpen(false) }} sx={{ cursor: 'pointer' }}>
+                  <ListItemButton 
+                    onClick={() => {
+                      if (!open) {
+                        navigate('/departments');
+                        handleCloseAll(); 
+                      }
+                    }}
+                  >
+                    <ListItemIcon sx={{ cursor: 'pointer', py: 0.5 }}>
                       <DashboardIcon />
                     </ListItemIcon>
-                    <ListItemText
-                      primary='Departments'
-                      onClick={() => { navigate('/departments'); handleCloseAll(); }}
-                      sx={{ cursor: 'pointer' }}
-                    />
-                    <IconButton onClick={handleDepartmentClick}>
-                      {departmentOpen ? <ExpandLess /> : <ExpandMore />}
-                    </IconButton>
+                    {open && (
+                      <>
+                        <ListItemText
+                          primary='Departments'
+                          onClick={() => { navigate('/departments'); handleCloseAll(); }}
+                          sx={{ cursor: 'pointer' }}
+                        />
+                        <IconButton onClick={handleDepartmentClick}>
+                          {departmentOpen ? <ExpandLess /> : <ExpandMore />}
+                        </IconButton>
+                      </>
+                    )}
                   </ListItemButton>
                 </Tooltip>
               </ListItem>
