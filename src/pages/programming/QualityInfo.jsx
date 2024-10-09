@@ -247,12 +247,12 @@ export const QualityInfo = () => {
                     )
                     .map((item, index) => (
                       <TableRow key={index} sx={{ backgroundColor: index % 2 === 0 ? '#f0f0f0' : '#fff' }}>
-                        <TableCell align='center' sx={{ fontSize: '15px' }} onClick={() => handleOpenItem(item)}>{item.custCode}</TableCell>
-                        <TableCell align='center' sx={{ fontSize: '15px', padding: 0 }}>{item.coc && <CheckIcon />}</TableCell>
-                        <TableCell align='center' sx={{ fontSize: '15px', padding: 0 }}>{item.matlCert && <CheckIcon />}</TableCell>
-                        <TableCell align='center' sx={{ fontSize: '15px', padding: 0 }}>{item.platCert && <CheckIcon />}</TableCell>
-                        <TableCell align='center' sx={{ fontSize: '15px', padding: 0 }}>{item.addInfo && <CheckIcon />}</TableCell>
-                        <TableCell align='center' sx={{ fontSize: '15px' }}>
+                        <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }} onClick={() => handleOpenItem(item)}>{item.custCode}</TableCell>
+                        <TableCell align='center' sx={{ fontSize: '15px', p: 0 }}>{item.coc && <CheckIcon sx={{ fontSize: '20px', fontWeight: 'bold' }} />}</TableCell>
+                        <TableCell align='center' sx={{ fontSize: '15px', p: 0 }}>{item.matlCert && <CheckIcon sx={{ fontSize: '20px', fontWeight: 'bold' }} />}</TableCell>
+                        <TableCell align='center' sx={{ fontSize: '15px', p: 0 }}>{item.platCert && <CheckIcon sx={{ fontSize: '20px', fontWeight: 'bold' }} />}</TableCell>
+                        <TableCell align='center' sx={{ fontSize: '15px', p: 0 }}>{item.addInfo && <CheckIcon sx={{ fontSize: '20px', fontWeight: 'bold' }} />}</TableCell>
+                        <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>
                           <CopyToClipboard text={item.notes} onCopy={() => { setShowToast(true); setCopy('Engineering Note Copied'); }}>
                             <Typography>{item.notes}</Typography>
                           </CopyToClipboard>

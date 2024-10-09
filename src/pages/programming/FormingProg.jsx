@@ -250,21 +250,21 @@ export const FormingProg = () => {
                             const dropdownTBRStatus = dropdownTBRStatuses[job.JobNo] || job.dataValues.formStatus;
                             return (
                               <TableRow key={index} sx={{ backgroundColor: index % 2 === 0 ? '#f0f0f0' : '#fff' }} className={`${rowClass}`}>
-                                <TableCell align='center' sx={{ fontWeight: 'bold', fontSize: '15px' }}>{job.JobNo}</TableCell>
-                                <TableCell align='center' sx={{ fontSize: '15px' }}>
+                                <TableCell align='center' sx={{ fontWeight: 'bold', fontSize: '15px', p: 1.25 }}>{job.JobNo}</TableCell>
+                                <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>
                                   <CopyToClipboard text={job.PartNo} onCopy={() => { setShowToast(true); setPartCopy(`${job.PartNo}`); }}>
                                     <span>{job.PartNo}</span>
                                   </CopyToClipboard>
                                 </TableCell>
-                                <TableCell align='center' sx={{ fontSize: '15px' }}>{job.Revision}</TableCell>
-                                <TableCell align='center' sx={{ fontSize: '15px' }}>{job.EstimQty}</TableCell>
-                                <TableCell align='center' sx={{ fontSize: '15px' }}>{job.DueDate.split('-')[1] + '/' + job.DueDate.split('-')[2].split('T')[0]}</TableCell>
-                                <TableCell align='center' sx={{ fontSize: '15px' }}>{job.CustCode}</TableCell>
-                                <TableCell align='center' sx={{ fontSize: '15px' }}>{job.User_Text3}</TableCell>
-                                <TableCell align='center' sx={{ fontSize: '15px' }}>{job.dataValues.engineer}</TableCell>
+                                <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.Revision}</TableCell>
+                                <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.EstimQty}</TableCell>
+                                <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.DueDate.split('-')[1] + '/' + job.DueDate.split('-')[2].split('T')[0]}</TableCell>
+                                <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.CustCode}</TableCell>
+                                <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.User_Text3}</TableCell>
+                                <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.dataValues.engineer}</TableCell>
                                 
                                 {cookieData.forming ?
-                                  <TableCell align='center' sx={{ fontSize: '15px' }}>
+                                  <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>
                                     <FormControl variant='standard' fullWidth>
                                       <Select
                                         value={dropdownTBRTitle || ''}
@@ -301,11 +301,11 @@ export const FormingProg = () => {
                                     </FormControl>
                                   </TableCell>
                                 :
-                                  <TableCell align='center' sx={{ fontSize: '15px' }}>{job.dataValues.formProgrammer}</TableCell>
+                                  <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.dataValues.formProgrammer}</TableCell>
                                 }
 
                                 {cookieData.forming ?
-                                  <TableCell align='center' sx={{ fontSize: '15px' }}>
+                                  <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>
                                     <FormControl variant='standard' fullWidth>
                                       <Select
                                         value={dropdownTBRStatus || ''}
@@ -339,7 +339,7 @@ export const FormingProg = () => {
                                     </FormControl>
                                   </TableCell>
                                 :
-                                  <TableCell align='center' sx={{ fontSize: '15px' }}>{job.dataValues.formStatus}</TableCell>
+                                  <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.dataValues.formStatus}</TableCell>
                                 }
                               </TableRow>
                             )
@@ -454,21 +454,21 @@ export const FormingProg = () => {
                             const dropdownFutureStatus = dropdownFutureStatuses[job.JobNo] || job.dataValues.formStatus;
                             return (
                               <TableRow key={index} sx={{ backgroundColor: index % 2 === 0 ? '#f0f0f0' : '#fff' }} className={`${rowClass}`}>
-                                <TableCell align='center' sx={{ fontWeight: 'bold', fontSize: '15px' }}>{job.JobNo}</TableCell>
-                                <TableCell align='center' sx={{ fontSize: '15px' }}>
+                                <TableCell align='center' sx={{ fontWeight: 'bold', fontSize: '15px', p: 1.25 }}>{job.JobNo}</TableCell>
+                                <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>
                                   <CopyToClipboard text={job.PartNo} onCopy={() => { setShowToast(true); setPartCopy(`${job.PartNo}`); }}>
                                     <span>{job.PartNo}</span>
                                   </CopyToClipboard>
                                 </TableCell>
-                                <TableCell align='center' sx={{ fontSize: '15px' }}>{job.Revision}</TableCell>
-                                <TableCell align='center' sx={{ fontSize: '15px' }}>{job.EstimQty}</TableCell>
-                                <TableCell align='center' sx={{ fontSize: '15px' }}>{job.DueDate.split('-')[1] + '/' + job.DueDate.split('-')[2].split('T')[0]}</TableCell>
-                                <TableCell align='center' sx={{ fontSize: '15px' }}>{job.CustCode}</TableCell>
-                                <TableCell align='center' sx={{ fontSize: '15px' }}>{job.User_Text3}</TableCell>
-                                <TableCell align='center' sx={{ fontSize: '15px' }}>{job.dataValues.engineer}</TableCell>
+                                <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.Revision}</TableCell>
+                                <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.EstimQty}</TableCell>
+                                <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.DueDate.split('-')[1] + '/' + job.DueDate.split('-')[2].split('T')[0]}</TableCell>
+                                <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.CustCode}</TableCell>
+                                <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.User_Text3}</TableCell>
+                                <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.dataValues.engineer}</TableCell>
                                 
                                 {cookieData.forming ?
-                                  <TableCell align='center' sx={{ fontSize: '15px' }}>
+                                  <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>
                                     <FormControl variant='standard' fullWidth>
                                       <Select
                                         value={dropdownFutureTitle || ''}
@@ -505,11 +505,11 @@ export const FormingProg = () => {
                                     </FormControl>
                                   </TableCell>
                                 :
-                                  <TableCell align='center' sx={{ fontSize: '15px' }}>{job.dataValues.formProgrammer}</TableCell>
+                                  <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.dataValues.formProgrammer}</TableCell>
                                 }
 
                                 {cookieData.forming ?
-                                  <TableCell align='center' sx={{ fontSize: '15px' }}>
+                                  <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>
                                     <FormControl variant='standard' fullWidth>
                                       <Select
                                         value={dropdownFutureStatus || ''}
@@ -543,7 +543,7 @@ export const FormingProg = () => {
                                     </FormControl>
                                   </TableCell>
                                 :
-                                  <TableCell align='center' sx={{ fontSize: '15px' }}>{job.dataValues.formStatus}</TableCell>
+                                  <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.dataValues.formStatus}</TableCell>
                                 }
                               </TableRow>
                             )
@@ -633,19 +633,19 @@ export const FormingProg = () => {
                           if (job.dataValues.jobStatus == 'FORMING' && job.dataValues.formStatus == 'BD TEST') {
                             return (
                               <TableRow key={index} sx={{ backgroundColor: index % 2 === 0 ? '#f0f0f0' : '#fff' }}>
-                                <TableCell align='center' sx={{ fontWeight: 'bold', fontSize: '15px' }}>{job.JobNo}</TableCell>
-                                <TableCell align='center' sx={{ fontSize: '15px' }}>
+                                <TableCell align='center' sx={{ fontWeight: 'bold', fontSize: '15px', p: 1.25 }}>{job.JobNo}</TableCell>
+                                <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>
                                   <CopyToClipboard text={job.PartNo} onCopy={() => { setShowToast(true); setPartCopy(`${job.PartNo}`); }}>
                                     <span>{job.PartNo}</span>
                                   </CopyToClipboard>
                                 </TableCell>
-                                <TableCell align='center' sx={{ fontSize: '15px' }}>{job.Revision}</TableCell>
-                                <TableCell align='center' sx={{ fontSize: '15px' }}>{job.EstimQty}</TableCell>
-                                <TableCell align='center' sx={{ fontSize: '15px' }}>{job.DueDate.split('-')[1] + '/' + job.DueDate.split('-')[2].split('T')[0]}</TableCell>
-                                <TableCell align='center' sx={{ fontSize: '15px' }}>{job.CustCode}</TableCell>
-                                <TableCell align='center' sx={{ fontSize: '15px' }}>{job.User_Text3}</TableCell>
-                                <TableCell align='center' sx={{ fontSize: '15px' }}>{job.User_Text2}</TableCell>
-                                <TableCell align='center' sx={{ fontSize: '15px' }}>{job.dataValues.notes}</TableCell>
+                                <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.Revision}</TableCell>
+                                <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.EstimQty}</TableCell>
+                                <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.DueDate.split('-')[1] + '/' + job.DueDate.split('-')[2].split('T')[0]}</TableCell>
+                                <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.CustCode}</TableCell>
+                                <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.User_Text3}</TableCell>
+                                <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.User_Text2}</TableCell>
+                                <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.dataValues.notes}</TableCell>
                               </TableRow>
                             )
                           }

@@ -358,7 +358,7 @@ export const TubeLaser = () => {
                               <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.DueDate.split('-')[1] + '/' + job.DueDate.split('-')[2].split('T')[0]}</TableCell>
                               <TableCell align='center' sx={{ fontSize: '15px', p: 0 }}>
                                 <IconButton>
-                                  {job.User_Date1 && <CheckIcon />}
+                                  {job.User_Date1 && <CheckIcon sx={{ fontSize: '20px', fontWeight: 'bold' }} />}
                                 </IconButton>
                               </TableCell>
                               <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.CustCode}</TableCell>

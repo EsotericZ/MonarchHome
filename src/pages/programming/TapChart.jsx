@@ -184,7 +184,7 @@ export const TapChart = () => {
             </DialogActions>
           </Dialog>
 
-          {/* Data Table */}
+{/* Data Table */}
 
           <Box sx={{ display: 'flex', justifyContent: 'space-around', width: '100%' }}>
             <Box sx={{ width: '45%' }}>
@@ -208,9 +208,9 @@ export const TapChart = () => {
                       .map((tap, index) => {
                         return (
                           <TableRow key={index} sx={{ backgroundColor: index % 2 === 0 ? '#f0f0f0' : '#fff' }}>
-                            <TableCell align='center' sx={{ fontSize: '15px' }} onClick={() => handleOpenTap(tap)}>{tap.tapName}</TableCell>
-                            <TableCell align='center' sx={{ fontSize: '15px', padding: 0 }}>{tap.holeSize}</TableCell>
-                            <TableCell align='center' sx={{ fontSize: '15px', padding: 0 }}>{tap.notes}</TableCell>
+                            <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }} onClick={() => handleOpenTap(tap)}>{tap.tapName}</TableCell>
+                            <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{tap.holeSize}</TableCell>
+                            <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{tap.notes}</TableCell>
                           </TableRow>
                         )
                       })
@@ -241,9 +241,9 @@ export const TapChart = () => {
                       .map((tap, index) => {
                         return (
                           <TableRow key={index} sx={{ backgroundColor: index % 2 === 0 ? '#f0f0f0' : '#fff' }}>
-                            <TableCell align='center' sx={{ fontSize: '15px' }} onClick={() => handleOpenTap(tap)}>{tap.tapName}</TableCell>
-                            <TableCell align='center' sx={{ fontSize: '15px', padding: 0 }}>{tap.holeSize}</TableCell>
-                            <TableCell align='center' sx={{ fontSize: '15px', padding: 0 }}>{tap.notes}</TableCell>
+                            <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }} onClick={() => handleOpenTap(tap)}>{tap.tapName}</TableCell>
+                            <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{tap.holeSize}</TableCell>
+                            <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{tap.notes}</TableCell>
                           </TableRow>
                         )
                       })

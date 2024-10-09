@@ -244,21 +244,21 @@ export const TubeLaserProg = () => {
                             const dropdownTBRStatus = dropdownTBRStatuses[job.JobNo] || job.dataValues.tlStatus;
                             return (
                               <TableRow key={index} sx={{ backgroundColor: index % 2 === 0 ? '#f0f0f0' : '#fff' }} className={`${rowClass}`}>
-                                <TableCell align='center' sx={{ fontWeight: 'bold', fontSize: '15px' }}>{job.JobNo}</TableCell>
-                                <TableCell align='center' sx={{ fontSize: '15px' }}>
+                                <TableCell align='center' sx={{ fontWeight: 'bold', fontSize: '15px', p: 1.25 }}>{job.JobNo}</TableCell>
+                                <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>
                                   <CopyToClipboard text={job.PartNo} onCopy={() => { setShowToast(true); setPartCopy(`${job.PartNo}`); }}>
                                     <span>{job.PartNo}</span>
                                   </CopyToClipboard>
                                 </TableCell>
-                                <TableCell align='center' sx={{ fontSize: '15px' }}>{job.Revision}</TableCell>
-                                <TableCell align='center' sx={{ fontSize: '15px' }}>{job.EstimQty}</TableCell>
-                                <TableCell align='center' sx={{ fontSize: '15px' }}>{job.DueDate.split('-')[1] + '/' + job.DueDate.split('-')[2].split('T')[0]}</TableCell>
-                                <TableCell align='center' sx={{ fontSize: '15px' }}>{job.CustCode}</TableCell>
-                                <TableCell align='center' sx={{ fontSize: '15px' }}>{job.User_Text3}</TableCell>
-                                <TableCell align='center' sx={{ fontSize: '15px' }}>{job.dataValues.engineer}</TableCell>
+                                <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.Revision}</TableCell>
+                                <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.EstimQty}</TableCell>
+                                <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.DueDate.split('-')[1] + '/' + job.DueDate.split('-')[2].split('T')[0]}</TableCell>
+                                <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.CustCode}</TableCell>
+                                <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.User_Text3}</TableCell>
+                                <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.dataValues.engineer}</TableCell>
                                 
                                 {cookieData.tlaser ?
-                                  <TableCell align='center' sx={{ fontSize: '15px' }}>
+                                  <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>
                                     <FormControl variant='standard' fullWidth>
                                       <Select
                                         value={dropdownTBRTitle || ''}
@@ -295,11 +295,11 @@ export const TubeLaserProg = () => {
                                     </FormControl>
                                   </TableCell>
                                 :
-                                  <TableCell align='center' sx={{ fontSize: '15px' }}>{job.dataValues.tlProgrammer}</TableCell>
+                                  <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.dataValues.tlProgrammer}</TableCell>
                                 }
 
                                 {cookieData.tlaser ?
-                                  <TableCell align='center' sx={{ fontSize: '15px' }}>
+                                  <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>
                                     <FormControl variant='standard' fullWidth>
                                       <Select
                                         value={dropdownTBRStatus || ''}
@@ -333,7 +333,7 @@ export const TubeLaserProg = () => {
                                     </FormControl>
                                   </TableCell>
                                 :
-                                  <TableCell align='center' sx={{ fontSize: '15px' }}>{job.dataValues.tlStatus}</TableCell>
+                                  <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.dataValues.tlStatus}</TableCell>
                                 }
                               </TableRow>
                             )
@@ -448,21 +448,21 @@ export const TubeLaserProg = () => {
                             const dropdownFutureStatus = dropdownFutureStatuses[job.JobNo] || job.dataValues.tlStatus;
                             return (
                               <TableRow key={index} sx={{ backgroundColor: index % 2 === 0 ? '#f0f0f0' : '#fff' }} className={`${rowClass}`}>
-                                <TableCell align='center' sx={{ fontWeight: 'bold', fontSize: '15px' }}>{job.JobNo}</TableCell>
-                                <TableCell align='center' sx={{ fontSize: '15px' }}>
+                                <TableCell align='center' sx={{ fontWeight: 'bold', fontSize: '15px', p: 1.25 }}>{job.JobNo}</TableCell>
+                                <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>
                                   <CopyToClipboard text={job.PartNo} onCopy={() => { setShowToast(true); setPartCopy(`${job.PartNo}`); }}>
                                     <span>{job.PartNo}</span>
                                   </CopyToClipboard>
                                 </TableCell>
-                                <TableCell align='center' sx={{ fontSize: '15px' }}>{job.Revision}</TableCell>
-                                <TableCell align='center' sx={{ fontSize: '15px' }}>{job.EstimQty}</TableCell>
-                                <TableCell align='center' sx={{ fontSize: '15px' }}>{job.DueDate.split('-')[1] + '/' + job.DueDate.split('-')[2].split('T')[0]}</TableCell>
-                                <TableCell align='center' sx={{ fontSize: '15px' }}>{job.CustCode}</TableCell>
-                                <TableCell align='center' sx={{ fontSize: '15px' }}>{job.User_Text3}</TableCell>
-                                <TableCell align='center' sx={{ fontSize: '15px' }}>{job.dataValues.engineer}</TableCell>
+                                <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.Revision}</TableCell>
+                                <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.EstimQty}</TableCell>
+                                <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.DueDate.split('-')[1] + '/' + job.DueDate.split('-')[2].split('T')[0]}</TableCell>
+                                <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.CustCode}</TableCell>
+                                <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.User_Text3}</TableCell>
+                                <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.dataValues.engineer}</TableCell>
                                 
                                 {cookieData.tlaser ?
-                                  <TableCell align='center' sx={{ fontSize: '15px' }}>
+                                  <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>
                                     <FormControl variant='standard' fullWidth>
                                       <Select
                                         value={dropdownFutureTitle || ''}
@@ -499,11 +499,11 @@ export const TubeLaserProg = () => {
                                     </FormControl>
                                   </TableCell>
                                 :
-                                  <TableCell align='center' sx={{ fontSize: '15px' }}>{job.dataValues.tlProgrammer}</TableCell>
+                                  <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.dataValues.tlProgrammer}</TableCell>
                                 }
 
                                 {cookieData.tlaser ?
-                                  <TableCell align='center' sx={{ fontSize: '15px' }}>
+                                  <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>
                                     <FormControl variant='standard' fullWidth>
                                       <Select
                                         value={dropdownFutureStatus || ''}
@@ -537,7 +537,7 @@ export const TubeLaserProg = () => {
                                     </FormControl>
                                   </TableCell>
                                 :
-                                  <TableCell align='center' sx={{ fontSize: '15px' }}>{job.dataValues.tlStatus}</TableCell>
+                                  <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.dataValues.tlStatus}</TableCell>
                                 }
                               </TableRow>
                             )
