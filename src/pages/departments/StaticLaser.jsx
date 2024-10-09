@@ -201,11 +201,11 @@ export const StaticLaser = () => {
   const handleMaterialsOpen = (job) => {
     setSelectedJob(job);
     setShowMaterials(true);
-  };
+  }
 
   const handleMaterialsClose = () => {
     setShowMaterials(false);
-  };
+  }
 
   const handleTabChange = (event, newValue) => {
     setSelectedTab(newValue);
@@ -240,7 +240,7 @@ export const StaticLaser = () => {
               <TextField label='Program No' fullWidth value={programNo} onChange={(e) => setProgramNo(e.target.value)} sx={{ mb: 2, mt: 1 }} />
               <TextField label='Material' fullWidth value={material} onChange={(e) => setMaterial(e.target.value)} sx={{ mb: 2, mt: 1 }} />
               <TextField label='Jobs' fullWidth value={jobNo} onChange={(e) => setJobNo(e.target.value)} sx={{ mb: 2, mt: 1 }} />
-              <TextField label='Area' fullWidth defaultValue='Tube Laser' sx={{ mb: 2, mt: 1 }} disabled />
+              <TextField label='Area' fullWidth defaultValue='Static Laser' sx={{ mb: 2, mt: 1 }} disabled />
             </DialogContent>
             <DialogActions>
               <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', gap: 2, paddingBottom: 2 }}>
@@ -262,7 +262,7 @@ export const StaticLaser = () => {
               <TextField label='Program No' fullWidth value={programNo} onChange={(e) => setProgramNo(e.target.value)} sx={{ mb: 2, mt: 1 }} />
               <TextField label='Material' fullWidth value={material} onChange={(e) => setMaterial(e.target.value)} sx={{ mb: 2, mt: 1 }} />
               <TextField label='Jobs' fullWidth value={jobNo} onChange={(e) => setJobNo(e.target.value)} sx={{ mb: 2, mt: 1 }} />
-              <TextField label='Area' fullWidth defaultValue='Tube Laser' sx={{ mb: 2, mt: 1 }} disabled />
+              <TextField label='Area' fullWidth defaultValue='Static Laser' sx={{ mb: 2, mt: 1 }} disabled />
             </DialogContent>
             <DialogActions>
               <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', gap: 2, paddingBottom: 2 }}>

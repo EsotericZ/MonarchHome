@@ -11,17 +11,17 @@ import CheckIcon from '@mui/icons-material/Check';
 import HistoryIcon from '@mui/icons-material/History';
 import RefreshIcon from '@mui/icons-material/Refresh';
 
-import getTBRJobs from '../../services/tlaser/getTBRJobs';
-import getFRJobs from '../../services/tlaser/getFRJobs';
+import getTBRJobs from '../../services/flaser/getTBRJobs';
+import getFRJobs from '../../services/flaser/getFRJobs';
 import createMaterial from '../../services/material/createMaterial';
-import getAllTLMaterials from '../../services/material/getAllTLMaterials';
+import getAllFLMaterials from '../../services/material/getAllFLMaterials';
 import updateMaterial from '../../services/material/updateMaterial';
 import updateCheck from '../../services/material/updateCheck';
 import updateComplete from '../../services/material/updateComplete';
 import updateNeed from '../../services/material/updateNeed';
 import updateVerified from '../../services/material/updateVerified';
 
-export const TubeLaser = () => {
+export const FixtureLaser = () => {
   const cookies = new Cookies();
   let cookieData
   try {
@@ -30,7 +30,7 @@ export const TubeLaser = () => {
     cookieData = {
       'name': '',
       'role': 'employee',
-      'tlaser': false,
+      'laser': false,
     };
   }
 
@@ -48,7 +48,7 @@ export const TubeLaser = () => {
 
   const [searchedTBR, setSearchedTBR] = useState([]);
   const [searchedFR, setSearchedFR] = useState([]);
-  const [searchedTLPrograms, setSearchedTLPrograms] = useState([]);
+  const [searchedFLPrograms, setSearchedFLPrograms] = useState([]);
   const [needsNestingTBR, setNeedsNestingTBR] = useState([]);
   const [needsNestingFuture, setNeedsNestingFuture] = useState([]);
   const [jobProgramNo, setJobProgramNo] = useState('None');
@@ -62,22 +62,22 @@ export const TubeLaser = () => {
   const [programNo, setProgramNo] = useState('');
   const [material, setMaterial] = useState('');
   const [jobNo, setJobNo] = useState('');
-  const [machine, setMachine] = useState('tlaser');
+  const [machine, setMachine] = useState('flaser');
   const [id, setId] = useState(0);
 
   const fetchData = async () => {
     try {
-      const [tbrJobs, frJobs, tlMaterials] = await Promise.all([
+      const [tbrJobs, frJobs, flMaterials] = await Promise.all([
         getTBRJobs(),
         getFRJobs(),
-        getAllTLMaterials()
+        getAllFLMaterials()
       ]);
 
       setSearchedTBR(tbrJobs);
       setSearchedFR(frJobs);
-      setSearchedTLPrograms(tlMaterials.data);
+      setSearchedFLPrograms(flMaterials.data);
 
-      const uniq = [...new Set(tlMaterials.data.flatMap(job => job.jobNo.length > 6 ? job.jobNo.split(' ') : job.jobNo))];
+      const uniq = [...new Set(flMaterials.data.flatMap(job => job.jobNo.length > 6 ? job.jobNo.split(' ') : job.jobNo))];
 
       if (uniq.length > 0) {
         let tbrJobsNeeded = tbrJobs.filter(job => !uniq.includes(job.JobNo))
@@ -102,7 +102,7 @@ export const TubeLaser = () => {
 
   const handleSave = async () => {
     try {
-      await createMaterial(programNo, material, jobNo, 'tlaser', 'tlaser')
+      await createMaterial(programNo, material, jobNo, 'flaser', 'flaser')
       setId(0);
       setProgramNo('');
       setMaterial('');
@@ -219,14 +219,14 @@ export const TubeLaser = () => {
     <Box sx={{ width: '100%', textAlign: 'center', overflowY: 'auto', height: '100vh' }}>
       {loading ? (
         <Box>
-          <Typography variant='h4' sx={{ fontWeight: 'bold', margin: '16px' }}>Tube Laser</Typography>
+          <Typography variant='h4' sx={{ fontWeight: 'bold', margin: '16px' }}>Fixture Laser</Typography>
           <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginTop: '100px' }}>
             <PuffLoader color='red' />
           </Box>
         </Box>
       ) : (
         <Box sx={{ width: '100%' }}>
-          <Typography variant='h4' sx={{ fontWeight: 'bold', margin: '16px' }}>Tube Laser</Typography>
+          <Typography variant='h4' sx={{ fontWeight: 'bold', margin: '16px' }}>Fixture Laser</Typography>
 
 {/* Add Modal */}
 
@@ -240,7 +240,7 @@ export const TubeLaser = () => {
               <TextField label='Program No' fullWidth value={programNo} onChange={(e) => setProgramNo(e.target.value)} sx={{ mb: 2, mt: 1 }} />
               <TextField label='Material' fullWidth value={material} onChange={(e) => setMaterial(e.target.value)} sx={{ mb: 2, mt: 1 }} />
               <TextField label='Jobs' fullWidth value={jobNo} onChange={(e) => setJobNo(e.target.value)} sx={{ mb: 2, mt: 1 }} />
-              <TextField label='Area' fullWidth defaultValue='Tube Laser' sx={{ mb: 2, mt: 1 }} disabled />
+              <TextField label='Area' fullWidth defaultValue='Fixture Laser' sx={{ mb: 2, mt: 1 }} disabled />
             </DialogContent>
             <DialogActions>
               <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', gap: 2, paddingBottom: 2 }}>
@@ -262,7 +262,7 @@ export const TubeLaser = () => {
               <TextField label='Program No' fullWidth value={programNo} onChange={(e) => setProgramNo(e.target.value)} sx={{ mb: 2, mt: 1 }} />
               <TextField label='Material' fullWidth value={material} onChange={(e) => setMaterial(e.target.value)} sx={{ mb: 2, mt: 1 }} />
               <TextField label='Jobs' fullWidth value={jobNo} onChange={(e) => setJobNo(e.target.value)} sx={{ mb: 2, mt: 1 }} />
-              <TextField label='Area' fullWidth defaultValue='Tube Laser' sx={{ mb: 2, mt: 1 }} disabled />
+              <TextField label='Area' fullWidth defaultValue='Fixture Laser' sx={{ mb: 2, mt: 1 }} disabled />
             </DialogContent>
             <DialogActions>
               <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', gap: 2, paddingBottom: 2 }}>
@@ -530,7 +530,7 @@ export const TubeLaser = () => {
                   </Table>
                 </TableContainer>
 
-                {cookieData.tlaser &&
+                {cookieData.laser &&
                   <IconButton onClick={handleShow} sx={{ backgroundColor: '#111827', color: 'white', height: '52.5px', width: '52.5px', zIndex: 1000, position: 'fixed', bottom: '85px', right: '20px','&:hover': { backgroundColor: '#374151', }, }}>
                     <AddIcon fontSize='large' />
                   </IconButton>
@@ -578,7 +578,7 @@ export const TubeLaser = () => {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {searchedTLPrograms
+                      {searchedFLPrograms
                         .filter((row) => 
                           !searchedValueProgramNo || row.programNo
                             .toString()
@@ -600,14 +600,14 @@ export const TubeLaser = () => {
                         .map((job, index) => {
                           return (
                             <TableRow key={index} sx={{ backgroundColor: index % 2 === 0 ? '#f0f0f0' : '#fff' }}>
-                              {cookieData.tlaser ? 
+                              {cookieData.laser ? 
                                 <TableCell align='center' sx={{ fontWeight: 'bold', fontSize: '15px', p: 1.25 }} onClick={() => handleUpdateJob(job)}>{job.programNo}</TableCell>
                               :
                                 <TableCell align='center' sx={{ fontWeight: 'bold', fontSize: '15px', p: 1.25 }}>{job.programNo}</TableCell>
                               }
                               <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.material}</TableCell>
                               <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.jobNo}</TableCell>
-                              {cookieData.tlaser ? 
+                              {cookieData.laser ? 
                                 <>
                                   <TableCell align='center' sx={{ fontSize: '15px', p: 0 }} onClick={() => toggleCheck(job)}>
                                     <IconButton>
@@ -644,7 +644,7 @@ export const TubeLaser = () => {
                               :
                                 <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}></TableCell>
                               }
-                              {cookieData.tlaser ? 
+                              {cookieData.laser ? 
                                 <>
                                   <TableCell align='center' sx={{ fontSize: '15px', p: 0 }} onClick={() => toggleVerified(job)}>
                                     <IconButton>
@@ -669,7 +669,7 @@ export const TubeLaser = () => {
                   </Table>
                 </TableContainer>
 
-                {cookieData.tlaser &&
+                {cookieData.laser &&
                   <IconButton onClick={handleShow} sx={{ backgroundColor: '#111827', color: 'white', height: '52.5px', width: '52.5px', zIndex: 1000, position: 'fixed', bottom: '85px', right: '20px','&:hover': { backgroundColor: '#374151', }, }}>
                     <AddIcon fontSize='large' />
                   </IconButton>
@@ -693,13 +693,13 @@ export const TubeLaser = () => {
                         <TableCell align='center' sx={{ width: '15%' }}><input type='text' placeholder='Program No' value={searchedValueProgramNo || ''} onChange={(e) => setSearchedValueProgramNo(e.target.value)} style={{ width: '100%', fontWeight: 'bold', fontSize: '15px', border: 'none', outline: 'none', background: 'transparent', color: '#000', textAlign: 'center' }} /></TableCell>
                         <TableCell align='center' sx={{ width: '25%' }}><input type='text' placeholder='Material' value={searchedValueMaterial || ''} onChange={(e) => setSearchedValueMaterial(e.target.value)} style={{ width: '100%', fontWeight: 'bold', fontSize: '15px', border: 'none', outline: 'none', background: 'transparent', color: '#000', textAlign: 'center' }} /></TableCell>
                         <TableCell align='center' sx={{ width: '10%' }}><input type='text' placeholder='Job No' value={searchedValueJobNo || ''} onChange={(e) => setSearchedValueJobNo(e.target.value)} style={{ width: '100%', fontWeight: 'bold', fontSize: '15px', border: 'none', outline: 'none', background: 'transparent', color: '#000', textAlign: 'center' }} /></TableCell>
-                        {cookieData.tlaser && 
+                        {cookieData.laser && 
                           <TableCell align='center' sx={{ fontWeight: 'bold', width: '10%', fontSize: '15px' }}>Completed</TableCell>
                         }
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {searchedTLPrograms
+                      {searchedFLPrograms
                         .filter((row) => 
                           !searchedValueProgramNo || row.programNo
                             .toString()
@@ -722,14 +722,14 @@ export const TubeLaser = () => {
                             if (job.verified) {
                             return (
                               <TableRow key={index} sx={{ backgroundColor: index % 2 === 0 ? '#f0f0f0' : '#fff' }}>
-                                {cookieData.tlaser ? 
+                                {cookieData.laser ? 
                                   <TableCell align='center' sx={{ fontWeight: 'bold', fontSize: '15px', p: 1.25 }} onClick={() => handleUpdateJob(job)}>{job.programNo}</TableCell>
                                 :
                                   <TableCell align='center' sx={{ fontWeight: 'bold', fontSize: '15px', p: 1.25 }}>{job.programNo}</TableCell>
                                 }
                                 <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.material}</TableCell>
                                 <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.jobNo}</TableCell>
-                                {cookieData.tlaser &&
+                                {cookieData.laser &&
                                   <TableCell align='center' sx={{ fontSize: '15px', p: 0 }}>
                                     <IconButton onClick={() => handleShowComplete(job)}>
                                       {<HistoryIcon sx={{ fontSize: '20px', fontWeight: 'bold' }} />}
@@ -745,7 +745,7 @@ export const TubeLaser = () => {
                   </Table>
                 </TableContainer>
 
-                {cookieData.tlaser &&
+                {cookieData.laser &&
                   <IconButton onClick={handleShow} sx={{ backgroundColor: '#111827', color: 'white', height: '52.5px', width: '52.5px', zIndex: 1000, position: 'fixed', bottom: '85px', right: '20px','&:hover': { backgroundColor: '#374151', }, }}>
                     <AddIcon fontSize='large' />
                   </IconButton>
@@ -959,7 +959,7 @@ export const TubeLaser = () => {
                   </Table>
                 </TableContainer>
                 
-                {cookieData.tlaser &&
+                {cookieData.laser &&
                   <IconButton onClick={handleShow} sx={{ backgroundColor: '#111827', color: 'white', height: '52.5px', width: '52.5px', zIndex: 1000, position: 'fixed', bottom: '85px', right: '20px','&:hover': { backgroundColor: '#374151', }, }}>
                     <AddIcon fontSize='large' />
                   </IconButton>

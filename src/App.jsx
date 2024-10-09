@@ -8,6 +8,7 @@ import { BendDeduction } from './pages/programming/BendDeduction';
 import { Dashboard } from './pages/dashboard/Dashboard';
 import { Departments } from './pages/departments/Departments';
 import { Engineering } from './pages/programming/Engineering';
+import { FixtureLaser } from './pages/departments/FixtureLaser';
 import { FormingProg } from './pages/programming/FormingProg';
 import { Hardware } from './pages/programming/Hardware';
 import { Login } from './pages/login/Login';
@@ -40,6 +41,7 @@ export const App = () => {
           <Route path='/dashboard' element={<Dashboard />} />
           <Route path='/departments' element={<Departments />} />
           <Route path='/engineering' element={<Engineering />} />
+          <Route path='/fixtureLaser' element={<FixtureLaser />} />
           <Route path='/formingProg' element={<FormingProg />} />
           <Route path='/hardware' element={<Hardware />} />
           <Route path='/login' element={<Login />} />
