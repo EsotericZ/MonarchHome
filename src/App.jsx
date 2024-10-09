@@ -16,6 +16,7 @@ import { Profile } from './pages/profile/Profile';
 import { Programming } from './pages/programming/Programming';
 import { Quality } from './pages/programming/Quality';
 import { QualityInfo } from './pages/programming/QualityInfo';
+import { StaticLaser } from './pages/departments/StaticLaser';
 import { TapChart } from './pages/programming/TapChart';
 import { TubeLaser } from './pages/departments/TubeLaser';
 import { TubeLaserProg } from './pages/programming/TubeLaserProg';
@@ -47,6 +48,7 @@ export const App = () => {
           <Route path='/programming' element={<Programming />} />
           <Route path='/quality' element={<Quality />} />
           <Route path='/qualityInfo' element={<QualityInfo />} />
+          <Route path='/staticLaser' element={<StaticLaser />} />
           <Route path='/tapChart' element={<TapChart />} />
           <Route path='/tubeLaser' element={<TubeLaser />} />
           <Route path='/tubeLaserProg' element={<TubeLaserProg />} />
