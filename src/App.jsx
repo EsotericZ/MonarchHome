@@ -6,6 +6,7 @@ import Cookies from 'universal-cookie';
 import { Admin } from './pages/admin/Admin';
 import { BendDeduction } from './pages/programming/BendDeduction';
 import { Dashboard } from './pages/dashboard/Dashboard';
+import { Departments } from './pages/departments/Departments';
 import { Engineering } from './pages/programming/Engineering';
 import { FormingProg } from './pages/programming/FormingProg';
 import { Hardware } from './pages/programming/Hardware';
@@ -16,6 +17,7 @@ import { Programming } from './pages/programming/Programming';
 import { Quality } from './pages/programming/Quality';
 import { QualityInfo } from './pages/programming/QualityInfo';
 import { TapChart } from './pages/programming/TapChart';
+import { TubeLaser } from './pages/departments/TubeLaser';
 import { TubeLaserProg } from './pages/programming/TubeLaserProg';
 
 export const App = () => {
@@ -35,6 +37,7 @@ export const App = () => {
           <Route path='/admin' element={<Admin />} />
           <Route path='/bendDeduction' element={<BendDeduction />} />
           <Route path='/dashboard' element={<Dashboard />} />
+          <Route path='/departments' element={<Departments />} />
           <Route path='/engineering' element={<Engineering />} />
           <Route path='/formingProg' element={<FormingProg />} />
           <Route path='/hardware' element={<Hardware />} />
@@ -45,6 +48,7 @@ export const App = () => {
           <Route path='/quality' element={<Quality />} />
           <Route path='/qualityInfo' element={<QualityInfo />} />
           <Route path='/tapChart' element={<TapChart />} />
+          <Route path='/tubeLaser' element={<TubeLaser />} />
           <Route path='/tubeLaserProg' element={<TubeLaserProg />} />
         </Routes>
       </SideNav>

@@ -12,6 +12,7 @@ import {
   Key as KeyIcon,
   Login as LoginIcon,
   Person as PersonIcon,
+  Stream as StreamIcon,
 } from '@mui/icons-material';
 import { styled, useTheme } from '@mui/material/styles';
 
@@ -88,18 +89,24 @@ export const SideNav = ({ children, loggedIn }) => {
   const [admin, setAdmin] = useState(false);
   const [open, setOpen] = useState(false);
   const [programmingOpen, setProgrammingOpen] = useState(false);
+  const [departmentOpen, setDepartmentOpen] = useState(false);
 
   const handleDrawerToggle = () => {
     setOpen(!open);
-  };
+  }
 
   const handleProgrammingClick = () => {
     setProgrammingOpen(!programmingOpen);
-  };
+  }
+  
+  const handleDepartmentClick = () => {
+    setDepartmentOpen(!departmentOpen);
+  }
 
   const handleCloseAll = () => {
     setOpen(false); 
     setProgrammingOpen(false);
+    setDepartmentOpen(false);
   }
 
   useEffect(() => {
@@ -150,7 +157,7 @@ export const SideNav = ({ children, loggedIn }) => {
                 <Tooltip title='Programming' placement='right' arrow>
                   <ListItemButton>
                     <ListItemIcon onClick={() => { navigate('/programming'); setOpen(false) }} sx={{ cursor: 'pointer' }}>
-                      <DashboardIcon />
+                      <StreamIcon />
                     </ListItemIcon>
                     <ListItemText
                       primary='Programming'
@@ -228,6 +235,99 @@ export const SideNav = ({ children, loggedIn }) => {
                   </ListItem>
                 </List>
               </Collapse>
+
+{/* DEPARTMENTS */}
+
+              <ListItem disablePadding>
+                <Tooltip title='Departments' placement='right' arrow>
+                  <ListItemButton>
+                    <ListItemIcon onClick={() => { navigate('/departments'); setOpen(false) }} sx={{ cursor: 'pointer' }}>
+                      <DashboardIcon />
+                    </ListItemIcon>
+                    <ListItemText
+                      primary='Departments'
+                      onClick={() => { navigate('/departments'); handleCloseAll(); }}
+                      sx={{ cursor: 'pointer' }}
+                    />
+                    <IconButton onClick={handleDepartmentClick}>
+                      {departmentOpen ? <ExpandLess /> : <ExpandMore />}
+                    </IconButton>
+                  </ListItemButton>
+                </Tooltip>
+              </ListItem>
+              <Collapse in={departmentOpen} timeout='auto' unmountOnExit>
+                <List component='div' disablePadding sx={{ paddingLeft: 7 }}>
+                  <ListItem disablePadding>
+                    <ListItemButton onClick={() => { navigate('/engineering'); handleCloseAll(); }}>
+                      <ListItemText primary='Engineering' />
+                    </ListItemButton>
+                  </ListItem>
+                </List>
+                <List component='div' disablePadding sx={{ paddingLeft: 7 }}>
+                  <ListItem disablePadding>
+                    <ListItemButton onClick={() => { navigate('/quality'); handleCloseAll(); }}>
+                      <ListItemText primary='Quality' />
+                    </ListItemButton>
+                  </ListItem>
+                </List>
+                <List component='div' disablePadding sx={{ paddingLeft: 7 }}>
+                  <ListItem disablePadding>
+                    <ListItemButton onClick={() => { navigate('/formingProg'); handleCloseAll(); }}>
+                      <ListItemText primary='Forming' />
+                    </ListItemButton>
+                  </ListItem>
+                </List>
+                <List component='div' disablePadding sx={{ paddingLeft: 7 }}>
+                  <ListItem disablePadding>
+                    <ListItemButton onClick={() => { navigate('/tubeLaserProg'); handleCloseAll(); }}>
+                      <ListItemText primary='Tube Laser' />
+                    </ListItemButton>
+                  </ListItem>
+                </List>
+                <List component='div' disablePadding sx={{ paddingLeft: 7 }}>
+                  <ListItem disablePadding>
+                    <ListItemButton onClick={() => { navigate('/machining'); handleCloseAll(); }}>
+                      <ListItemText primary='Machining' />
+                    </ListItemButton>
+                  </ListItem>
+                </List>
+                <List component='div' disablePadding sx={{ paddingLeft: 7 }}>
+                  <ListItem disablePadding>
+                    <ListItemButton onClick={() => { navigate('/qualityInfo'); handleCloseAll(); }}>
+                      <ListItemText primary='Quality Info' />
+                    </ListItemButton>
+                  </ListItem>
+                </List>
+                <List component='div' disablePadding sx={{ paddingLeft: 7 }}>
+                  <ListItem disablePadding>
+                    <ListItemButton onClick={() => { navigate('/bendDeduction'); handleCloseAll(); }}>
+                      <ListItemText primary='Bend Deduction' />
+                    </ListItemButton>
+                  </ListItem>
+                </List>
+                <List component='div' disablePadding sx={{ paddingLeft: 7 }}>
+                  <ListItem disablePadding>
+                    <ListItemButton onClick={() => { navigate('/hardware'); handleCloseAll(); }}>
+                      <ListItemText primary='Hardware' />
+                    </ListItemButton>
+                  </ListItem>
+                </List>
+                <List component='div' disablePadding sx={{ paddingLeft: 7 }}>
+                  <ListItem disablePadding>
+                    <ListItemButton onClick={() => { navigate('/tapChart'); handleCloseAll(); }}>
+                      <ListItemText primary='Tap Chart' />
+                    </ListItemButton>
+                  </ListItem>
+                </List>
+              </Collapse>
+            
+            
+            
+            
+            
+            
+            
+            
             </List>
 
             <Divider />
