@@ -9,6 +9,7 @@ import { Dashboard } from './pages/dashboard/Dashboard';
 import { Departments } from './pages/departments/Departments';
 import { Engineering } from './pages/programming/Engineering';
 import { FixtureLaser } from './pages/departments/FixtureLaser';
+import { Forming } from './pages/departments/Forming';
 import { FormingProg } from './pages/programming/FormingProg';
 import { Laser } from './pages/departments/Laser';
 import { Hardware } from './pages/programming/Hardware';
@@ -46,6 +47,7 @@ export const App = () => {
           <Route path='/departments' element={<Departments />} />
           <Route path='/engineering' element={<Engineering />} />
           <Route path='/fixtureLaser' element={<FixtureLaser />} />
+          <Route path='/forming' element={<Forming />} />
           <Route path='/formingProg' element={<FormingProg />} />
           <Route path='/Laser' element={<Laser />} />
           <Route path='/hardware' element={<Hardware />} />

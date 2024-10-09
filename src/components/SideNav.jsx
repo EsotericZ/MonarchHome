@@ -155,7 +155,9 @@ export const SideNav = ({ children, loggedIn }) => {
               <ListItem disablePadding>
                 <Tooltip title='Dashboard' placement='right' arrow>
                   <ListItemButton onClick={() => { navigate('/dashboard'); handleCloseAll(); }}>
-                    <ListItemIcon><HomeIcon /></ListItemIcon>
+                    <ListItemIcon sx={{ cursor: 'pointer', py: 1 }}>
+                      <HomeIcon />
+                    </ListItemIcon>
                     <ListItemText primary='Dashboard' />
                   </ListItemButton>
                 </Tooltip>
@@ -356,7 +358,9 @@ export const SideNav = ({ children, loggedIn }) => {
                 <ListItem disablePadding>
                   <Tooltip title='Profile' placement='right' arrow>
                     <ListItemButton onClick={() => { navigate('/profile'); handleCloseAll(); }}>
-                      <ListItemIcon><PersonIcon /></ListItemIcon>
+                      <ListItemIcon sx={{ cursor: 'pointer', py: 1 }}>
+                        <PersonIcon />
+                      </ListItemIcon>
                       <ListItemText primary='Profile' />
                     </ListItemButton>
                   </Tooltip>
@@ -365,7 +369,9 @@ export const SideNav = ({ children, loggedIn }) => {
                 <ListItem disablePadding>
                   <Tooltip title='Login' placement='right' arrow>
                     <ListItemButton onClick={() => { navigate('/login'); handleCloseAll(); }}>
-                      <ListItemIcon><LoginIcon /></ListItemIcon>
+                      <ListItemIcon sx={{ cursor: 'pointer', py: 1 }}>
+                        <LoginIcon />
+                      </ListItemIcon>
                       <ListItemText primary='Login' />
                     </ListItemButton>
                   </Tooltip>
@@ -383,7 +389,9 @@ export const SideNav = ({ children, loggedIn }) => {
                   <ListItem disablePadding>
                     <Tooltip title='Admin' placement='right' arrow>
                       <ListItemButton onClick={() => { navigate('/admin'); handleCloseAll(); }}>
-                        <ListItemIcon><AdminPanelSettingsIcon /></ListItemIcon>
+                        <ListItemIcon sx={{ cursor: 'pointer', py: 1 }}>
+                          <AdminPanelSettingsIcon />
+                        </ListItemIcon>
                         <ListItemText primary='Admin' />
                       </ListItemButton>
                     </Tooltip>
@@ -392,7 +400,9 @@ export const SideNav = ({ children, loggedIn }) => {
                     <Tooltip title='RFID' placement='right' arrow>
                       <a href="http://10.0.1.45:3000/" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: 'inherit' }}>
                         <ListItemButton onClick={handleCloseAll}>
-                          <ListItemIcon><KeyIcon /></ListItemIcon>
+                          <ListItemIcon sx={{ cursor: 'pointer', py: 1 }}>
+                            <KeyIcon />
+                          </ListItemIcon>
                           <ListItemText primary='RFID Site' />
                         </ListItemButton>
                       </a>
