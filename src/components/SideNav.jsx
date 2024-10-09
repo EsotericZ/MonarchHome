@@ -94,6 +94,7 @@ export const SideNav = ({ children, loggedIn }) => {
 
   const handleDrawerToggle = () => {
     setOpen(!open);
+    closeAllMenus();
   }
 
   const handleProgrammingClick = () => {
@@ -172,7 +173,7 @@ export const SideNav = ({ children, loggedIn }) => {
                       }
                     }}
                   >
-                    <ListItemIcon sx={{ cursor: 'pointer', py: 0.5 }}>
+                    <ListItemIcon sx={{ cursor: 'pointer', py: 1 }}>
                       <StreamIcon />
                     </ListItemIcon>
                     {open && (
@@ -268,7 +269,7 @@ export const SideNav = ({ children, loggedIn }) => {
                       }
                     }}
                   >
-                    <ListItemIcon sx={{ cursor: 'pointer', py: 0.5 }}>
+                    <ListItemIcon sx={{ cursor: 'pointer', py: 1 }}>
                       <DashboardIcon />
                     </ListItemIcon>
                     {open && (
@@ -289,76 +290,61 @@ export const SideNav = ({ children, loggedIn }) => {
               <Collapse in={departmentOpen} timeout='auto' unmountOnExit>
                 <List component='div' disablePadding sx={{ paddingLeft: 7 }}>
                   <ListItem disablePadding>
-                    <ListItemButton onClick={() => { navigate('/engineering'); handleCloseAll(); }}>
-                      <ListItemText primary='Engineering' />
+                    <ListItemButton onClick={() => { navigate('/fixtureLaser'); handleCloseAll(); }}>
+                      <ListItemText primary='Fixture Laser' />
                     </ListItemButton>
                   </ListItem>
                 </List>
                 <List component='div' disablePadding sx={{ paddingLeft: 7 }}>
                   <ListItem disablePadding>
-                    <ListItemButton onClick={() => { navigate('/quality'); handleCloseAll(); }}>
-                      <ListItemText primary='Quality' />
-                    </ListItemButton>
-                  </ListItem>
-                </List>
-                <List component='div' disablePadding sx={{ paddingLeft: 7 }}>
-                  <ListItem disablePadding>
-                    <ListItemButton onClick={() => { navigate('/formingProg'); handleCloseAll(); }}>
+                    <ListItemButton onClick={() => { navigate('/forming'); handleCloseAll(); }}>
                       <ListItemText primary='Forming' />
                     </ListItemButton>
                   </ListItem>
                 </List>
                 <List component='div' disablePadding sx={{ paddingLeft: 7 }}>
                   <ListItem disablePadding>
-                    <ListItemButton onClick={() => { navigate('/tubeLaserProg'); handleCloseAll(); }}>
+                    <ListItemButton onClick={() => { navigate('/laser'); handleCloseAll(); }}>
+                      <ListItemText primary='Laser (Enterprise)' />
+                    </ListItemButton>
+                  </ListItem>
+                </List>
+                <List component='div' disablePadding sx={{ paddingLeft: 7 }}>
+                  <ListItem disablePadding>
+                    <ListItemButton onClick={() => { navigate('/punch'); handleCloseAll(); }}>
+                      <ListItemText primary='Punch' />
+                    </ListItemButton>
+                  </ListItem>
+                </List>
+                <List component='div' disablePadding sx={{ paddingLeft: 7 }}>
+                  <ListItem disablePadding>
+                    <ListItemButton onClick={() => { navigate('/saw'); handleCloseAll(); }}>
+                      <ListItemText primary='Saw' />
+                    </ListItemButton>
+                  </ListItem>
+                </List>
+                <List component='div' disablePadding sx={{ paddingLeft: 7 }}>
+                  <ListItem disablePadding>
+                    <ListItemButton onClick={() => { navigate('/shear'); handleCloseAll(); }}>
+                      <ListItemText primary='Shear' />
+                    </ListItemButton>
+                  </ListItem>
+                </List>
+                <List component='div' disablePadding sx={{ paddingLeft: 7 }}>
+                  <ListItem disablePadding>
+                    <ListItemButton onClick={() => { navigate('/staticLaser'); handleCloseAll(); }}>
+                      <ListItemText primary='Static Laser' />
+                    </ListItemButton>
+                  </ListItem>
+                </List>
+                <List component='div' disablePadding sx={{ paddingLeft: 7 }}>
+                  <ListItem disablePadding>
+                    <ListItemButton onClick={() => { navigate('/tubeLaser'); handleCloseAll(); }}>
                       <ListItemText primary='Tube Laser' />
                     </ListItemButton>
                   </ListItem>
                 </List>
-                <List component='div' disablePadding sx={{ paddingLeft: 7 }}>
-                  <ListItem disablePadding>
-                    <ListItemButton onClick={() => { navigate('/machining'); handleCloseAll(); }}>
-                      <ListItemText primary='Machining' />
-                    </ListItemButton>
-                  </ListItem>
-                </List>
-                <List component='div' disablePadding sx={{ paddingLeft: 7 }}>
-                  <ListItem disablePadding>
-                    <ListItemButton onClick={() => { navigate('/qualityInfo'); handleCloseAll(); }}>
-                      <ListItemText primary='Quality Info' />
-                    </ListItemButton>
-                  </ListItem>
-                </List>
-                <List component='div' disablePadding sx={{ paddingLeft: 7 }}>
-                  <ListItem disablePadding>
-                    <ListItemButton onClick={() => { navigate('/bendDeduction'); handleCloseAll(); }}>
-                      <ListItemText primary='Bend Deduction' />
-                    </ListItemButton>
-                  </ListItem>
-                </List>
-                <List component='div' disablePadding sx={{ paddingLeft: 7 }}>
-                  <ListItem disablePadding>
-                    <ListItemButton onClick={() => { navigate('/hardware'); handleCloseAll(); }}>
-                      <ListItemText primary='Hardware' />
-                    </ListItemButton>
-                  </ListItem>
-                </List>
-                <List component='div' disablePadding sx={{ paddingLeft: 7 }}>
-                  <ListItem disablePadding>
-                    <ListItemButton onClick={() => { navigate('/tapChart'); handleCloseAll(); }}>
-                      <ListItemText primary='Tap Chart' />
-                    </ListItemButton>
-                  </ListItem>
-                </List>
               </Collapse>
-            
-            
-            
-            
-            
-            
-            
-            
             </List>
 
             <Divider />
@@ -404,10 +390,12 @@ export const SideNav = ({ children, loggedIn }) => {
                   </ListItem>
                   <ListItem disablePadding>
                     <Tooltip title='RFID' placement='right' arrow>
-                      <ListItemButton onClick={() => { navigate('/http://10.0.1.45:3000/'); handleCloseAll(); }}>
-                        <ListItemIcon><KeyIcon /></ListItemIcon>
-                        <ListItemText primary='RFID Site' />
-                      </ListItemButton>
+                      <a href="http://10.0.1.45:3000/" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: 'inherit' }}>
+                        <ListItemButton onClick={handleCloseAll}>
+                          <ListItemIcon><KeyIcon /></ListItemIcon>
+                          <ListItemText primary='RFID Site' />
+                        </ListItemButton>
+                      </a>
                     </Tooltip>
                   </ListItem>
                 </List>
