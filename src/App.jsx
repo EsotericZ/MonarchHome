@@ -4,6 +4,7 @@ import { SideNav } from './components/SideNav';
 import Cookies from 'universal-cookie';
 
 import { Admin } from './pages/admin/Admin';
+import { Backlog } from './pages/backlog/Backlog';
 import { BendDeduction } from './pages/programming/BendDeduction';
 import { Dashboard } from './pages/dashboard/Dashboard';
 import { Departments } from './pages/departments/Departments';
@@ -42,6 +43,7 @@ export const App = () => {
         <Routes>
           <Route path='/' element={<Dashboard />} />
           <Route path='/admin' element={<Admin />} />
+          <Route path='/backlog' element={<Backlog />} />
           <Route path='/bendDeduction' element={<BendDeduction />} />
           <Route path='/dashboard' element={<Dashboard />} />
           <Route path='/departments' element={<Departments />} />
