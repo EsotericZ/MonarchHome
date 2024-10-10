@@ -272,15 +272,13 @@ export const Profile = ({ loggedIn, handleLogout }) => {
           )}
         </>
       ) : (
-        <>
-          <NavLink to="/login" style={{ textDecoration: 'none' }}>
-            <Box sx={{ textAlign: 'center', mt: 5 }}>
-              <Button variant="contained" color="error" sx={{ m: 5 }}>
-                Log In
-              </Button>
-            </Box>
-          </NavLink>
-        </>
+        <NavLink to="/login" style={{ textDecoration: 'none' }}>
+          <Box sx={{ textAlign: 'center', mt: 5 }}>
+            <Button variant="contained" color="error" sx={{ m: 5 }}>
+              Log In
+            </Button>
+          </Box>
+        </NavLink>
       )}
     </Box>
   );
