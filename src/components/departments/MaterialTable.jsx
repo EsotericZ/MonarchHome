@@ -1,4 +1,3 @@
-import React from 'react';
 import { Box, Icon, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 
 import CheckIcon from '@mui/icons-material/Check';

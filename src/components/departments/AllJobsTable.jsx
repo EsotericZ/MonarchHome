@@ -9,16 +9,16 @@ import RefreshButton from '../shared/RefreshButton';
 import SearchTableCell from '../shared/SearchTableCell';
 import StandardTableCell from '../shared/StandardTableCell';
 
-const NestTable = ({
+const AllJobsTable = ({
   cookieData,
   cookieDataKey,
   handleMaterialsOpen,
-  needsNestingFuture,
-  needsNestingTBR,
   onAddClick,
   onCloseSnackbar,
   onRefresh,
   partCopy,
+  searchedFR,
+  searchedTBR,
   searchedValues,
   selectedTab,
   setPartCopy,
@@ -27,30 +27,29 @@ const NestTable = ({
   showToast,
 }) => {
   const handleInputChange = (key, value) => {
-    setSearchedValues((prev) => ({ 
-      ...prev, 
-      [key]: value 
+    setSearchedValues((prev) => ({
+      ...prev,
+      [key]: value,
     }));
-    console.log('Filtering material:', searchedValues.material);
   };
 
-  const renderTableRows = (jobs, isFuture = false) => {
+  const renderTableRows = (jobs) => {
     return jobs
       .filter((row) => typeof row.JobNo !== 'undefined')
       .filter((row) =>
-        !searchedValues.jobNo || row.JobNo.toString().toLowerCase().includes(searchedValues.jobNo.toLowerCase())
+        !searchedValues.jobNo || row.JobNo.toLowerCase().includes(searchedValues.jobNo.toLowerCase())
       )
       .filter((row) =>
-        !searchedValues.partNo || row.PartNo.toString().toLowerCase().includes(searchedValues.partNo.toLowerCase())
+        !searchedValues.partNo || row.PartNo.toLowerCase().includes(searchedValues.partNo.toLowerCase())
       )
       .filter((row) =>
-        !searchedValues.customer || row.CustCode.toString().toLowerCase().includes(searchedValues.customer.toLowerCase())
+        !searchedValues.customer || row.CustCode.toLowerCase().includes(searchedValues.customer.toLowerCase())
       )
       .filter((row) =>
-        !searchedValues.type || row.User_Text3.toString().toLowerCase().includes(searchedValues.type.toLowerCase())
+        !searchedValues.type || row.User_Text3.toLowerCase().includes(searchedValues.type.toLowerCase())
       )
       .filter((row) =>
-        !searchedValues.material || row.SubPartNo.toString().toLowerCase().includes(searchedValues.material.toLowerCase())
+        !searchedValues.material || row.SubPartNo.toLowerCase().includes(searchedValues.material.toLowerCase())
       )
       .map((job, index) => (
         <TableRow key={index} sx={{ backgroundColor: index % 2 === 0 ? '#f0f0f0' : '#fff' }}>
@@ -70,7 +69,7 @@ const NestTable = ({
           <TableCell align="center" sx={{ fontSize: '15px', p: 1.25 }}>{job.Revision}</TableCell>
           <TableCell align="center" sx={{ fontSize: '15px', p: 1.25 }}>{job.EstimQty}</TableCell>
           <TableCell align="center" sx={{ fontSize: '15px', p: 1.25 }}>
-            {job.DueDate.split('-')[1] + '/' + job.DueDate.split('-')[2].split('T')[0]}
+            {job.DueDate.split('-')[1]}/{job.DueDate.split('-')[2].split('T')[0]}
           </TableCell>
           <TableCell align="center" sx={{ fontSize: '15px', p: 0 }}>
             <IconButton>
@@ -118,7 +117,7 @@ const NestTable = ({
 
   return (
     <Box>
-      {selectedTab === 0 && (
+      {selectedTab === 3 && (
         <Box sx={{ padding: '12px' }}>
           <TableContainer component={Paper}>
             <Table>
@@ -162,22 +161,22 @@ const NestTable = ({
                 </TableRow>
               </TableHead>
               <TableBody>
-                {needsNestingTBR.length >= 1 && (
+                {searchedTBR.length >= 1 && (
                   <TableRow>
                     <TableCell colSpan={10} align="center" sx={{ fontWeight: 'bold', fontSize: '15px', backgroundColor: '#D1BBA8', p: 1.25 }}>
                       TBR
                     </TableCell>
                   </TableRow>
                 )}
-                {renderTableRows(needsNestingTBR)}
-                {needsNestingFuture.length >= 1 && (
+                {renderTableRows(searchedTBR)}
+                {searchedFR.length >= 1 && (
                   <TableRow>
                     <TableCell colSpan={10} align="center" sx={{ fontWeight: 'bold', fontSize: '15px', backgroundColor: '#D1BBA8', p: 1.25 }}>
                       FUTURE
                     </TableCell>
                   </TableRow>
                 )}
-                {renderTableRows(needsNestingFuture, true)}
+                {renderTableRows(searchedFR)}
               </TableBody>
             </Table>
           </TableContainer>
@@ -196,4 +195,4 @@ const NestTable = ({
   );
 };
 
-export default NestTable;
+export default AllJobsTable;

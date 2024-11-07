@@ -1,22 +1,20 @@
 import { useEffect, useState } from 'react';
-import { Alert, Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Icon, IconButton, List, ListItem, Paper, Snackbar, Tab, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tabs, TextField, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 
-import { CopyToClipboard } from 'react-copy-to-clipboard';
 import Cookies from 'universal-cookie';
 import { jwtDecode } from 'jwt-decode';
 
 import PuffLoader from 'react-spinners/PuffLoader';
-import AddIcon from '@mui/icons-material/Add';
-import CheckIcon from '@mui/icons-material/Check';
-import HistoryIcon from '@mui/icons-material/History';
-import RefreshIcon from '@mui/icons-material/Refresh';
 
 import AddModal from '../../components/departments/AddModal';
+import AllJobsTable from '../../components/departments/AllJobsTable';
 import AllMaterialsModal from '../../components/departments/AllMaterialsModal';
 import CompleteModal from '../../components/departments/CompleteModal';
-import CopySnackbar from '../../components/shared/CopySnackbar';
 import DepartmentTabs from '../../components/departments/DepartmentTabs';
 import EditModal from '../../components/departments/EditModal';
+import MaterialTable from '../../components/departments/MaterialTable';
+import NestTable from '../../components/departments/NestTable';
+import ProgramTable from '../../components/departments/ProgramTable';
 
 import getTBRJobs from '../../services/shear/getTBRJobs';
 import getFRJobs from '../../services/shear/getFRJobs';
@@ -41,12 +39,6 @@ export const Shear = () => {
     };
   }
 
-  const [searchedValueJobNo, setSearchedValueJobNo] = useState('');
-  const [searchedValuePartNo, setSearchedValuePartNo] = useState('');
-  const [searchedValueCustomer, setSearchedValueCustomer] = useState('');
-  const [searchedValueType, setSearchedValueType] = useState('');
-  const [searchedValueMaterial, setSearchedValueMaterial] = useState('');
-  const [searchedValueProgramNo, setSearchedValueProgramNo] = useState('');
   const [jobId, setJobId] = useState(0);
   const [selectedJob, setSelectedJob] = useState(null);
   const [update, setUpdate] = useState('');
@@ -71,6 +63,15 @@ export const Shear = () => {
   const [jobNo, setJobNo] = useState('');
   const [machine, setMachine] = useState('shear');
   const [id, setId] = useState(0);
+  
+  const [searchedValues, setSearchedValues] = useState({
+    jobNo: '',
+    partNo: '',
+    customer: '',
+    type: '',
+    material: '',
+    programNo: '',
+  });
 
   const fetchData = async () => {
     try {
@@ -284,656 +285,70 @@ export const Shear = () => {
             handleTabChange={handleTabChange}
             tabLabels={['Ready to Nest', 'Material', 'Programs', 'All Jobs']}
           />
+          
+          <NestTable
+            cookieData={cookieData}
+            cookieDataKey='shear'
+            handleMaterialsOpen={handleMaterialsOpen}
+            needsNestingFuture={needsNestingFuture}
+            needsNestingTBR={needsNestingTBR}
+            onAddClick={handleShow}
+            onCloseSnackbar={() => setShowToast(false)}
+            onRefresh={fetchData}
+            partCopy={partCopy}
+            searchedValues={searchedValues}
+            selectedTab={selectedTab}
+            setPartCopy={setPartCopy}
+            setSearchedValues={setSearchedValues}
+            setShowToast={setShowToast}
+            showToast={showToast}
+          />
 
-          {/* READY TO NEST */}
+          <MaterialTable
+            cookieData={cookieData}
+            cookieDataKey='shear'
+            handleUpdateJob={handleUpdateJob}
+            onAddClick={handleShow}
+            onRefresh={fetchData}
+            searchedPrograms={searchedShearPrograms}
+            searchedValues={searchedValues}
+            selectedTab={selectedTab}
+            setSearchedValues={setSearchedValues}
+            toggleCheck={toggleCheck}
+            toggleNeed={toggleNeed}
+            toggleVerified={toggleVerified}
+          />
 
-          <Box>
-            {selectedTab === 0 && (
-              <Box sx={{ padding: '12px' }}>
-                <TableContainer component={Paper}>
-                  <Table>
-                    <TableHead>
-                      <TableRow>
-                        <TableCell align='center' sx={{ width: '10%' }}><input type='text' placeholder='Job No' value={searchedValueJobNo || ''} onChange={(e) => setSearchedValueJobNo(e.target.value)} style={{ width: '100%', fontWeight: 'bold', fontSize: '15px', border: 'none', outline: 'none', background: 'transparent', color: '#000', textAlign: 'center' }} /></TableCell>
-                        <TableCell align='center' sx={{ fontWeight: 'bold', width: '7%', fontSize: '15px' }}>Step No</TableCell>
-                        <TableCell align='center' sx={{ width: '20%' }}><input type='text' placeholder='Part No' value={searchedValuePartNo || ''} onChange={(e) => setSearchedValuePartNo(e.target.value)} style={{ width: '100%', fontWeight: 'bold', fontSize: '15px', border: 'none', outline: 'none', background: 'transparent', color: '#000', textAlign: 'center' }} /></TableCell>
-                        <TableCell align='center' sx={{ fontWeight: 'bold', width: '6%', fontSize: '15px' }}>Revision</TableCell>
-                        <TableCell align='center' sx={{ fontWeight: 'bold', width: '6%', fontSize: '15px' }}>Qty</TableCell>
-                        <TableCell align='center' sx={{ fontWeight: 'bold', width: '7%', fontSize: '15px' }}>Due Date</TableCell>
-                        <TableCell align='center' sx={{ fontWeight: 'bold', width: '7%', fontSize: '15px' }}>Traveler</TableCell>
-                        <TableCell align='center' sx={{ width: '10%' }}><input type='text' placeholder='Customer' value={searchedValueCustomer || ''} onChange={(e) => setSearchedValueCustomer(e.target.value)} style={{ width: '100%', fontWeight: 'bold', fontSize: '15px', border: 'none', outline: 'none', background: 'transparent', color: '#000', textAlign: 'center' }} /></TableCell>
-                        <TableCell align='center' sx={{ width: '7%' }}><input type='text' placeholder='Type' value={searchedValueType || ''} onChange={(e) => setSearchedValueType(e.target.value)} style={{ width: '100%', fontWeight: 'bold', fontSize: '15px', border: 'none', outline: 'none', background: 'transparent', color: '#000', textAlign: 'center' }} /></TableCell>
-                        <TableCell align='center' sx={{ width: '20%' }}><input type='text' placeholder='Materials' value={searchedValueMaterial || ''} onChange={(e) => setSearchedValueMaterial(e.target.value)} style={{ width: '100%', fontWeight: 'bold', fontSize: '15px', border: 'none', outline: 'none', background: 'transparent', color: '#000', textAlign: 'center' }} /></TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {needsNestingTBR.length >= 1 &&
-                        <TableRow>
-                          <TableCell colSpan={10} align='center' sx={{ fontWeight: 'bold', fontSize: '15px', backgroundColor: '#D1BBA8', p: 1.25 }}>TBR</TableCell>
-                        </TableRow>
-                      }
-                      {needsNestingTBR
-                        .filter(row => typeof row.JobNo !== 'undefined')
-                        .filter((row) =>
-                          !searchedValueJobNo || row.JobNo
-                            .toString()
-                            .toLowerCase()
-                            .includes(searchedValueJobNo.toString().toLowerCase())
-                        )
-                        .filter((row) =>
-                          !searchedValuePartNo || row.PartNo
-                            .toString()
-                            .toLowerCase()
-                            .includes(searchedValuePartNo.toString().toLowerCase())
-                        )
-                        .filter((row) =>
-                          !searchedValueCustomer || row.CustCode
-                            .toString()
-                            .toLowerCase()
-                            .includes(searchedValueCustomer.toString().toLowerCase())
-                        )
-                        .filter((row) =>
-                          !searchedValueType || row.User_Text3
-                            .toString()
-                            .toLowerCase()
-                            .includes(searchedValueType.toString().toLowerCase())
-                        )
-                        .filter((row) =>
-                          !searchedValueMaterial || row.SubPartNo
-                            .toString()
-                            .toLowerCase()
-                            .includes(searchedValueMaterial.toString().toLowerCase())
-                        )
-                        .map((job, index) => {
-                          return (
-                            <TableRow key={index} sx={{ backgroundColor: index % 2 === 0 ? '#f0f0f0' : '#fff' }}>
-                              <TableCell align='center' sx={{ fontWeight: 'bold', fontSize: '15px', p: 1.25 }}>{job.JobNo}</TableCell>
-                              <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.StepNo}</TableCell>
-                              <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>
-                                <CopyToClipboard text={job.PartNo} onCopy={() => { setShowToast(true); setPartCopy(`${job.PartNo}`); }}>
-                                  <span>{job.PartNo}</span>
-                                </CopyToClipboard>
-                              </TableCell>
-                              <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.Revision}</TableCell>
-                              <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.EstimQty}</TableCell>
-                              <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.DueDate.split('-')[1] + '/' + job.DueDate.split('-')[2].split('T')[0]}</TableCell>
-                              <TableCell align='center' sx={{ fontSize: '15px', p: 0 }}>
-                                <IconButton>
-                                  {job.User_Date1 && <CheckIcon sx={{ fontSize: '20px', fontWeight: 'bold' }} />}
-                                </IconButton>
-                              </TableCell>
-                              <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.CustCode}</TableCell>
-                              <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.User_Text3}</TableCell>
-                              <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>
-                                {Array.isArray(job.SubPartNo) && job.SubPartNo.length === 1 ? (
-                                  <CopyToClipboard text={job.SubPartNo[0]} onCopy={() => { setShowToast(true); setPartCopy(`${job.SubPartNo[0]}`); }}>
-                                    <span>{job.SubPartNo[0]}</span>
-                                  </CopyToClipboard>
-                                ) : (
-                                  <Button
-                                    onClick={() => handleMaterialsOpen(job)}
-                                    sx={{
-                                      padding: 0,
-                                      minWidth: 'auto',
-                                      background: 'none',
-                                      border: 'none',
-                                      boxShadow: 'none',
-                                      textTransform: 'none',
-                                      '&:hover': {
-                                        backgroundColor: 'transparent',
-                                      },
-                                      '&:focus': {
-                                        outline: 'none',
-                                      }
-                                    }}
-                                  >
-                                    ...
-                                  </Button>
-                                )}
-                              </TableCell>
-                            </TableRow>
-                          )
-                        })
-                      }
-                      {needsNestingFuture.length >= 1 &&
-                        <TableRow>
-                          <TableCell colSpan={10} align='center' sx={{ fontWeight: 'bold', fontSize: '15px', backgroundColor: '#D1BBA8', p: 1.25 }}>FUTURE</TableCell>
-                        </TableRow>
-                      }
-                      {needsNestingFuture
-                        .filter(row => typeof row.JobNo !== 'undefined')
-                        .filter((row) =>
-                          !searchedValueJobNo || row.JobNo
-                            .toString()
-                            .toLowerCase()
-                            .includes(searchedValueJobNo.toString().toLowerCase())
-                        )
-                        .filter((row) =>
-                          !searchedValuePartNo || row.PartNo
-                            .toString()
-                            .toLowerCase()
-                            .includes(searchedValuePartNo.toString().toLowerCase())
-                        )
-                        .filter((row) =>
-                          !searchedValueCustomer || row.CustCode
-                            .toString()
-                            .toLowerCase()
-                            .includes(searchedValueCustomer.toString().toLowerCase())
-                        )
-                        .filter((row) =>
-                          !searchedValueType || row.User_Text3
-                            .toString()
-                            .toLowerCase()
-                            .includes(searchedValueType.toString().toLowerCase())
-                        )
-                        .filter((row) =>
-                          !searchedValueMaterial || row.SubPartNo
-                            .toString()
-                            .toLowerCase()
-                            .includes(searchedValueMaterial.toString().toLowerCase())
-                        )
-                        .map((job, index) => {
-                          return (
-                            <TableRow key={index} sx={{ backgroundColor: index % 2 === 0 ? '#f0f0f0' : '#fff' }}>
-                              <TableCell align='center' sx={{ fontWeight: 'bold', fontSize: '15px', p: 1.25 }}>{job.JobNo}</TableCell>
-                              <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.StepNo}</TableCell>
-                              <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>
-                                <CopyToClipboard text={job.PartNo} onCopy={() => { setShowToast(true); setPartCopy(`${job.PartNo}`); }}>
-                                  <span>{job.PartNo}</span>
-                                </CopyToClipboard>
-                              </TableCell>
-                              <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.Revision}</TableCell>
-                              <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.EstimQty}</TableCell>
-                              <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.DueDate.split('-')[1] + '/' + job.DueDate.split('-')[2].split('T')[0]}</TableCell>
-                              <TableCell align='center' sx={{ fontSize: '15px', p: 0 }}>
-                                <IconButton>
-                                  {job.User_Date1 && <CheckIcon sx={{ fontSize: '20px', fontWeight: 'bold' }} />}
-                                </IconButton>
-                              </TableCell>
-                              <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.CustCode}</TableCell>
-                              <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.User_Text3}</TableCell>
-                              <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>
-                                {Array.isArray(job.SubPartNo) && job.SubPartNo.length === 1 ? (
-                                  <CopyToClipboard text={job.SubPartNo[0]} onCopy={() => { setShowToast(true); setPartCopy(`${job.SubPartNo[0]}`); }}>
-                                    <span>{job.SubPartNo[0]}</span>
-                                  </CopyToClipboard>
-                                ) : (
-                                  <Button
-                                    onClick={() => handleMaterialsOpen(job)}
-                                    sx={{
-                                      padding: 0,
-                                      minWidth: 'auto',
-                                      background: 'none',
-                                      border: 'none',
-                                      boxShadow: 'none',
-                                      textTransform: 'none',
-                                      '&:hover': {
-                                        backgroundColor: 'transparent',
-                                      },
-                                      '&:focus': {
-                                        outline: 'none',
-                                      }
-                                    }}
-                                  >
-                                    ...
-                                  </Button>
-                                )}
-                              </TableCell>
-                            </TableRow>
-                          )
-                        })
-                      }
-                    </TableBody>
-                  </Table>
-                </TableContainer>
+          <ProgramTable
+            cookieData={cookieData}
+            cookieDataKey='shear'
+            handleUpdateJob={handleUpdateJob}
+            handleShowComplete={handleShowComplete}
+            onAddClick={handleShow}
+            onRefresh={fetchData}
+            searchedPrograms={searchedShearPrograms}
+            searchedValues={searchedValues}
+            selectedTab={selectedTab}
+            setSearchedValues={setSearchedValues}
+          />
 
-                {cookieData.shear &&
-                  <IconButton onClick={handleShow} sx={{ backgroundColor: '#111827', color: 'white', height: '52.5px', width: '52.5px', zIndex: 1000, position: 'fixed', bottom: '85px', right: '20px', '&:hover': { backgroundColor: '#374151', }, }}>
-                    <AddIcon fontSize='large' />
-                  </IconButton>
-                }
-                <IconButton onClick={fetchData} sx={{ backgroundColor: '#111827', color: 'white', height: '52.5px', width: '52.5px', zIndex: 1000, position: 'fixed', bottom: '20px', right: '20px', '&:hover': { backgroundColor: '#374151', }, }}>
-                  <RefreshIcon fontSize='large' />
-                </IconButton>
-
-                <CopySnackbar
-                  show={showToast}
-                  onClose={() => setShowToast(false)}
-                  message={`${partCopy} Copied To Clipboard`}
-                />
-              </Box>
-            )}
-          </Box>
-
-          {/* MATERIAL */}
-
-          <Box>
-            {selectedTab === 1 && (
-              <Box sx={{ padding: '12px' }}>
-                <TableContainer component={Paper}>
-                  <Table>
-                    <TableHead>
-                      <TableRow>
-                        <TableCell align='center' sx={{ width: '15%' }}><input type='text' placeholder='Program No' value={searchedValueProgramNo || ''} onChange={(e) => setSearchedValueProgramNo(e.target.value)} style={{ width: '100%', fontWeight: 'bold', fontSize: '15px', border: 'none', outline: 'none', background: 'transparent', color: '#000', textAlign: 'center' }} /></TableCell>
-                        <TableCell align='center' sx={{ width: '25%' }}><input type='text' placeholder='Material' value={searchedValueMaterial || ''} onChange={(e) => setSearchedValueMaterial(e.target.value)} style={{ width: '100%', fontWeight: 'bold', fontSize: '15px', border: 'none', outline: 'none', background: 'transparent', color: '#000', textAlign: 'center' }} /></TableCell>
-                        <TableCell align='center' sx={{ width: '10%' }}><input type='text' placeholder='Job No' value={searchedValueJobNo || ''} onChange={(e) => setSearchedValueJobNo(e.target.value)} style={{ width: '100%', fontWeight: 'bold', fontSize: '15px', border: 'none', outline: 'none', background: 'transparent', color: '#000', textAlign: 'center' }} /></TableCell>
-                        <TableCell align='center' sx={{ fontWeight: 'bold', width: '10%', fontSize: '15px' }}>Check</TableCell>
-                        <TableCell align='center' sx={{ fontWeight: 'bold', width: '10%', fontSize: '15px' }}>Need</TableCell>
-                        <TableCell align='center' sx={{ fontWeight: 'bold', width: '10%', fontSize: '15px' }}>On Order</TableCell>
-                        <TableCell align='center' sx={{ fontWeight: 'bold', width: '10%', fontSize: '15px' }}>Expected</TableCell>
-                        <TableCell align='center' sx={{ fontWeight: 'bold', width: '10%', fontSize: '15px' }}>Verified</TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {searchedShearPrograms
-                        .filter((row) =>
-                          !searchedValueProgramNo || row.programNo
-                            .toString()
-                            .toLowerCase()
-                            .includes(searchedValueProgramNo.toString().toLowerCase())
-                        )
-                        .filter((row) =>
-                          !searchedValueMaterial || row.material
-                            .toString()
-                            .toLowerCase()
-                            .includes(searchedValueMaterial.toString().toLowerCase())
-                        )
-                        .filter((row) =>
-                          !searchedValueJobNo || row.jobNo
-                            .toString()
-                            .toLowerCase()
-                            .includes(searchedValueJobNo.toString().toLowerCase())
-                        )
-                        .map((job, index) => {
-                          return (
-                            <TableRow key={index} sx={{ backgroundColor: index % 2 === 0 ? '#f0f0f0' : '#fff' }}>
-                              {cookieData.shear ?
-                                <TableCell align='center' sx={{ fontWeight: 'bold', fontSize: '15px', p: 1.25 }} onClick={() => handleUpdateJob(job)}>{job.programNo}</TableCell>
-                                :
-                                <TableCell align='center' sx={{ fontWeight: 'bold', fontSize: '15px', p: 1.25 }}>{job.programNo}</TableCell>
-                              }
-                              <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.material}</TableCell>
-                              <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.jobNo}</TableCell>
-                              {cookieData.shear ?
-                                <>
-                                  <TableCell align='center' sx={{ fontSize: '15px', p: 0 }} onClick={() => toggleCheck(job)}>
-                                    <IconButton>
-                                      {job.checkMatl && <CheckIcon sx={{ fontSize: '20px', fontWeight: 'bold' }} />}
-                                    </IconButton>
-                                  </TableCell>
-                                  <TableCell align='center' sx={{ fontSize: '15px', p: 0 }} onClick={() => toggleNeed(job)}>
-                                    <IconButton>
-                                      {job.needMatl && <CheckIcon sx={{ fontSize: '20px', fontWeight: 'bold' }} />}
-                                    </IconButton>
-                                  </TableCell>
-                                </>
-                                :
-                                <>
-                                  <TableCell align='center' sx={{ fontSize: '15px', p: 0 }}>
-                                    <Icon>
-                                      {job.checkMatl && <CheckIcon sx={{ fontSize: '20px', fontWeight: 'bold' }} />}
-                                    </Icon>
-                                  </TableCell>
-                                  <TableCell align='center' sx={{ fontSize: '15px', p: 0 }}>
-                                    <Icon>
-                                      {job.needMatl && <CheckIcon sx={{ fontSize: '20px', fontWeight: 'bold' }} />}
-                                    </Icon>
-                                  </TableCell>
-                                </>
-                              }
-                              <TableCell align='center' sx={{ fontSize: '15px', p: 0 }}>
-                                <Icon>
-                                  {job.onOrder && <CheckIcon sx={{ fontSize: '20px', fontWeight: 'bold' }} />}
-                                </Icon>
-                              </TableCell>
-                              {job.expected ?
-                                <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.expected.split('-')[1] + '/' + job.expected.split('-')[2].split('T')[0]}</TableCell>
-                                :
-                                <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}></TableCell>
-                              }
-                              {cookieData.shear ?
-                                <>
-                                  <TableCell align='center' sx={{ fontSize: '15px', p: 0 }} onClick={() => toggleVerified(job)}>
-                                    <IconButton>
-                                      {job.verified && <CheckIcon sx={{ fontSize: '20px', fontWeight: 'bold' }} />}
-                                    </IconButton>
-                                  </TableCell>
-                                </>
-                                :
-                                <>
-                                  <TableCell align='center' sx={{ fontSize: '15px', p: 0 }}>
-                                    <IconButton>
-                                      {job.verified && <CheckIcon sx={{ fontSize: '20px', fontWeight: 'bold' }} />}
-                                    </IconButton>
-                                  </TableCell>
-                                </>
-                              }
-                            </TableRow>
-                          )
-                        })
-                      }
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-
-                {cookieData.shear &&
-                  <IconButton onClick={handleShow} sx={{ backgroundColor: '#111827', color: 'white', height: '52.5px', width: '52.5px', zIndex: 1000, position: 'fixed', bottom: '85px', right: '20px', '&:hover': { backgroundColor: '#374151', }, }}>
-                    <AddIcon fontSize='large' />
-                  </IconButton>
-                }
-                <IconButton onClick={fetchData} sx={{ backgroundColor: '#111827', color: 'white', height: '52.5px', width: '52.5px', zIndex: 1000, position: 'fixed', bottom: '20px', right: '20px', '&:hover': { backgroundColor: '#374151', }, }}>
-                  <RefreshIcon fontSize='large' />
-                </IconButton>
-              </Box>
-            )}
-          </Box>
-
-          {/* PROGRAMS */}
-
-          <Box>
-            {selectedTab === 2 && (
-              <Box sx={{ padding: '12px' }}>
-                <TableContainer component={Paper}>
-                  <Table>
-                    <TableHead>
-                      <TableRow>
-                        <TableCell align='center' sx={{ width: '15%' }}><input type='text' placeholder='Program No' value={searchedValueProgramNo || ''} onChange={(e) => setSearchedValueProgramNo(e.target.value)} style={{ width: '100%', fontWeight: 'bold', fontSize: '15px', border: 'none', outline: 'none', background: 'transparent', color: '#000', textAlign: 'center' }} /></TableCell>
-                        <TableCell align='center' sx={{ width: '25%' }}><input type='text' placeholder='Material' value={searchedValueMaterial || ''} onChange={(e) => setSearchedValueMaterial(e.target.value)} style={{ width: '100%', fontWeight: 'bold', fontSize: '15px', border: 'none', outline: 'none', background: 'transparent', color: '#000', textAlign: 'center' }} /></TableCell>
-                        <TableCell align='center' sx={{ width: '10%' }}><input type='text' placeholder='Job No' value={searchedValueJobNo || ''} onChange={(e) => setSearchedValueJobNo(e.target.value)} style={{ width: '100%', fontWeight: 'bold', fontSize: '15px', border: 'none', outline: 'none', background: 'transparent', color: '#000', textAlign: 'center' }} /></TableCell>
-                        {cookieData.shear &&
-                          <TableCell align='center' sx={{ fontWeight: 'bold', width: '10%', fontSize: '15px' }}>Completed</TableCell>
-                        }
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {searchedShearPrograms
-                        .filter((row) =>
-                          !searchedValueProgramNo || row.programNo
-                            .toString()
-                            .toLowerCase()
-                            .includes(searchedValueProgramNo.toString().toLowerCase())
-                        )
-                        .filter((row) =>
-                          !searchedValueMaterial || row.material
-                            .toString()
-                            .toLowerCase()
-                            .includes(searchedValueMaterial.toString().toLowerCase())
-                        )
-                        .filter((row) =>
-                          !searchedValueJobNo || row.jobNo
-                            .toString()
-                            .toLowerCase()
-                            .includes(searchedValueJobNo.toString().toLowerCase())
-                        )
-                        .map((job, index) => {
-                          if (job.verified) {
-                            return (
-                              <TableRow key={index} sx={{ backgroundColor: index % 2 === 0 ? '#f0f0f0' : '#fff' }}>
-                                {cookieData.shear ?
-                                  <TableCell align='center' sx={{ fontWeight: 'bold', fontSize: '15px', p: 1.25 }} onClick={() => handleUpdateJob(job)}>{job.programNo}</TableCell>
-                                  :
-                                  <TableCell align='center' sx={{ fontWeight: 'bold', fontSize: '15px', p: 1.25 }}>{job.programNo}</TableCell>
-                                }
-                                <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.material}</TableCell>
-                                <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.jobNo}</TableCell>
-                                {cookieData.shear &&
-                                  <TableCell align='center' sx={{ fontSize: '15px', p: 0 }}>
-                                    <IconButton onClick={() => handleShowComplete(job)}>
-                                      {<HistoryIcon sx={{ fontSize: '20px', fontWeight: 'bold' }} />}
-                                    </IconButton>
-                                  </TableCell>
-                                }
-                              </TableRow>
-                            )
-                          }
-                        })
-                      }
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-
-                {cookieData.shear &&
-                  <IconButton onClick={handleShow} sx={{ backgroundColor: '#111827', color: 'white', height: '52.5px', width: '52.5px', zIndex: 1000, position: 'fixed', bottom: '85px', right: '20px', '&:hover': { backgroundColor: '#374151', }, }}>
-                    <AddIcon fontSize='large' />
-                  </IconButton>
-                }
-                <IconButton onClick={fetchData} sx={{ backgroundColor: '#111827', color: 'white', height: '52.5px', width: '52.5px', zIndex: 1000, position: 'fixed', bottom: '20px', right: '20px', '&:hover': { backgroundColor: '#374151', }, }}>
-                  <RefreshIcon fontSize='large' />
-                </IconButton>
-              </Box>
-            )}
-          </Box>
-
-          {/* ALL JOBS */}
-
-          <Box>
-            {selectedTab === 3 && (
-              <Box sx={{ padding: '12px' }}>
-                <TableContainer component={Paper}>
-                  <Table>
-                    <TableHead>
-                      <TableRow>
-                        <TableCell align='center' sx={{ width: '10%' }}><input type='text' placeholder='Job No' value={searchedValueJobNo || ''} onChange={(e) => setSearchedValueJobNo(e.target.value)} style={{ width: '100%', fontWeight: 'bold', fontSize: '15px', border: 'none', outline: 'none', background: 'transparent', color: '#000', textAlign: 'center' }} /></TableCell>
-                        <TableCell align='center' sx={{ fontWeight: 'bold', width: '7%', fontSize: '15px' }}>Step No</TableCell>
-                        <TableCell align='center' sx={{ width: '20%' }}><input type='text' placeholder='Part No' value={searchedValuePartNo || ''} onChange={(e) => setSearchedValuePartNo(e.target.value)} style={{ width: '100%', fontWeight: 'bold', fontSize: '15px', border: 'none', outline: 'none', background: 'transparent', color: '#000', textAlign: 'center' }} /></TableCell>
-                        <TableCell align='center' sx={{ fontWeight: 'bold', width: '6%', fontSize: '15px' }}>Revision</TableCell>
-                        <TableCell align='center' sx={{ fontWeight: 'bold', width: '6%', fontSize: '15px' }}>Qty</TableCell>
-                        <TableCell align='center' sx={{ fontWeight: 'bold', width: '7%', fontSize: '15px' }}>Due Date</TableCell>
-                        <TableCell align='center' sx={{ fontWeight: 'bold', width: '7%', fontSize: '15px' }}>Traveler</TableCell>
-                        <TableCell align='center' sx={{ width: '10%' }}><input type='text' placeholder='Customer' value={searchedValueCustomer || ''} onChange={(e) => setSearchedValueCustomer(e.target.value)} style={{ width: '100%', fontWeight: 'bold', fontSize: '15px', border: 'none', outline: 'none', background: 'transparent', color: '#000', textAlign: 'center' }} /></TableCell>
-                        <TableCell align='center' sx={{ width: '7%' }}><input type='text' placeholder='Type' value={searchedValueType || ''} onChange={(e) => setSearchedValueType(e.target.value)} style={{ width: '100%', fontWeight: 'bold', fontSize: '15px', border: 'none', outline: 'none', background: 'transparent', color: '#000', textAlign: 'center' }} /></TableCell>
-                        <TableCell align='center' sx={{ width: '20%' }}><input type='text' placeholder='Materials' value={searchedValueMaterial || ''} onChange={(e) => setSearchedValueMaterial(e.target.value)} style={{ width: '100%', fontWeight: 'bold', fontSize: '15px', border: 'none', outline: 'none', background: 'transparent', color: '#000', textAlign: 'center' }} /></TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {searchedTBR.length >= 1 &&
-                        <TableRow>
-                          <TableCell colSpan={10} align='center' sx={{ fontWeight: 'bold', fontSize: '15px', backgroundColor: '#D1BBA8', p: 1.25 }}>TBR</TableCell>
-                        </TableRow>
-                      }
-                      {searchedTBR
-                        .filter(row => typeof row.JobNo !== 'undefined')
-                        .filter((row) =>
-                          !searchedValueJobNo || row.JobNo
-                            .toString()
-                            .toLowerCase()
-                            .includes(searchedValueJobNo.toString().toLowerCase())
-                        )
-                        .filter((row) =>
-                          !searchedValuePartNo || row.PartNo
-                            .toString()
-                            .toLowerCase()
-                            .includes(searchedValuePartNo.toString().toLowerCase())
-                        )
-                        .filter((row) =>
-                          !searchedValueCustomer || row.CustCode
-                            .toString()
-                            .toLowerCase()
-                            .includes(searchedValueCustomer.toString().toLowerCase())
-                        )
-                        .filter((row) =>
-                          !searchedValueType || row.User_Text3
-                            .toString()
-                            .toLowerCase()
-                            .includes(searchedValueType.toString().toLowerCase())
-                        )
-                        .filter((row) =>
-                          !searchedValueMaterial || row.SubPartNo
-                            .toString()
-                            .toLowerCase()
-                            .includes(searchedValueMaterial.toString().toLowerCase())
-                        )
-                        .map((job, index) => {
-                          return (
-                            <TableRow key={index} sx={{ backgroundColor: index % 2 === 0 ? '#f0f0f0' : '#fff' }}>
-                              <TableCell align='center' sx={{ fontWeight: 'bold', fontSize: '15px', p: 1.25 }}>{job.JobNo}</TableCell>
-                              <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.StepNo}</TableCell>
-                              <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>
-                                <CopyToClipboard text={job.PartNo} onCopy={() => { setShowToast(true); setPartCopy(`${job.PartNo}`); }}>
-                                  <span>{job.PartNo}</span>
-                                </CopyToClipboard>
-                              </TableCell>
-                              <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.Revision}</TableCell>
-                              <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.EstimQty}</TableCell>
-                              <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.DueDate.split('-')[1] + '/' + job.DueDate.split('-')[2].split('T')[0]}</TableCell>
-                              <TableCell align='center' sx={{ fontSize: '15px', p: 0 }}>
-                                <IconButton>
-                                  {job.User_Date1 && <CheckIcon sx={{ fontSize: '20px', fontWeight: 'bold' }} />}
-                                </IconButton>
-                              </TableCell>
-                              <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.CustCode}</TableCell>
-                              <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.User_Text3}</TableCell>
-                              <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>
-                                {Array.isArray(job.SubPartNo) && job.SubPartNo.length === 1 ? (
-                                  <CopyToClipboard text={job.SubPartNo[0]} onCopy={() => { setShowToast(true); setPartCopy(`${job.SubPartNo[0]}`); }}>
-                                    <span>{job.SubPartNo[0]}</span>
-                                  </CopyToClipboard>
-                                ) : (
-                                  <Button
-                                    onClick={() => handleMaterialsOpen(job)}
-                                    sx={{
-                                      padding: 0,
-                                      minWidth: 'auto',
-                                      background: 'none',
-                                      border: 'none',
-                                      boxShadow: 'none',
-                                      textTransform: 'none',
-                                      '&:hover': {
-                                        backgroundColor: 'transparent',
-                                      },
-                                      '&:focus': {
-                                        outline: 'none',
-                                      }
-                                    }}
-                                  >
-                                    ...
-                                  </Button>
-                                )}
-                              </TableCell>
-                            </TableRow>
-                          )
-                        })
-                      }
-                      {searchedFR.length >= 1 &&
-                        <TableRow>
-                          <TableCell colSpan={10} align='center' sx={{ fontWeight: 'bold', fontSize: '15px', backgroundColor: '#D1BBA8', p: 1.25 }}>FUTURE</TableCell>
-                        </TableRow>
-                      }
-                      {searchedFR
-                        .filter(row => typeof row.JobNo !== 'undefined')
-                        .filter((row) =>
-                          !searchedValueJobNo || row.JobNo
-                            .toString()
-                            .toLowerCase()
-                            .includes(searchedValueJobNo.toString().toLowerCase())
-                        )
-                        .filter((row) =>
-                          !searchedValuePartNo || row.PartNo
-                            .toString()
-                            .toLowerCase()
-                            .includes(searchedValuePartNo.toString().toLowerCase())
-                        )
-                        .filter((row) =>
-                          !searchedValueCustomer || row.CustCode
-                            .toString()
-                            .toLowerCase()
-                            .includes(searchedValueCustomer.toString().toLowerCase())
-                        )
-                        .filter((row) =>
-                          !searchedValueType || row.User_Text3
-                            .toString()
-                            .toLowerCase()
-                            .includes(searchedValueType.toString().toLowerCase())
-                        )
-                        .filter((row) =>
-                          !searchedValueMaterial || row.SubPartNo
-                            .toString()
-                            .toLowerCase()
-                            .includes(searchedValueMaterial.toString().toLowerCase())
-                        )
-                        .map((job, index) => {
-                          return (
-                            <TableRow key={index} sx={{ backgroundColor: index % 2 === 0 ? '#f0f0f0' : '#fff' }}>
-                              <TableCell align='center' sx={{ fontWeight: 'bold', fontSize: '15px', p: 1.25 }}>{job.JobNo}</TableCell>
-                              <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.StepNo}</TableCell>
-                              <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>
-                                <CopyToClipboard text={job.PartNo} onCopy={() => { setShowToast(true); setPartCopy(`${job.PartNo}`); }}>
-                                  <span>{job.PartNo}</span>
-                                </CopyToClipboard>
-                              </TableCell>
-                              <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.Revision}</TableCell>
-                              <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.EstimQty}</TableCell>
-                              <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.DueDate.split('-')[1] + '/' + job.DueDate.split('-')[2].split('T')[0]}</TableCell>
-                              <TableCell align='center' sx={{ fontSize: '15px', p: 0 }}>
-                                <IconButton>
-                                  {job.User_Date1 && <CheckIcon sx={{ fontSize: '20px', fontWeight: 'bold' }} />}
-                                </IconButton>
-                              </TableCell>
-                              <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.CustCode}</TableCell>
-                              <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.User_Text3}</TableCell>
-                              <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>
-                                {Array.isArray(job.SubPartNo) && job.SubPartNo.length === 1 ? (
-                                  <CopyToClipboard text={job.SubPartNo[0]} onCopy={() => { setShowToast(true); setPartCopy(`${job.SubPartNo[0]}`); }}>
-                                    <span>{job.SubPartNo[0]}</span>
-                                  </CopyToClipboard>
-                                ) : (
-                                  <Button
-                                    onClick={() => handleMaterialsOpen(job)}
-                                    sx={{
-                                      padding: 0,
-                                      minWidth: 'auto',
-                                      background: 'none',
-                                      border: 'none',
-                                      boxShadow: 'none',
-                                      textTransform: 'none',
-                                      '&:hover': {
-                                        backgroundColor: 'transparent',
-                                      },
-                                      '&:focus': {
-                                        outline: 'none',
-                                      }
-                                    }}
-                                  >
-                                    ...
-                                  </Button>
-                                )}
-                              </TableCell>
-                            </TableRow>
-                          )
-                        })
-                      }
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-
-                {cookieData.shear &&
-                  <IconButton onClick={handleShow} sx={{ backgroundColor: '#111827', color: 'white', height: '52.5px', width: '52.5px', zIndex: 1000, position: 'fixed', bottom: '85px', right: '20px', '&:hover': { backgroundColor: '#374151', }, }}>
-                    <AddIcon fontSize='large' />
-                  </IconButton>
-                }
-                <IconButton onClick={fetchData} sx={{ backgroundColor: '#111827', color: 'white', height: '52.5px', width: '52.5px', zIndex: 1000, position: 'fixed', bottom: '20px', right: '20px', '&:hover': { backgroundColor: '#374151', }, }}>
-                  <RefreshIcon fontSize='large' />
-                </IconButton>
-
-                <Snackbar
-                  open={showToast}
-                  autoHideDuration={3000}
-                  onClose={() => setShowToast(false)}
-                  anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-                  sx={{ marginRight: '100px' }}
-                >
-                  <Alert
-                    onClose={() => setShowToast(false)}
-                    severity='success'
-                    sx={{ width: '100%' }}
-                  >
-                    <strong>{partCopy} Copied To Clipboard</strong>
-                  </Alert>
-                </Snackbar>
-              </Box>
-            )}
-          </Box>
-
+          <AllJobsTable
+            cookieData={cookieData}
+            cookieDataKey='shear'
+            handleMaterialsOpen={handleMaterialsOpen}
+            onAddClick={handleShow}
+            onCloseSnackbar={() => setShowToast(false)}
+            onRefresh={fetchData}
+            partCopy={partCopy}
+            searchedFR={searchedFR}
+            searchedTBR={searchedTBR}
+            searchedValues={searchedValues}
+            selectedTab={selectedTab}
+            setPartCopy={setPartCopy}
+            setSearchedValues={setSearchedValues}
+            setShowToast={setShowToast}
+            showToast={showToast}
+          />
         </Box>
       )}
     </Box>
