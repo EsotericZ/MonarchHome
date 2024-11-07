@@ -1,10 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Box, Typography } from '@mui/material';
-
 import Cookies from 'universal-cookie';
 import { jwtDecode } from 'jwt-decode';
-
-import PuffLoader from 'react-spinners/PuffLoader';
 
 import AddModal from '../../components/departments/AddModal';
 import AllJobsTable from '../../components/departments/AllJobsTable';
@@ -14,6 +10,7 @@ import DepartmentTabs from '../../components/departments/DepartmentTabs';
 import EditModal from '../../components/departments/EditModal';
 import MaterialTable from '../../components/departments/MaterialTable';
 import NestTable from '../../components/departments/NestTable';
+import PageContainer from '../../components/shared/PageContainer';
 import ProgramTable from '../../components/departments/ProgramTable';
 
 import getTBRJobs from '../../services/tlaser/getTBRJobs';
@@ -63,7 +60,7 @@ export const TubeLaser = () => {
   const [jobNo, setJobNo] = useState('');
   const [machine, setMachine] = useState('tlaser');
   const [id, setId] = useState(0);
-  
+
   const [searchedValues, setSearchedValues] = useState({
     jobNo: '',
     partNo: '',
@@ -225,132 +222,119 @@ export const TubeLaser = () => {
   }, [loading, show, update]);
 
   return (
-    <Box sx={{ width: '100%', textAlign: 'center', overflowY: 'auto', height: '100vh' }}>
-      {loading ? (
-        <Box>
-          <Typography variant='h4' sx={{ fontWeight: 'bold', margin: '16px' }}>Tube Laser</Typography>
-          <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginTop: '100px' }}>
-            <PuffLoader color='red' />
-          </Box>
-        </Box>
-      ) : (
-        <Box sx={{ width: '100%' }}>
-          <Typography variant='h4' sx={{ fontWeight: 'bold', margin: '16px' }}>Tube Laser</Typography>
+    <PageContainer loading={loading} title='Tube Laser'>
+      <AddModal
+        show={show}
+        handleClose={handleClose}
+        handleCancel={handleCancel}
+        handleSave={handleSave}
+        programNo={programNo}
+        setProgramNo={setProgramNo}
+        material={material}
+        setMaterial={setMaterial}
+        jobNo={jobNo}
+        setJobNo={setJobNo}
+        areaName='Tube Laser'
+      />
 
-          <AddModal
-            show={show}
-            handleClose={handleClose}
-            handleCancel={handleCancel}
-            handleSave={handleSave}
-            programNo={programNo}
-            setProgramNo={setProgramNo}
-            material={material}
-            setMaterial={setMaterial}
-            jobNo={jobNo}
-            setJobNo={setJobNo}
-            areaName='Tube Laser'
-          />
+      <EditModal
+        show={showEdit}
+        handleClose={handleClose}
+        handleCancel={handleCancel}
+        handleUpdate={handleUpdate}
+        programNo={programNo}
+        setProgramNo={setProgramNo}
+        material={material}
+        setMaterial={setMaterial}
+        jobNo={jobNo}
+        setJobNo={setJobNo}
+        areaName='Tube Laser'
+      />
 
-          <EditModal
-            show={showEdit}
-            handleClose={handleClose}
-            handleCancel={handleCancel}
-            handleUpdate={handleUpdate}
-            programNo={programNo}
-            setProgramNo={setProgramNo}
-            material={material}
-            setMaterial={setMaterial}
-            jobNo={jobNo}
-            setJobNo={setJobNo}
-            areaName='Tube Laser'
-          />
+      <CompleteModal
+        show={showComplete}
+        handleClose={handleCloseComplete}
+        toggleComplete={toggleComplete}
+        jobProgramNo={jobProgramNo}
+      />
 
-          <CompleteModal
-            show={showComplete}
-            handleClose={handleCloseComplete}
-            toggleComplete={toggleComplete}
-            jobProgramNo={jobProgramNo}
-          />
+      <AllMaterialsModal
+        show={showMaterials}
+        handleClose={handleMaterialsClose}
+        selectedJob={selectedJob}
+        setShowToast={setShowToast}
+        setPartCopy={setPartCopy}
+      />
 
-          <AllMaterialsModal
-            show={showMaterials}
-            handleClose={handleMaterialsClose}
-            selectedJob={selectedJob}
-            setShowToast={setShowToast}
-            setPartCopy={setPartCopy}
-          />
+      <DepartmentTabs
+        selectedTab={selectedTab}
+        handleTabChange={handleTabChange}
+        tabLabels={['Ready to Nest', 'Material', 'Programs', 'All Jobs']}
+      />
 
-          <DepartmentTabs
-            selectedTab={selectedTab}
-            handleTabChange={handleTabChange}
-            tabLabels={['Ready to Nest', 'Material', 'Programs', 'All Jobs']}
-          />
-          
-          <NestTable
-            cookieData={cookieData}
-            cookieDataKey='tlaser'
-            handleMaterialsOpen={handleMaterialsOpen}
-            needsNestingFuture={needsNestingFuture}
-            needsNestingTBR={needsNestingTBR}
-            onAddClick={handleShow}
-            onCloseSnackbar={() => setShowToast(false)}
-            onRefresh={fetchData}
-            partCopy={partCopy}
-            searchedValues={searchedValues}
-            selectedTab={selectedTab}
-            setPartCopy={setPartCopy}
-            setSearchedValues={setSearchedValues}
-            setShowToast={setShowToast}
-            showToast={showToast}
-          />
+      <NestTable
+        cookieData={cookieData}
+        cookieDataKey='tlaser'
+        handleMaterialsOpen={handleMaterialsOpen}
+        needsNestingFuture={needsNestingFuture}
+        needsNestingTBR={needsNestingTBR}
+        onAddClick={handleShow}
+        onCloseSnackbar={() => setShowToast(false)}
+        onRefresh={fetchData}
+        partCopy={partCopy}
+        searchedValues={searchedValues}
+        selectedTab={selectedTab}
+        setPartCopy={setPartCopy}
+        setSearchedValues={setSearchedValues}
+        setShowToast={setShowToast}
+        showToast={showToast}
+      />
 
-          <MaterialTable
-            cookieData={cookieData}
-            cookieDataKey='tlaser'
-            handleUpdateJob={handleUpdateJob}
-            onAddClick={handleShow}
-            onRefresh={fetchData}
-            searchedPrograms={searchedTLPrograms}
-            searchedValues={searchedValues}
-            selectedTab={selectedTab}
-            setSearchedValues={setSearchedValues}
-            toggleCheck={toggleCheck}
-            toggleNeed={toggleNeed}
-            toggleVerified={toggleVerified}
-          />
+      <MaterialTable
+        cookieData={cookieData}
+        cookieDataKey='tlaser'
+        handleUpdateJob={handleUpdateJob}
+        onAddClick={handleShow}
+        onRefresh={fetchData}
+        searchedPrograms={searchedTLPrograms}
+        searchedValues={searchedValues}
+        selectedTab={selectedTab}
+        setSearchedValues={setSearchedValues}
+        toggleCheck={toggleCheck}
+        toggleNeed={toggleNeed}
+        toggleVerified={toggleVerified}
+      />
 
-          <ProgramTable
-            cookieData={cookieData}
-            cookieDataKey='tlaser'
-            handleUpdateJob={handleUpdateJob}
-            handleShowComplete={handleShowComplete}
-            onAddClick={handleShow}
-            onRefresh={fetchData}
-            searchedPrograms={searchedTLPrograms}
-            searchedValues={searchedValues}
-            selectedTab={selectedTab}
-            setSearchedValues={setSearchedValues}
-          />
+      <ProgramTable
+        cookieData={cookieData}
+        cookieDataKey='tlaser'
+        handleUpdateJob={handleUpdateJob}
+        handleShowComplete={handleShowComplete}
+        onAddClick={handleShow}
+        onRefresh={fetchData}
+        searchedPrograms={searchedTLPrograms}
+        searchedValues={searchedValues}
+        selectedTab={selectedTab}
+        setSearchedValues={setSearchedValues}
+      />
 
-          <AllJobsTable
-            cookieData={cookieData}
-            cookieDataKey='tlaser'
-            handleMaterialsOpen={handleMaterialsOpen}
-            onAddClick={handleShow}
-            onCloseSnackbar={() => setShowToast(false)}
-            onRefresh={fetchData}
-            partCopy={partCopy}
-            searchedFR={searchedFR}
-            searchedTBR={searchedTBR}
-            searchedValues={searchedValues}
-            selectedTab={selectedTab}
-            setPartCopy={setPartCopy}
-            setSearchedValues={setSearchedValues}
-            setShowToast={setShowToast}
-            showToast={showToast}
-          />
-        </Box>
-      )}
-    </Box>
+      <AllJobsTable
+        cookieData={cookieData}
+        cookieDataKey='tlaser'
+        handleMaterialsOpen={handleMaterialsOpen}
+        onAddClick={handleShow}
+        onCloseSnackbar={() => setShowToast(false)}
+        onRefresh={fetchData}
+        partCopy={partCopy}
+        searchedFR={searchedFR}
+        searchedTBR={searchedTBR}
+        searchedValues={searchedValues}
+        selectedTab={selectedTab}
+        setPartCopy={setPartCopy}
+        setSearchedValues={setSearchedValues}
+        setShowToast={setShowToast}
+        showToast={showToast}
+      />
+    </PageContainer>
   );
 }

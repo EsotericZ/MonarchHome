@@ -3,6 +3,7 @@ import { Box, Icon, IconButton, Paper, Table, TableBody, TableCell, TableContain
 import CheckIcon from '@mui/icons-material/Check';
 
 import AddButton from '../shared/AddButton';
+import DataTableCell from '../shared/DataTableCell';
 import RefreshButton from '../shared/RefreshButton';
 import SearchTableCell from '../shared/SearchTableCell';
 import StandardTableCell from '../shared/StandardTableCell';
@@ -75,43 +76,42 @@ const MaterialTable = ({
                   .map((job, index) => (
                     <TableRow key={index} sx={{ backgroundColor: index % 2 === 0 ? '#f0f0f0' : '#fff' }}>
                       {cookieData[cookieDataKey] ? (
-                        <TableCell
-                          align="center"
-                          sx={{ fontWeight: 'bold', fontSize: '15px', p: 1.25 }}
+                        <DataTableCell
+                          bold
                           onClick={() => handleUpdateJob(job)}
                         >
                           {job.programNo}
-                        </TableCell>
+                        </DataTableCell>
                       ) : (
-                        <TableCell align="center" sx={{ fontWeight: 'bold', fontSize: '15px', p: 1.25 }}>
+                        <DataTableCell bold>
                           {job.programNo}
-                        </TableCell>
+                        </DataTableCell>
                       )}
-                      <TableCell align="center" sx={{ fontSize: '15px', p: 1.25 }}>{job.material}</TableCell>
-                      <TableCell align="center" sx={{ fontSize: '15px', p: 1.25 }}>{job.jobNo}</TableCell>
-                      <TableCell align="center" sx={{ fontSize: '15px', p: 0 }}>
+                      <DataTableCell>{job.material}</DataTableCell>
+                      <DataTableCell>{job.jobNo}</DataTableCell>
+                      <DataTableCell padding={0}>
                         <IconButton onClick={() => cookieData[cookieDataKey] && toggleCheck(job)}>
                           {job.checkMatl && <CheckIcon sx={{ fontSize: '20px', fontWeight: 'bold' }} />}
                         </IconButton>
-                      </TableCell>
-                      <TableCell align="center" sx={{ fontSize: '15px', p: 0 }}>
+                      </DataTableCell>
+                      <DataTableCell padding={0}>
                         <IconButton onClick={() => cookieData[cookieDataKey] && toggleNeed(job)}>
                           {job.needMatl && <CheckIcon sx={{ fontSize: '20px', fontWeight: 'bold' }} />}
                         </IconButton>
-                      </TableCell>
-                      <TableCell align="center" sx={{ fontSize: '15px', p: 0 }}>
+                      </DataTableCell>
+                      <DataTableCell padding={0}>
                         <Icon>
                           {job.onOrder && <CheckIcon sx={{ fontSize: '20px', fontWeight: 'bold' }} />}
                         </Icon>
-                      </TableCell>
-                      <TableCell align="center" sx={{ fontSize: '15px', p: 1.25 }}>
+                      </DataTableCell>
+                      <DataTableCell>
                         {job.expected ? `${job.expected.split('-')[1]}/${job.expected.split('-')[2].split('T')[0]}` : ''}
-                      </TableCell>
-                      <TableCell align="center" sx={{ fontSize: '15px', p: 0 }}>
+                      </DataTableCell>
+                      <DataTableCell padding={0}>
                         <IconButton onClick={() => cookieData[cookieDataKey] && toggleVerified(job)}>
                           {job.verified && <CheckIcon sx={{ fontSize: '20px', fontWeight: 'bold' }} />}
                         </IconButton>
-                      </TableCell>
+                      </DataTableCell>
                     </TableRow>
                   ))}
               </TableBody>

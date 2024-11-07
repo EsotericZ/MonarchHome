@@ -3,6 +3,7 @@ import { Box, IconButton, Paper, Table, TableBody, TableCell, TableContainer, Ta
 import HistoryIcon from '@mui/icons-material/History';
 
 import AddButton from '../shared/AddButton';
+import DataTableCell from '../shared/DataTableCell';
 import RefreshButton from '../shared/RefreshButton';
 import SearchTableCell from '../shared/SearchTableCell';
 import StandardTableCell from '../shared/StandardTableCell';
@@ -72,26 +73,25 @@ const ProgramTable = ({
                   .map((job, index) => (
                     <TableRow key={index} sx={{ backgroundColor: index % 2 === 0 ? '#f0f0f0' : '#fff' }}>
                       {cookieData[cookieDataKey] ? (
-                        <TableCell
-                          align="center"
-                          sx={{ fontWeight: 'bold', fontSize: '15px', p: 1.25 }}
+                        <DataTableCell
+                          bold
                           onClick={() => handleUpdateJob(job)}
                         >
                           {job.programNo}
-                        </TableCell>
+                        </DataTableCell>
                       ) : (
-                        <TableCell align="center" sx={{ fontWeight: 'bold', fontSize: '15px', p: 1.25 }}>
+                        <DataTableCell sx={{ fontWeight: 'bold' }}>
                           {job.programNo}
-                        </TableCell>
+                        </DataTableCell>
                       )}
-                      <TableCell align="center" sx={{ fontSize: '15px', p: 1.25 }}>{job.material}</TableCell>
-                      <TableCell align="center" sx={{ fontSize: '15px', p: 1.25 }}>{job.jobNo}</TableCell>
+                      <DataTableCell>{job.material}</DataTableCell>
+                      <DataTableCell>{job.jobNo}</DataTableCell>
                       {cookieData[cookieDataKey] && (
-                        <TableCell align="center" sx={{ fontSize: '15px', p: 0 }}>
+                        <DataTableCell padding={0}>
                           <IconButton onClick={() => handleShowComplete(job)}>
                             <HistoryIcon sx={{ fontSize: '20px', fontWeight: 'bold' }} />
                           </IconButton>
-                        </TableCell>
+                        </DataTableCell>
                       )}
                     </TableRow>
                   ))}

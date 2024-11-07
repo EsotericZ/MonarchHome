@@ -5,6 +5,7 @@ import CheckIcon from '@mui/icons-material/Check';
 
 import AddButton from '../shared/AddButton';
 import CopySnackbar from '../shared/CopySnackbar';
+import DataTableCell from '../shared/DataTableCell';
 import RefreshButton from '../shared/RefreshButton';
 import SearchTableCell from '../shared/SearchTableCell';
 import StandardTableCell from '../shared/StandardTableCell';
@@ -53,9 +54,9 @@ const AllJobsTable = ({
       )
       .map((job, index) => (
         <TableRow key={index} sx={{ backgroundColor: index % 2 === 0 ? '#f0f0f0' : '#fff' }}>
-          <TableCell align="center" sx={{ fontWeight: 'bold', fontSize: '15px', p: 1.25 }}>{job.JobNo}</TableCell>
-          <TableCell align="center" sx={{ fontSize: '15px', p: 1.25 }}>{job.StepNo}</TableCell>
-          <TableCell align="center" sx={{ fontSize: '15px', p: 1.25 }}>
+          <DataTableCell bold>{job.JobNo}</DataTableCell>
+          <DataTableCell>{job.StepNo}</DataTableCell>
+          <DataTableCell>
             <CopyToClipboard
               text={job.PartNo}
               onCopy={() => {
@@ -65,20 +66,20 @@ const AllJobsTable = ({
             >
               <span>{job.PartNo}</span>
             </CopyToClipboard>
-          </TableCell>
-          <TableCell align="center" sx={{ fontSize: '15px', p: 1.25 }}>{job.Revision}</TableCell>
-          <TableCell align="center" sx={{ fontSize: '15px', p: 1.25 }}>{job.EstimQty}</TableCell>
-          <TableCell align="center" sx={{ fontSize: '15px', p: 1.25 }}>
+          </DataTableCell>
+          <DataTableCell>{job.Revision}</DataTableCell>
+          <DataTableCell>{job.EstimQty}</DataTableCell>
+          <DataTableCell>
             {job.DueDate.split('-')[1]}/{job.DueDate.split('-')[2].split('T')[0]}
-          </TableCell>
-          <TableCell align="center" sx={{ fontSize: '15px', p: 0 }}>
+          </DataTableCell>
+          <DataTableCell padding={0}>
             <IconButton>
               {job.User_Date1 && <CheckIcon sx={{ fontSize: '20px', fontWeight: 'bold' }} />}
             </IconButton>
-          </TableCell>
-          <TableCell align="center" sx={{ fontSize: '15px', p: 1.25 }}>{job.CustCode}</TableCell>
-          <TableCell align="center" sx={{ fontSize: '15px', p: 1.25 }}>{job.User_Text3}</TableCell>
-          <TableCell align="center" sx={{ fontSize: '15px', p: 1.25 }}>
+          </DataTableCell>
+          <DataTableCell>{job.CustCode}</DataTableCell>
+          <DataTableCell>{job.User_Text3}</DataTableCell>
+          <DataTableCell>
             {Array.isArray(job.SubPartNo) && job.SubPartNo.length === 1 ? (
               <CopyToClipboard
                 text={job.SubPartNo[0]}
@@ -110,7 +111,7 @@ const AllJobsTable = ({
                 ...
               </Button>
             )}
-          </TableCell>
+          </DataTableCell>
         </TableRow>
       ));
   };
@@ -124,7 +125,7 @@ const AllJobsTable = ({
               <TableHead>
                 <TableRow>
                   <SearchTableCell 
-                    width='20%'
+                    width='10%'
                     placeholder='Job No'
                     value={searchedValues.jobNo}
                     onChange={(e) => handleInputChange('jobNo', e.target.value)}
