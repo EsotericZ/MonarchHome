@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import Cookies from 'universal-cookie';
 import { jwtDecode } from 'jwt-decode';
 import { Box, Typography } from '@mui/material';
-import { DepartmentCard } from '../../components/DepartmentCard';
+import { DepartmentCard } from '../../components/departments/DepartmentCard';
 
 export const Programming = () => {
   const cookies = new Cookies();

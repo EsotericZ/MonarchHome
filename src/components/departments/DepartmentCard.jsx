@@ -1,21 +1,21 @@
 import { Link } from 'react-router-dom';
 import { Card, CardMedia, CardContent, Typography, Box } from '@mui/material';
 
-import bdIcon from '../images/bdIcon.png';
-import engineeringIcon from '../images/engineeringIcon.png';
-import flaserIcon from '../images/flaserIcon.png';
-import formingIcon from '../images/formingIcon.png';
-import hardwareIcon from '../images/hardwareIcon.png';
-import laserIcon from '../images/laserIcon.png';
-import machineIcon from '../images/machineIcon.png';
-import punchIcon from '../images/punchIcon.png';
-import qualityIcon from '../images/qualityIcon.png';
-import qcInfoIcon from '../images/qcInfoIcon.png';
-import sawIcon from '../images/sawIcon.png';
-import shearIcon from '../images/shearIcon.png';
-import slaserIcon from '../images/slaserIcon.png';
-import tapIcon from '../images/tapIcon.png';
-import tlaserIcon from '../images/tlaserIcon.png';
+import bdIcon from '../../images/bdIcon.png';
+import engineeringIcon from '../../images/engineeringIcon.png';
+import flaserIcon from '../../images/flaserIcon.png';
+import formingIcon from '../../images/formingIcon.png';
+import hardwareIcon from '../../images/hardwareIcon.png';
+import laserIcon from '../../images/laserIcon.png';
+import machineIcon from '../../images/machineIcon.png';
+import punchIcon from '../../images/punchIcon.png';
+import qualityIcon from '../../images/qualityIcon.png';
+import qcInfoIcon from '../../images/qcInfoIcon.png';
+import sawIcon from '../../images/sawIcon.png';
+import shearIcon from '../../images/shearIcon.png';
+import slaserIcon from '../../images/slaserIcon.png';
+import tapIcon from '../../images/tapIcon.png';
+import tlaserIcon from '../../images/tlaserIcon.png';
 
 export const DepartmentCard = ({ area }) => {
   let backgroundColor;

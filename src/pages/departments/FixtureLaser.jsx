@@ -11,6 +11,11 @@ import CheckIcon from '@mui/icons-material/Check';
 import HistoryIcon from '@mui/icons-material/History';
 import RefreshIcon from '@mui/icons-material/Refresh';
 
+import AddModal from '../../components/departments/AddModal';
+import AllMaterialsModal from '../../components/departments/AllMaterialsModal';
+import CompleteModal from '../../components/departments/CompleteModal';
+import EditModal from '../../components/departments/EditModal';
+
 import getTBRJobs from '../../services/flaser/getTBRJobs';
 import getFRJobs from '../../services/flaser/getFRJobs';
 import createMaterial from '../../services/material/createMaterial';
@@ -180,6 +185,7 @@ export const FixtureLaser = () => {
     setJobNo('');
     setMachine('');
     setShowEdit(false);
+    setShow(false);
   }
 
   const handleUpdate = async () => {
@@ -228,98 +234,48 @@ export const FixtureLaser = () => {
         <Box sx={{ width: '100%' }}>
           <Typography variant='h4' sx={{ fontWeight: 'bold', margin: '16px' }}>Fixture Laser</Typography>
 
-{/* Add Modal */}
+          <AddModal
+            show={show}
+            handleClose={handleClose}
+            handleCancel={handleCancel}
+            handleSave={handleSave}
+            programNo={programNo}
+            setProgramNo={setProgramNo}
+            material={material}
+            setMaterial={setMaterial}
+            jobNo={jobNo}
+            setJobNo={setJobNo}
+            areaName='Fixture Laser'
+          />
 
-          <Dialog open={show} onClose={handleClose} fullWidth>
-            <DialogTitle>
-              <Typography sx={{ fontWeight: 'bold', textAlign: 'center', fontSize: '30px' }}>
-                Add Program
-              </Typography>
-            </DialogTitle>
-            <DialogContent>
-              <TextField label='Program No' fullWidth value={programNo} onChange={(e) => setProgramNo(e.target.value)} sx={{ mb: 2, mt: 1 }} />
-              <TextField label='Material' fullWidth value={material} onChange={(e) => setMaterial(e.target.value)} sx={{ mb: 2, mt: 1 }} />
-              <TextField label='Jobs' fullWidth value={jobNo} onChange={(e) => setJobNo(e.target.value)} sx={{ mb: 2, mt: 1 }} />
-              <TextField label='Area' fullWidth defaultValue='Fixture Laser' sx={{ mb: 2, mt: 1 }} disabled />
-            </DialogContent>
-            <DialogActions>
-              <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', gap: 2, paddingBottom: 2 }}>
-                <Button onClick={handleCancel} variant='contained' color='error'>Cancel</Button>
-                <Button onClick={handleSave} variant='contained' color='success'>Save</Button>
-              </Box>
-            </DialogActions>
-          </Dialog>
+          <EditModal
+            show={showEdit}
+            handleClose={handleClose}
+            handleCancel={handleCancel}
+            handleUpdate={handleUpdate}
+            programNo={programNo}
+            setProgramNo={setProgramNo}
+            material={material}
+            setMaterial={setMaterial}
+            jobNo={jobNo}
+            setJobNo={setJobNo}
+            areaName='Fixture Laser'
+          />
 
-{/* Edit Modal */}
+          <CompleteModal
+            show={showComplete}
+            handleClose={handleCloseComplete}
+            toggleComplete={toggleComplete}
+            jobProgramNo={jobProgramNo}
+          />
 
-          <Dialog open={showEdit} onClose={handleClose} fullWidth>
-            <DialogTitle>
-              <Typography sx={{ fontWeight: 'bold', textAlign: 'center', fontSize: '30px' }}>
-                Update Program
-              </Typography>
-            </DialogTitle>
-            <DialogContent>
-              <TextField label='Program No' fullWidth value={programNo} onChange={(e) => setProgramNo(e.target.value)} sx={{ mb: 2, mt: 1 }} />
-              <TextField label='Material' fullWidth value={material} onChange={(e) => setMaterial(e.target.value)} sx={{ mb: 2, mt: 1 }} />
-              <TextField label='Jobs' fullWidth value={jobNo} onChange={(e) => setJobNo(e.target.value)} sx={{ mb: 2, mt: 1 }} />
-              <TextField label='Area' fullWidth defaultValue='Fixture Laser' sx={{ mb: 2, mt: 1 }} disabled />
-            </DialogContent>
-            <DialogActions>
-              <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', gap: 2, paddingBottom: 2 }}>
-                <Button onClick={handleCancel} variant='contained' color='error'>Cancel</Button>
-                <Button onClick={handleUpdate} variant='contained' color='success'>Save</Button>
-              </Box>
-            </DialogActions>
-          </Dialog>
-
-{/* Complete Modal */}
-
-          <Dialog open={showComplete} onClose={handleCloseComplete} fullWidth>
-            <DialogTitle>
-              <Typography sx={{ fontWeight: 'bold', textAlign: 'center', fontSize: '30px' }}>
-                Complete Program {jobProgramNo}
-              </Typography>
-            </DialogTitle>
-            <DialogActions>
-              <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', gap: 2, paddingBottom: 2 }}>
-                <Button onClick={handleCloseComplete} variant='contained' color='error'>Cancel</Button>
-                <Button onClick={toggleComplete} variant='contained' color='success'>Verify</Button>
-              </Box>
-            </DialogActions>
-          </Dialog>
-
-{/* All Materials Modal */}
-
-          <Dialog open={showMaterials} onClose={handleMaterialsClose} fullWidth>
-            <DialogTitle>
-              <Box sx={{ textAlign: 'center' }}>
-                <Typography sx={{ fontWeight: 'bold', fontSize: '28px' }}>
-                  Job {selectedJob ? selectedJob.JobNo : ''}
-                </Typography>
-                <Typography sx={{ fontWeight: 'bold', fontSize: '28px' }}>
-                  All Materials
-                </Typography>
-              </Box>
-            </DialogTitle>
-            <DialogContent>
-              {selectedJob && (
-                <List sx={{ textAlign: 'center', alignItems: 'center' }}>
-                  {selectedJob.SubPartNo.map((subPart, index) => (
-                    <ListItem key={index} sx={{ justifyContent: 'center' }}>
-                      <CopyToClipboard text={subPart} onCopy={() => { setShowToast(true); setPartCopy(`${subPart}`); }}>
-                        <Typography sx={{ textAlign: 'center' }}>{subPart}</Typography>
-                      </CopyToClipboard>
-                    </ListItem>
-                  ))}
-                </List>
-              )}
-            </DialogContent>
-            <DialogActions>
-              <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', gap: 2, paddingBottom: 2 }}>
-                <Button onClick={handleMaterialsClose} variant='contained' color='error'>Close</Button>
-              </Box>
-            </DialogActions>
-          </Dialog>
+          <AllMaterialsModal
+            show={showMaterials}
+            handleClose={handleMaterialsClose}
+            selectedJob={selectedJob}
+            setShowToast={setShowToast}
+            setPartCopy={setPartCopy}
+          />
 
           <Tabs value={selectedTab} onChange={handleTabChange} centered  TabIndicatorProps={{ style: {backgroundColor: 'red'} }}>
             <Tab label='Ready to Nest' sx={{ width: '15%', '&.Mui-selected': { color: 'red' }, '&:focus': { outline: 'none' } }} />
