@@ -39,7 +39,6 @@
   color: darkslategrey !important;
 }
 
-
 .modal-footer-custom {
   display: flex;
   justify-content: space-between;
@@ -64,4 +63,20 @@
   padding-top: 20px;
   font-weight: bold;
   text-align: center;
+}
+
+.expedite-row {
+  background-color: pink !important;
+}
+
+.expedite-row:nth-of-type(odd) {
+  filter: brightness(0.93);
+}
+
+.qc-row {
+  background-color: lightskyblue !important;
+}
+
+.qc-row:nth-of-type(odd) {
+  filter: brightness(0.93);
 }

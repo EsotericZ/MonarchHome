@@ -13,7 +13,6 @@ import getFutureJobs from '../../services/engineering/getFutureJobs';
 import getAllUsers from '../../services/users/getAllUsers';
 import updateFormStatus from '../../services/forming/updateFormStatus';
 import updateFormProgrammer from '../../services/forming/updateFormProgrammer';
-import './engineering.css';
 
 export const FormingProg = () => {
   const { cookieData } = useUserContext();

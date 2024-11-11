@@ -15,7 +15,6 @@ import getAllUsers from '../../services/users/getAllUsers';
 import getAllQCNotes from '../../services/qcinfo/getAllQCNotes';
 import updateInspector from '../../services/quality/updateInspector';
 import updateStatus from '../../services/quality/updateStatus';
-import './engineering.css';
 
 export const Quality = () => {
   const { cookieData } = useUserContext();

@@ -18,7 +18,6 @@ import getAllUsers from '../../services/users/getAllUsers';
 import updateModel from '../../services/engineering/updateModel';
 import updateEngineer from '../../services/engineering/updateEngineer';
 import updateJobStatus from '../../services/engineering/updateJobStatus';
-import './engineering.css';
 
 export const Machining = () => {
   const { cookieData } = useUserContext();

@@ -13,7 +13,6 @@ import getFutureJobs from '../../services/engineering/getFutureJobs';
 import getAllUsers from '../../services/users/getAllUsers';
 import updateTLStatus from '../../services/tlaser/updateTLStatus';
 import updateTLProgrammer from '../../services/tlaser/updateTLProgrammer';
-import './engineering.css';
 
 export const TubeLaserProg = () => {
   const { cookieData } = useUserContext();

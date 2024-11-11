@@ -16,7 +16,6 @@ import getSingleJob from '../../services/backlog/getSingleJob';
 import updateJob from '../../services/backlog/updateJob';
 import updateEmail from '../../services/backlog/updateEmail';
 import updateHold from '../../services/backlog/updateHold';
-import './backlog.css';
 
 export const Backlog = () => {
   const { cookieData } = useUserContext();
@@ -164,8 +163,8 @@ export const Backlog = () => {
       const sortedJobsNo = sortedJobs.filter(job => !job.MasterJobNo);
 
       const thisMonthNo = today.getMonth();
-      const nextMonthNo = today.getMonth() + 1;
-      const futureMonthNo = today.getMonth() + 2;
+      const nextMonthNo = (today.getMonth() + 1) % 12;
+      const futureMonthNo = (today.getMonth() + 2) % 12;
       const months = [
         'January',
         'February',
@@ -326,8 +325,8 @@ export const Backlog = () => {
       const sortedJobsNo = sortedJobs.filter(job => !job.MasterJobNo);
 
       const thisMonthNo = today.getMonth();
-      const nextMonthNo = today.getMonth() + 1;
-      const futureMonthNo = today.getMonth() + 2;
+      const nextMonthNo = (today.getMonth() + 1) % 12;
+      const futureMonthNo = (today.getMonth() + 2) % 12;
       const months = [
         'January',
         'February',

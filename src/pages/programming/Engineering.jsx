@@ -21,7 +21,6 @@ import getAllQCNotes from '../../services/qcinfo/getAllQCNotes';
 import updateModel from '../../services/engineering/updateModel';
 import updateEngineer from '../../services/engineering/updateEngineer';
 import updateJobStatus from '../../services/engineering/updateJobStatus';
-import './engineering.css';
 
 export const Engineering = () => {
   const { cookieData } = useUserContext();
