@@ -2,8 +2,7 @@ import { useEffect, useState } from 'react';
 import { Box, Table, TableBody, TableContainer, TableHead, TableRow } from '@mui/material';
 
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import Cookies from 'universal-cookie';
-import { jwtDecode } from 'jwt-decode';
+import { useUserContext } from '../../context/UserContext';
 
 import CheckIcon from '@mui/icons-material/Check';
 
@@ -16,18 +15,7 @@ import StandardTableCell from '../../components/shared/StandardTableCell';
 import getAllJobs from '../../services/forming/getAllJobs';
 
 export const Forming = () => {
-  const cookies = new Cookies();
-  let cookieData
-  try {
-    cookieData = jwtDecode(cookies.get('jwt'));
-  } catch {
-    cookieData = {
-      'name': '',
-      'role': 'employee',
-      'forming': false,
-    };
-  }
-
+  const { cookieData } = useUserContext();
   const [searchedValueJobNo, setSearchedValueJobNo] = useState('');
   const [searchedValuePartNo, setSearchedValuePartNo] = useState('');
   const [searchedValueCustomer, setSearchedValueCustomer] = useState('');

@@ -1,22 +1,10 @@
 import { useEffect, useState } from 'react';
-import Cookies from 'universal-cookie';
-import { jwtDecode } from 'jwt-decode';
+import { useUserContext } from '../../context/UserContext';
 import { Box, Typography } from '@mui/material';
 import { DepartmentCard } from '../../components/departments/DepartmentCard';
 
 export const Programming = () => {
-  const cookies = new Cookies();
-  let cookieData;
-  try {
-    cookieData = jwtDecode(cookies.get('jwt'));
-  } catch {
-    cookieData = {
-      name: '',
-      role: 'employee',
-      engineering: false,
-    };
-  }
-
+  const { cookieData } = useUserContext();
   const [areas, setAreas] = useState([]);
   const [tools, setTools] = useState([]);
 

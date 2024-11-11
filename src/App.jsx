@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { SideNav } from './components/SideNav';
 import Cookies from 'universal-cookie';
+import { useUserContext } from './context/UserContext';
 
 import { Admin } from './pages/admin/Admin';
 import { Backlog } from './pages/backlog/Backlog';
@@ -29,11 +30,29 @@ import { TubeLaser } from './pages/departments/TubeLaser';
 import { TubeLaserProg } from './pages/programming/TubeLaserProg';
 
 export const App = () => {
+  const { setCookieData } = useUserContext();
   const [loggedIn, setLoggedIn] = useState(!!new Cookies().get('jwt'));
 
   const handleLogout = () => {
     const cookies = new Cookies();
     cookies.remove('jwt', { path: '/', domain: '' });
+    setCookieData({
+      'name': '',
+      'role': 'employee',
+      'backlog': false,
+      'engineering': false,
+      'forming': false,
+      'laser': false,
+      'machining': false,
+      'maintenance': false,
+      'punch': false,
+      'purchasing': false,
+      'quality': false,
+      'shipping': false,
+      'tlaser': false,
+      'saw': false,
+      'shear': false,
+    });
     setLoggedIn(false);
   };
 

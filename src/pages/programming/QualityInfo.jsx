@@ -2,8 +2,7 @@ import { useEffect, useState } from 'react';
 import { Box, Button, Checkbox, Dialog, DialogTitle, DialogContent, DialogActions, FormControlLabel, TextField, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, Snackbar, Alert, IconButton } from '@mui/material';
 
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import Cookies from 'universal-cookie';
-import { jwtDecode } from 'jwt-decode';
+import { useUserContext } from '../../context/UserContext';
 
 import PuffLoader from 'react-spinners/PuffLoader';
 import CheckIcon from '@mui/icons-material/Check';
@@ -14,18 +13,7 @@ import createQCNote from '../../services/qcinfo/createQCNote';
 import updateQCInfo from '../../services/qcinfo/updateQCInfo';
 
 export const QualityInfo = () => {
-  const cookies = new Cookies();
-  let cookieData
-  try {
-    cookieData = jwtDecode(cookies.get('jwt'));
-  } catch {
-    cookieData = {
-      'name': '',
-      'role': 'employee',
-      'quality': false,
-    };
-  }
-
+  const { cookieData } = useUserContext();
   const [searchedQC, setSearchedQC] = useState([]);
   const [searchedValueCustCode, setSearchedValueCustCode] = useState('');
   const [loading, setLoading] = useState(true);

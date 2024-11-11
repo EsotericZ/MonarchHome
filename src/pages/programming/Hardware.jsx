@@ -1,23 +1,11 @@
 import { useEffect, useState } from 'react';
 import { Box, Typography } from '@mui/material';
-import Cookies from 'universal-cookie';
-import { jwtDecode } from 'jwt-decode';
+import { useUserContext } from '../../context/UserContext';
 
 import PuffLoader from 'react-spinners/PuffLoader';
 
 export const Hardware = () => {
-  const cookies = new Cookies();
-  let cookieData
-  try {
-    cookieData = jwtDecode(cookies.get('jwt'));
-  } catch {
-    cookieData = {
-      'name': '',
-      'role': 'employee',
-      'forming': false,
-    };
-  }
-
+  const { cookieData } = useUserContext();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

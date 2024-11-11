@@ -2,8 +2,7 @@ import { useEffect, useState } from 'react';
 import { Alert, Box, Divider, FormControl, IconButton, MenuItem, Paper, Select, Snackbar, Tab, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tabs, Typography } from '@mui/material';
 
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import Cookies from 'universal-cookie';
-import { jwtDecode } from 'jwt-decode';
+import { useUserContext } from '../../context/UserContext';
 
 import PuffLoader from 'react-spinners/PuffLoader';
 import CheckIcon from '@mui/icons-material/Check';
@@ -22,18 +21,7 @@ import updateJobStatus from '../../services/engineering/updateJobStatus';
 import './engineering.css';
 
 export const Machining = () => {
-  const cookies = new Cookies();
-  let cookieData
-  try {
-    cookieData = jwtDecode(cookies.get('jwt'));
-  } catch {
-    cookieData = {
-      'name': '',
-      'role': 'employee',
-      'machining': false,
-    };
-  }
-
+  const { cookieData } = useUserContext();
   const [searchedValueJobNo, setSearchedValueJobNo] = useState('');
   const [searchedValuePartNo, setSearchedValuePartNo] = useState('');
   const [searchedValueCustomer, setSearchedValueCustomer] = useState('');

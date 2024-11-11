@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
-import Cookies from 'universal-cookie';
-import { jwtDecode } from 'jwt-decode';
+import { useUserContext } from '../../context/UserContext';
 
 import AddModal from '../../components/departments/AddModal';
 import AllJobsTable from '../../components/departments/AllJobsTable';
@@ -24,18 +23,7 @@ import updateNeed from '../../services/material/updateNeed';
 import updateVerified from '../../services/material/updateVerified';
 
 export const StaticLaser = () => {
-  const cookies = new Cookies();
-  let cookieData
-  try {
-    cookieData = jwtDecode(cookies.get('jwt'));
-  } catch {
-    cookieData = {
-      'name': '',
-      'role': 'employee',
-      'laser': false,
-    };
-  }
-
+  const { cookieData } = useUserContext();
   const [jobId, setJobId] = useState(0);
   const [selectedJob, setSelectedJob] = useState(null);
   const [update, setUpdate] = useState('');

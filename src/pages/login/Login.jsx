@@ -1,14 +1,17 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Cookies from 'universal-cookie';
 import { jwtDecode } from "jwt-decode";
 import { Alert, Box, Button, TextField, Typography } from '@mui/material';
+import { useUserContext } from '../../context/UserContext';
 import login from '../../services/portal/login';
 
 export const Login = () => {
+  const navigate = useNavigate();
+  const { cookieData, setCookieData } = useUserContext();
   const cookies = new Cookies();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [cookieData, setCookieData] = useState('');
   const [loggedIn, setLoggedIn] = useState(false);
   const [loginFail, setLoginFail] = useState(false);
 
@@ -17,9 +20,12 @@ export const Login = () => {
     try {
       const res = await login(username, password);
       cookies.set('jwt', res.accessToken);
+      console.log(jwtDecode(cookies.get('jwt')));
+      const decodedData = jwtDecode(cookies.get('jwt'));
+      console.log('Decoded Data:', decodedData);
       setCookieData(jwtDecode(cookies.get('jwt')));
       setLoggedIn(true);
-      window.location.href = '/';
+      navigate('/');
     } catch (error) {
       setLoginFail(true);
       console.error('Login failed:', error);

@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Box, Button, Dialog, DialogTitle, DialogContent, DialogActions, FormControl, InputLabel, TextField, Select, MenuItem, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, IconButton } from '@mui/material';
 
-import Cookies from 'universal-cookie';
-import { jwtDecode } from 'jwt-decode';
+import { useUserContext } from '../../context/UserContext';
 
 import PuffLoader from 'react-spinners/PuffLoader';
 import AddIcon from '@mui/icons-material/Add';
@@ -13,18 +12,7 @@ import getStandardTaps from '../../services/taps/getStandardTaps';
 import updateTap from '../../services/taps/updateTap';
 
 export const TapChart = () => {
-  const cookies = new Cookies();
-  let cookieData
-  try {
-    cookieData = jwtDecode(cookies.get('jwt'));
-  } catch {
-    cookieData = {
-      'name': '',
-      'role': 'employee',
-      'engineering': false,
-    };
-  }
-
+  const { cookieData } = useUserContext();
   const [searchedValueTapStandard, setSearchedValueTapStandard] = useState('');
   const [searchedValueTapMetric, setSearchedValueTapMetric] = useState('');
   const [searchedStandard, setSearchedStandard] = useState([]);

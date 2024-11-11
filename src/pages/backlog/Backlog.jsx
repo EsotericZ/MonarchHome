@@ -1,8 +1,7 @@
 import { useEffect, useState, Fragment } from 'react';
 import { Alert, Box, Divider, FormControl, IconButton, MenuItem, Paper, Select, Snackbar, Tab, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tabs, Typography } from '@mui/material';
 
-import Cookies from 'universal-cookie';
-import { jwtDecode } from 'jwt-decode';
+import { useUserContext } from '../../context/UserContext';
 
 import PuffLoader from 'react-spinners/PuffLoader';
 import AddIcon from '@mui/icons-material/Add';
@@ -20,17 +19,7 @@ import updateHold from '../../services/backlog/updateHold';
 import './backlog.css';
 
 export const Backlog = () => {
-  const cookies = new Cookies();
-  let cookieData
-  try {
-    cookieData = jwtDecode(cookies.get('jwt'));
-  } catch {
-    cookieData = {
-      'name': '',
-      'role': 'employee',
-      'backlog': false,
-    };
-  }
+  const { cookieData } = useUserContext();
 
   Chart.register(
     ArcElement,

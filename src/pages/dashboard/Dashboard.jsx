@@ -2,8 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Box, Button, Chip, IconButton, Table, TableBody, TableCell, TableRow, Typography } from '@mui/material';
 
-import Cookies from 'universal-cookie';
-import { jwtDecode } from 'jwt-decode';
+import { useUserContext } from '../../context/UserContext';
 import { NavLink } from 'react-router-dom';
 
 import PuffLoader from 'react-spinners/PuffLoader';
@@ -29,18 +28,9 @@ export const Dashboard = () => {
     Title,
     Tooltip,
   );
-  const navigate = useNavigate();
-  const cookies = new Cookies();
-  let cookieData
-  try {
-    cookieData = jwtDecode(cookies.get('jwt'));
-  } catch {
-    cookieData = {
-      'name': '',
-      'role': 'employee',
-    };
-  }
 
+  const navigate = useNavigate();
+  const { cookieData } = useUserContext();
   const [engTotal, setEngTotal] = useState(0);
   const [expedite, setExpedite] = useState(0);
   const [engTbr, setEngTbr] = useState(0);
