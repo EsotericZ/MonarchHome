@@ -1,13 +1,11 @@
 import { useEffect, useState } from 'react';
-import { Box, Button, Checkbox, Dialog, DialogTitle, DialogContent, DialogActions, FormControl, InputLabel, TextField, Select, MenuItem, Typography, CircularProgress, IconButton, FormControlLabel, InputAdornment } from '@mui/material';
-
-import Cookies from 'universal-cookie';
-import { jwtDecode } from 'jwt-decode';
-
-import PuffLoader from 'react-spinners/PuffLoader';
+import { Box, IconButton, FormControl, TextField, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 
+import { useUserContext } from '../../context/UserContext';
+
 import getAllUsers from '../../services/users/getAllUsers';
+import getAllRFID from '../../services/rfid/getAllRFID';
 import getUserPassword from '../../services/users/getUserPassword';
 import createUser from '../../services/users/createUser';
 import deleteUser from '../../services/users/deleteUser';
@@ -26,21 +24,13 @@ import updateTLaser from '../../services/users/updateTLaser';
 import updatePurchasing from '../../services/users/updatePurchasing';
 import updateBacklog from '../../services/users/updateBacklog';
 
-import getAllRFID from '../../services/rfid/getAllRFID';
-import { EmployeeCard } from '../../components/EmployeeCard';
+import AddUserModal from '../../components/admin/AddUserModal';
+import EmployeeCard from '../../components/admin/EmployeeCard';
+import PageContainer from '../../components/shared/PageContainer';
+import UpdateUserModal from '../../components/admin/UpdateUserModal';
 
 export const Admin = () => {
-  const cookies = new Cookies();
-  let cookieData
-  try {
-    cookieData = jwtDecode(cookies.get('jwt'));
-  } catch {
-    cookieData = {
-      'name': '',
-      'role': 'employee',
-    };
-  }
-
+  const { cookieData } = useUserContext();
   const [allUsers, setAllUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [update, setUpdate] = useState('');
@@ -52,18 +42,18 @@ export const Admin = () => {
     number: '',
     password: '',
     role: 'employee',
-    maintenance: 0,
-    shipping: 0,
-    engineering: 0,
-    tlaser: 0,
-    quality: 0,
-    forming: 0,
-    machining: 0,
-    laser: 0,
-    saw: 0,
-    punch: 0,
-    shear: 0,
     backlog: 0,
+    engineering: 0,
+    forming: 0,
+    laser: 0,
+    machining: 0,
+    maintenance: 0,
+    punch: 0,
+    quality: 0,
+    saw: 0,
+    shear: 0,
+    shipping: 0,
+    tlaser: 0,
   });
   const [updateSingleUser, setUpdateSingleUser] = useState({
     id: '',
@@ -73,26 +63,29 @@ export const Admin = () => {
     password: '',
   });
 
+  const [employeeData, setEmployeeData] = useState({
+    name: '',
+    username: '',
+    number: '',
+    password: '',
+  });
+  const [roles, setRoles] = useState([
+    { name: 'backlog', label: 'Backlog', checked: false },
+    { name: 'engineering', label: 'Engineering', checked: false },
+    { name: 'forming', label: 'Forming', checked: false },
+    { name: 'laser', label: 'Laser', checked: false },
+    { name: 'machining', label: 'Machining', checked: false },
+    { name: 'maintenance', label: 'Maintenance', checked: false },
+    { name: 'punch', label: 'Punch', checked: false },
+    { name: 'purchasing', label: 'Purchasing', checked: false },
+    { name: 'quality', label: 'Quality', checked: false },
+    { name: 'saw', label: 'Saw', checked: false },
+    { name: 'shear', label: 'Shear', checked: false },
+    { name: 'shipping', label: 'Shipping', checked: false },
+    { name: 'tlaser', label: 'TLaser', checked: false },
+  ]);
+
   const [userID, setUserID] = useState('');
-  const [name, setName] = useState('');
-  const [username, setUsername] = useState('');
-  const [number, setNumber] = useState('');
-  const [password, setPassword] = useState('');
-
-  const [engineering, setEngineering] = useState(false);
-  const [machining, setMachining] = useState(false);
-  const [quality, setQuality] = useState(false);
-  const [laser, setLaser] = useState(false);
-  const [forming, setForming] = useState(false);
-  const [tlaser, setTLaser] = useState(false);
-  const [saw, setSaw] = useState(false);
-  const [punch, setPunch] = useState(false);
-  const [shear, setShear] = useState(false);
-  const [maintenance, setMaintenance] = useState(false);
-  const [shipping, setShipping] = useState(false);
-  const [purchasing, setPurchasing] = useState(false);
-  const [backlog, setBacklog] = useState(false);
-
   const [searchName, setSearchName] = useState('');
   const [searchDepartment, setSearchDepartment] = useState('');
 
@@ -111,70 +104,32 @@ export const Admin = () => {
     }
   }
 
-  async function toggleMaintenance(user) {
-    updateMaintenance(user);
-    setUpdate('Maintenace');
-  }
-
-  async function toggleShipping(user) {
-    updateShipping(user);
-    setUpdate('Shipping');
-  }
-
-  async function togglePurchasing(user) {
-    updatePurchasing(user);
-    setUpdate('Purchasing');
-  }
-
-  async function toggleBacklog(user) {
-    updateBacklog(user);
-    setUpdate('Backlog');
-  }
-
-  async function toggleEngineering(user) {
-    updateEngineering(user)
-    setUpdate('Engineering')
-  }
-
-  async function toggleTLaser(user) {
-    updateTLaser(user)
-    setUpdate('Tube Laser')
-  }
-
-  async function toggleQuality(user) {
-    updateQuality(user)
-    setUpdate('Quality')
-  }
-
-  async function toggleForming(user) {
-    updateForming(user)
-    setUpdate('Forming')
-  }
-
-  async function toggleMachining(user) {
-    updateMachining(user)
-    setUpdate('Machining')
-  }
-
-  async function toggleLaser(user) {
-    updateLaser(user)
-    setUpdate('Laser')
-  }
-
-  async function toggleSaw(user) {
-    updateSaw(user)
-    setUpdate('Saw')
-  }
-
-  async function togglePunch(user) {
-    updatePunch(user)
-    setUpdate('Punch')
-  }
-
-  async function toggleShear(user) {
-    updateShear(user)
-    setUpdate('Shear')
-  }
+  const toggleRoleHandler = (roleName, isChecked) => {
+    setRoles((prev) =>
+      prev.map((role) =>
+        role.name === roleName ? { ...role, checked: isChecked } : role
+      )
+    );
+    const updateRoleFunctionMap = {
+      maintenance: updateMaintenance,
+      shipping: updateShipping,
+      purchasing: updatePurchasing,
+      backlog: updateBacklog,
+      engineering: updateEngineering,
+      tlaser: updateTLaser,
+      quality: updateQuality,
+      forming: updateForming,
+      machining: updateMachining,
+      laser: updateLaser,
+      saw: updateSaw,
+      punch: updatePunch,
+      shear: updateShear,
+    };
+    if (updateRoleFunctionMap[roleName]) {
+      updateRoleFunctionMap[roleName](userID);
+      setUpdate(roleName.charAt(0).toUpperCase() + roleName.slice(1));
+    }
+  };
 
   const handleChangeAdd = (e) => {
     const { name, value } = e.target;
@@ -202,35 +157,32 @@ export const Admin = () => {
     getUserPassword(user.id)
       .then((res) => {
         setUpdateSingleUser({
-          ...updateSingleUser,
-          id: user.id,
+          ...user,
+          password: res.data,
+        });
+
+        setEmployeeData({
           name: user.name,
           username: user.username,
           number: user.number,
-          password: res.data
-        })
-        setPassword(res.data)
-      }).then(() => {
+          password: res.data,
+        });
+
+        setRoles((prev) =>
+          prev.map((role) => ({
+            ...role,
+            checked: Boolean(user[role.name]),
+          }))
+        );
+
         setUserID(user.id);
-        setName(user.name);
-        setUsername(user.username);
-        setNumber(user.number);
-        setEngineering(user.engineering);
-        setMachining(user.machining);
-        setQuality(user.quality);
-        setLaser(user.laser);
-        setForming(user.forming);
-        setTLaser(user.tlaser);
-        setSaw(user.saw);
-        setPunch(user.punch);
-        setShear(user.shear);
-        setMaintenance(user.maintenance);
-        setShipping(user.shipping);
-        setPurchasing(user.purchasing);
-        setBacklog(user.backlog);
         setShowUpdate(true);
       })
+      .catch((err) => {
+        console.error('Error fetching user password:', err);
+      });
   };
+
   const handleCloseUpdate = () => setShowUpdate(false);
   const handleUpdate = () => {
     updateUser(updateSingleUser)
@@ -274,109 +226,61 @@ export const Admin = () => {
   });
 
   return (
-    <Box sx={{ width: '100%', textAlign: 'center', overflowY: 'auto', height: '100vh' }}>
-      {loading ? (
-        <Box>
-          <Typography variant='h4' sx={{ fontWeight: 'bold', margin: '16px' }}>Employee Database</Typography>
-          <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginTop: '100px' }}>
-            <PuffLoader color='red' />
+    <PageContainer loading={loading} title='Employee Database'>
+      {cookieData.role == 'admin' ? (
+        <Box sx={{ width: '100%' }}>
+          <Box sx={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: 2, pb: 2 }}>
+            <FormControl sx={{ width: '35%' }}>
+              <TextField
+                placeholder="Search by Name"
+                onChange={(e) => setSearchName(e.target.value)}
+              />
+            </FormControl>
+            <FormControl sx={{ width: '35%' }}>
+              <TextField
+                placeholder="Search by Department"
+                onChange={(e) => setSearchDepartment(e.target.value)}
+              />
+            </FormControl>
           </Box>
+
+          {/* Add Employee Modal */}
+
+          <AddUserModal
+            open={showAdd}
+            onClose={handleCloseAdd}
+            onChange={handleChangeAdd}
+            onSave={handleSave}
+          />
+
+          {/* Update Employee Modal */}
+
+          <UpdateUserModal
+            open={showUpdate}
+            onClose={handleCloseUpdate}
+            onChange={handleChangeUpdate}
+            onUpdate={handleUpdate}
+            employeeData={employeeData}
+            roleCheckboxes={roles}
+            toggleRoleHandler={toggleRoleHandler}
+          />
+
+          <Box sx={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: 1 }}>
+            {(searchName ? filteredUsersByName : filteredUsersByDepartment).map((user, index) => (
+              <EmployeeCard key={index} user={user} handleOpenUpdate={handleOpenUpdate} />
+            ))}
+          </Box>
+
+          <IconButton onClick={handleOpenAdd} sx={{ backgroundColor: '#111827', color: 'white', height: '52.5px', width: '52.5px', zIndex: 1000, position: 'fixed', bottom: '20px', right: '35px', '&:hover': { backgroundColor: '#374151', }, }}>
+            <AddIcon />
+          </IconButton>
         </Box>
-      ) : ( 
-        cookieData.role == 'admin' ? (
-          <Box sx={{ width: '100%' }}>
-            <Typography variant='h4' sx={{ fontWeight: 'bold', margin: '16px' }}>Employee Database</Typography>
-            <Box sx={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: 2, pb: 2 }}>
-              <FormControl sx={{ width: '35%' }}>
-                <TextField
-                  placeholder="Search by Name"
-                  onChange={(e) => setSearchName(e.target.value)}
-                />
-              </FormControl>
-              <FormControl sx={{ width: '35%' }}>
-                <TextField
-                  placeholder="Search by Department"
-                  onChange={(e) => setSearchDepartment(e.target.value)}
-                />
-              </FormControl>
-            </Box>
-
-{/* Add Employee Modal */}
-
-            <Dialog open={showAdd} onClose={handleCloseAdd} fullWidth>
-              <DialogTitle>
-                <Typography sx={{ fontWeight: 'bold', textAlign: 'center', fontSize: '30px' }}>
-                  Add User
-                </Typography>
-              </DialogTitle>
-              <DialogContent>
-                <TextField label="Employee Name" fullWidth name="name" onChange={handleChangeAdd} sx={{ mb: 2, mt: 1 }} />
-                <TextField label="Username" fullWidth name="username" onChange={handleChangeAdd} sx={{ mb: 2, mt: 1 }} />
-                <TextField label="Employee Number" fullWidth name="number" onChange={handleChangeAdd} sx={{ mb: 2, mt: 1 }} />
-                <TextField label="Password" fullWidth name="password" type="password" onChange={handleChangeAdd} sx={{ mb: 2, mt: 1 }} />
-              </DialogContent>
-              <DialogActions>
-                <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', gap: 2, paddingBottom: 2 }}>
-                  <Button onClick={handleCloseAdd} color="error" variant="contained">Cancel</Button>
-                  <Button onClick={handleSave} color="success" variant="contained">Save</Button>
-                </Box>
-              </DialogActions>
-            </Dialog>
-
-{/* Update Employee Modal */}
-
-            <Dialog open={showUpdate} onClose={handleCloseUpdate} fullWidth>
-              <DialogTitle>
-                <Typography sx={{ fontWeight: 'bold', textAlign: 'center', fontSize: '30px' }}>
-                  Update Employee {name}
-                </Typography>
-              </DialogTitle>
-              <DialogContent>
-                <TextField label="Employee Name" fullWidth defaultValue={name} name="name" onChange={handleChangeUpdate} sx={{ mb: 2, mt: 1 }} />
-                <TextField label="Username" fullWidth defaultValue={username} name="username" onChange={handleChangeUpdate} sx={{ mb: 2, mt: 1 }} />
-                <TextField label="Employee Number" fullWidth defaultValue={number} name="number" onChange={handleChangeUpdate} sx={{ mb: 2, mt: 1 }} />
-                <TextField label="Password" fullWidth defaultValue={password} name="password" type="password" onChange={handleChangeUpdate} sx={{ mb: 2, mt: 1 }} />
-
-                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, mt: 3 }}>
-                  <FormControlLabel control={<Checkbox checked={engineering} onChange={(e) => { setEngineering(e.target.checked); toggleEngineering(userID); }} />} label="Engineering" />
-                  <FormControlLabel control={<Checkbox checked={machining} onChange={(e) => { setMachining(e.target.checked); toggleMachining(userID); }} />} label="Machining" />
-                  <FormControlLabel control={<Checkbox checked={quality} onChange={(e) => { setQuality(e.target.checked); toggleQuality(userID); }} />} label="Quality" />
-                  <FormControlLabel control={<Checkbox checked={laser} onChange={(e) => { setLaser(e.target.checked); toggleLaser(userID); }} />} label="Laser" />
-                  <FormControlLabel control={<Checkbox checked={forming} onChange={(e) => { setForming(e.target.checked); toggleForming(userID); }} />} label="Forming" />
-                  <FormControlLabel control={<Checkbox checked={tlaser} onChange={(e) => { setTLaser(e.target.checked); toggleTLaser(userID); }} />} label="TLaser" />
-                  <FormControlLabel control={<Checkbox checked={saw} onChange={(e) => { setSaw(e.target.checked); toggleSaw(userID); }} />} label="Saw" />
-                  <FormControlLabel control={<Checkbox checked={punch} onChange={(e) => { setPunch(e.target.checked); togglePunch(userID); }} />} label="Punch" />
-                  <FormControlLabel control={<Checkbox checked={shear} onChange={(e) => { setShear(e.target.checked); toggleShear(userID); }} />} label="Shear" />
-                  <FormControlLabel control={<Checkbox checked={maintenance} onChange={(e) => { setMaintenance(e.target.checked); toggleMaintenance(userID); }} />} label="Maintenance" />
-                  <FormControlLabel control={<Checkbox checked={shipping} onChange={(e) => { setShipping(e.target.checked); toggleShipping(userID); }} />} label="Shipping" />
-                  <FormControlLabel control={<Checkbox checked={purchasing} onChange={(e) => { setPurchasing(e.target.checked); togglePurchasing(userID); }} />} label="Purchasing" />
-                  <FormControlLabel control={<Checkbox checked={backlog} onChange={(e) => { setBacklog(e.target.checked); toggleBacklog(userID); }} />} label="Backlog" />
-                </Box>
-              </DialogContent>
-              <DialogActions>
-                <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', gap: 2, paddingBottom: 2 }}>
-                  <Button onClick={handleCloseUpdate} color="error" variant="contained">Cancel</Button>
-                  <Button onClick={handleUpdate} color="success" variant="contained">Save</Button>
-                </Box>
-              </DialogActions>
-            </Dialog>
-
-            <Box sx={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: 1 }}>
-              {(searchName ? filteredUsersByName : filteredUsersByDepartment).map((user, index) => (
-                <EmployeeCard key={index} user={user} handleOpenUpdate={handleOpenUpdate} />
-              ))}
-            </Box>
-
-            <IconButton onClick={handleOpenAdd} sx={{ backgroundColor: '#111827', color: 'white', height: '52.5px', width: '52.5px', zIndex: 1000, position: 'fixed', bottom: '20px', right: '35px','&:hover': { backgroundColor: '#374151', }, }}>
-              <AddIcon />
-            </IconButton>
-          </Box>
-        ) : (
-          <Box sx={{ width: '100%', textAlign: 'center', alignContent: 'center', overflowY: 'auto', height: '100vh' }}>
-            <Typography variant='h4' sx={{ fontWeight: 'bold', margin: '16px' }}>You Don't Have Access To This Page</Typography>
-          </Box>
-        )
-      )}
-    </Box>
+      ) : (
+        <Box sx={{ width: '100%', textAlign: 'center', alignContent: 'center', overflowY: 'auto', height: '100vh' }}>
+          <Typography variant='h4' sx={{ fontWeight: 'bold', margin: '16px' }}>You Don't Have Access To This Page</Typography>
+        </Box>
+      )
+      }
+    </PageContainer>
   );
 }

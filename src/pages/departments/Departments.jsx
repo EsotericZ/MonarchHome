@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Box, Typography } from '@mui/material';
-import { DepartmentCard } from '../../components/departments/DepartmentCard';
+
+import DepartmentCard from '../../components/shared/DepartmentCard';
 
 export const Departments = () => {
   const [areas, setAreas] = useState([]);

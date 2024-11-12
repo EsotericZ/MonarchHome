@@ -17,7 +17,7 @@ import slaserIcon from '../../images/slaserIcon.png';
 import tapIcon from '../../images/tapIcon.png';
 import tlaserIcon from '../../images/tlaserIcon.png';
 
-export const DepartmentCard = ({ area }) => {
+const DepartmentCard = ({ area }) => {
   let backgroundColor;
   switch (area.areaType) {
     case 'production':
@@ -86,3 +86,5 @@ export const DepartmentCard = ({ area }) => {
     </Link>
   );
 };
+
+export default DepartmentCard;

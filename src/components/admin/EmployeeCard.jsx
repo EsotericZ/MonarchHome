@@ -2,7 +2,7 @@ import { Box, Card, CardContent, Chip, Typography } from '@mui/material';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import PersonIcon from '@mui/icons-material/Person';
 
-export const EmployeeCard = ({ user, handleOpenUpdate }) => {
+const EmployeeCard = ({ user, handleOpenUpdate }) => {
   let backgroundColor;
   switch (user.role) {
     case 'admin':
@@ -122,3 +122,5 @@ export const EmployeeCard = ({ user, handleOpenUpdate }) => {
     </Card>
   );
 };
+
+export default EmployeeCard;

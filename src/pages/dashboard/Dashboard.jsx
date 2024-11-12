@@ -18,6 +18,8 @@ import getRepeatJobs from '../../services/engineering/getRepeatJobs';
 import getOutsourceJobs from '../../services/engineering/getOutsourceJobs';
 import getUnconfirmedJobs from '../../services/engineering/getUnconfirmedJobs';
 
+import PageContainer from '../../components/shared/PageContainer';
+
 export const Dashboard = () => {
   Chart.register(
     ArcElement,
@@ -140,7 +142,7 @@ export const Dashboard = () => {
         position: 'top',
         align: 'center',
         labels: {
-          boxWidth: 20,   
+          boxWidth: 20,
           padding: 20,
           fullSize: true,
         }
@@ -183,245 +185,232 @@ export const Dashboard = () => {
   }
 
   return (
-    <Box sx={{ width: '100%', textAlign: 'center', overflowY: 'auto', height: '100vh' }}>
-      {loading ? (
-        <Box>
-          <Typography variant='h4' sx={{ fontWeight: 'bold', margin: '16px' }}>Monarch Metal</Typography>
-          <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginTop: '100px' }}>
-            <PuffLoader color='red' />
-          </Box>
-        </Box>
-      ) : (
+    <PageContainer loading={loading} title='Monarch Metal'>
+      {cookieData.name ? (
         <Box sx={{ width: '100%', p: 2 }}>
-          <Typography variant='h4' sx={{ fontWeight: 'bold', margin: '16px' }}>Monarch Metal</Typography>
+          <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', alignItems: 'flex-start', gap: 2 }}>
+            <Box sx={{ flexGrow: 1, flexShrink: 1, minWidth: '300px', maxWidth: { xs: '100%', md: '30%' }, display: 'flex', flexDirection: 'column', gap: 2 }}>
 
-          {cookieData.name ? (
-            <Box>
-              <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', alignItems: 'flex-start', gap: 2 }}>
-                <Box sx={{ flexGrow: 1, flexShrink: 1, minWidth: '300px', maxWidth: { xs: '100%', md: '30%' }, display: 'flex', flexDirection: 'column', gap: 2 }}>
-
-                  {/* USER INFORMATION */}
-                  <Box sx={{ display: 'flex', alignItems: 'center', border: '1px solid grey', borderRadius: '15px', p: 1 }}>
-                    <IconButton onClick={() => { navigate('/profile') }}>
-                      <PersonIcon sx={{ fontSize: 75 }} />
-                    </IconButton>
-                    <Box sx={{ ml: 2 }}>
-                      <Typography sx={{ fontSize: 32, fontWeight: 'bold' }}>{cookieData.name}</Typography>
-                      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-                        {cookieData.engineering && (
-                          <Chip 
-                            sx={{ fontSize: '12px', width: '100px', height: '25px', backgroundColor: programmingColor, color: 'white', fontWeight: 'bold' }} 
-                            label="Engineering" 
-                            onClick={() => navigate('/engineering')}
-                          />
-                        )}
-                        {cookieData.machining && (
-                          <Chip 
-                            sx={{ fontSize: '12px', width: '100px', height: '25px', backgroundColor: programmingColor, color: 'white', fontWeight: 'bold' }} 
-                            label="Machining" 
-                            onClick={() => navigate('/machining')}
-                          />
-                        )}
-                        {cookieData.quality && (
-                          <Chip 
-                            sx={{ fontSize: '12px', width: '100px', height: '25px', backgroundColor: programmingColor, color: 'white', fontWeight: 'bold' }} 
-                            label="Quality" 
-                            onClick={() => navigate('/quality')}
-                          />
-                        )}
-                        {cookieData.laser && (
-                          <>
-                            <Chip 
-                              sx={{ fontSize: '12px', width: '100px', height: '25px', backgroundColor: productionColor, color: 'black', fontWeight: 'bold' }} 
-                              label="Laser"
-                              onClick={() => navigate('/laser')} 
-                            />
-                            <Chip 
-                              sx={{ fontSize: '12px', width: '100px', height: '25px', backgroundColor: productionColor, color: 'black', fontWeight: 'bold' }} 
-                              label="FLaser"
-                              onClick={() => navigate('/fixtureLaser')} 
-                            />
-                            <Chip 
-                              sx={{ fontSize: '12px', width: '100px', height: '25px', backgroundColor: productionColor, color: 'black', fontWeight: 'bold' }} 
-                              label="SLaser"
-                              onClick={() => navigate('/staticLaser')} 
-                            />
-                          </>
-                        )}
-                        {cookieData.forming && (
-                          <>
-                            <Chip 
-                              sx={{ fontSize: '12px', width: '100px', height: '25px', backgroundColor: programmingColor, color: 'white', fontWeight: 'bold' }} 
-                              label="Forming"
-                              onClick={() => navigate('/formingprog')} 
-                            />
-                            <Chip 
-                              sx={{ fontSize: '12px', width: '100px', height: '25px', backgroundColor: productionColor, color: 'black', fontWeight: 'bold' }} 
-                              label="Forming" 
-                              onClick={() => navigate('/forming')}
-                            />
-                          </>
-                        )}
-                        {cookieData.tlaser && (
-                          <>
-                            <Chip 
-                              sx={{ fontSize: '12px', width: '100px', height: '25px', backgroundColor: programmingColor, color: 'white', fontWeight: 'bold' }} 
-                              label="TLaser" 
-                              onClick={() => navigate('/tubeLaserProg')}
-                            />
-                            <Chip 
-                              sx={{ fontSize: '12px', width: '100px', height: '25px', backgroundColor: productionColor, color: 'black', fontWeight: 'bold' }} 
-                              label="TLaser" 
-                              onClick={() => navigate('/tubeLaser')}
-                            />
-                          </>
-                        )}
-                        {cookieData.saw && (
-                          <Chip 
-                            sx={{ fontSize: '12px', width: '100px', height: '25px', backgroundColor: productionColor, color: 'black', fontWeight: 'bold' }} 
-                            label="Saw" 
-                            onClick={() => navigate('/saw')}
-                          />
-                        )}
-                        {cookieData.shear && (
-                          <Chip 
-                            sx={{ fontSize: '12px', width: '100px', height: '25px', backgroundColor: productionColor, color: 'black', fontWeight: 'bold' }} 
-                            label="Shear"
-                            onClick={() => navigate('/shear')} 
-                          />
-                        )}
-                        {cookieData.punch && (
-                          <Chip 
-                            sx={{ fontSize: '12px', width: '100px', height: '25px', backgroundColor: productionColor, color: 'black', fontWeight: 'bold' }} 
-                            label="Punch"
-                            onClick={() => navigate('/punch')} 
-                          />
-                        )}
-                        {cookieData.maintenance && (
-                          <Chip 
-                            sx={{ fontSize: '12px', width: '100px', height: '25px', backgroundColor: defaultColor, color: 'white', fontWeight: 'bold' }} 
-                            label="Maintenance"
-                            // onClick={() => navigate('/engineering')} 
-                          />
-                        )}
-                        {cookieData.shipping && (
-                          <Chip 
-                            sx={{ fontSize: '12px', width: '100px', height: '25px', backgroundColor: defaultColor, color: 'white', fontWeight: 'bold' }} 
-                            label="Shipping" 
-                            // onClick={() => navigate('/engineering')}
-                          />
-                        )}
-                        {cookieData.purchasing && (
-                          <Chip 
-                            sx={{ fontSize: '12px', width: '100px', height: '25px', backgroundColor: defaultColor, color: 'white', fontWeight: 'bold' }} 
-                            label="Purchasing" 
-                            // onClick={() => navigate('/engineering')}
-                          />
-                        )}
-                        {cookieData.backlog && (
-                          <Chip 
-                            sx={{ fontSize: '12px', width: '100px', height: '25px', backgroundColor: defaultColor, color: 'white', fontWeight: 'bold' }} 
-                            label="Backlog" 
-                            // onClick={() => navigate('/backlog')}
-                          />
-                        )}
-                      </Box>
-                    </Box>
+              {/* USER INFORMATION */}
+              <Box sx={{ display: 'flex', alignItems: 'center', border: '1px solid grey', borderRadius: '15px', p: 1 }}>
+                <IconButton onClick={() => { navigate('/profile') }}>
+                  <PersonIcon sx={{ fontSize: 75 }} />
+                </IconButton>
+                <Box sx={{ ml: 2 }}>
+                  <Typography sx={{ fontSize: 32, fontWeight: 'bold' }}>{cookieData.name}</Typography>
+                  <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+                    {cookieData.engineering && (
+                      <Chip
+                        sx={{ fontSize: '12px', width: '100px', height: '25px', backgroundColor: programmingColor, color: 'white', fontWeight: 'bold' }}
+                        label="Engineering"
+                        onClick={() => navigate('/engineering')}
+                      />
+                    )}
+                    {cookieData.machining && (
+                      <Chip
+                        sx={{ fontSize: '12px', width: '100px', height: '25px', backgroundColor: programmingColor, color: 'white', fontWeight: 'bold' }}
+                        label="Machining"
+                        onClick={() => navigate('/machining')}
+                      />
+                    )}
+                    {cookieData.quality && (
+                      <Chip
+                        sx={{ fontSize: '12px', width: '100px', height: '25px', backgroundColor: programmingColor, color: 'white', fontWeight: 'bold' }}
+                        label="Quality"
+                        onClick={() => navigate('/quality')}
+                      />
+                    )}
+                    {cookieData.laser && (
+                      <>
+                        <Chip
+                          sx={{ fontSize: '12px', width: '100px', height: '25px', backgroundColor: productionColor, color: 'black', fontWeight: 'bold' }}
+                          label="Laser"
+                          onClick={() => navigate('/laser')}
+                        />
+                        <Chip
+                          sx={{ fontSize: '12px', width: '100px', height: '25px', backgroundColor: productionColor, color: 'black', fontWeight: 'bold' }}
+                          label="FLaser"
+                          onClick={() => navigate('/fixtureLaser')}
+                        />
+                        <Chip
+                          sx={{ fontSize: '12px', width: '100px', height: '25px', backgroundColor: productionColor, color: 'black', fontWeight: 'bold' }}
+                          label="SLaser"
+                          onClick={() => navigate('/staticLaser')}
+                        />
+                      </>
+                    )}
+                    {cookieData.forming && (
+                      <>
+                        <Chip
+                          sx={{ fontSize: '12px', width: '100px', height: '25px', backgroundColor: programmingColor, color: 'white', fontWeight: 'bold' }}
+                          label="Forming"
+                          onClick={() => navigate('/formingprog')}
+                        />
+                        <Chip
+                          sx={{ fontSize: '12px', width: '100px', height: '25px', backgroundColor: productionColor, color: 'black', fontWeight: 'bold' }}
+                          label="Forming"
+                          onClick={() => navigate('/forming')}
+                        />
+                      </>
+                    )}
+                    {cookieData.tlaser && (
+                      <>
+                        <Chip
+                          sx={{ fontSize: '12px', width: '100px', height: '25px', backgroundColor: programmingColor, color: 'white', fontWeight: 'bold' }}
+                          label="TLaser"
+                          onClick={() => navigate('/tubeLaserProg')}
+                        />
+                        <Chip
+                          sx={{ fontSize: '12px', width: '100px', height: '25px', backgroundColor: productionColor, color: 'black', fontWeight: 'bold' }}
+                          label="TLaser"
+                          onClick={() => navigate('/tubeLaser')}
+                        />
+                      </>
+                    )}
+                    {cookieData.saw && (
+                      <Chip
+                        sx={{ fontSize: '12px', width: '100px', height: '25px', backgroundColor: productionColor, color: 'black', fontWeight: 'bold' }}
+                        label="Saw"
+                        onClick={() => navigate('/saw')}
+                      />
+                    )}
+                    {cookieData.shear && (
+                      <Chip
+                        sx={{ fontSize: '12px', width: '100px', height: '25px', backgroundColor: productionColor, color: 'black', fontWeight: 'bold' }}
+                        label="Shear"
+                        onClick={() => navigate('/shear')}
+                      />
+                    )}
+                    {cookieData.punch && (
+                      <Chip
+                        sx={{ fontSize: '12px', width: '100px', height: '25px', backgroundColor: productionColor, color: 'black', fontWeight: 'bold' }}
+                        label="Punch"
+                        onClick={() => navigate('/punch')}
+                      />
+                    )}
+                    {cookieData.maintenance && (
+                      <Chip
+                        sx={{ fontSize: '12px', width: '100px', height: '25px', backgroundColor: defaultColor, color: 'white', fontWeight: 'bold' }}
+                        label="Maintenance"
+                      // onClick={() => navigate('/engineering')} 
+                      />
+                    )}
+                    {cookieData.shipping && (
+                      <Chip
+                        sx={{ fontSize: '12px', width: '100px', height: '25px', backgroundColor: defaultColor, color: 'white', fontWeight: 'bold' }}
+                        label="Shipping"
+                      // onClick={() => navigate('/engineering')}
+                      />
+                    )}
+                    {cookieData.purchasing && (
+                      <Chip
+                        sx={{ fontSize: '12px', width: '100px', height: '25px', backgroundColor: defaultColor, color: 'white', fontWeight: 'bold' }}
+                        label="Purchasing"
+                      // onClick={() => navigate('/engineering')}
+                      />
+                    )}
+                    {cookieData.backlog && (
+                      <Chip
+                        sx={{ fontSize: '12px', width: '100px', height: '25px', backgroundColor: defaultColor, color: 'white', fontWeight: 'bold' }}
+                        label="Backlog"
+                      // onClick={() => navigate('/backlog')}
+                      />
+                    )}
                   </Box>
+                </Box>
+              </Box>
 
-                  {/* JOB SUMMARY */}
-                  <Box sx={{ border: '1px solid grey', borderRadius: '15px', p: 2 }}>
-                    <Table sx={{ borderCollapse: 'collapse' }}>
+              {/* JOB SUMMARY */}
+              <Box sx={{ border: '1px solid grey', borderRadius: '15px', p: 2 }}>
+                <Table sx={{ borderCollapse: 'collapse' }}>
+                  <TableBody>
+                    <TableRow>
+                      <TableCell align='right' sx={{ fontWeight: 'bold', fontSize: '22px', py: 0, pr: 2, border: 'none', width: '50%' }}>Total</TableCell>
+                      <TableCell align='left' sx={{ fontWeight: 'bold', fontSize: '22px', py: 0, border: 'none' }}>{engTotal}</TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2, width: '95%' }}>
+                  <Box>
+                    <Table>
                       <TableBody>
                         <TableRow>
-                          <TableCell align='right' sx={{ fontWeight: 'bold', fontSize: '22px', py: 0, pr: 2, border: 'none', width: '50%' }}>Total</TableCell>
-                          <TableCell align='left' sx={{ fontWeight: 'bold', fontSize: '22px', py: 0, border: 'none' }}>{engTotal}</TableCell>
+                          <TableCell align='right' sx={{ fontWeight: 'bold', fontSize: '16px', py: 0, pr: 2, border: 'none' }}>TBR</TableCell>
+                          <TableCell align='left' sx={{ fontWeight: 'bold', fontSize: '16px', py: 0, border: 'none' }}>{engTbr}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell align='right' sx={{ fontWeight: 'bold', fontSize: '16px', py: 0, pr: 2, border: 'none' }}>Future</TableCell>
+                          <TableCell align='left' sx={{ fontWeight: 'bold', fontSize: '16px', py: 0, border: 'none' }}>{engFuture}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell align='right' sx={{ fontWeight: 'bold', fontSize: '16px', py: 0, pr: 2, border: 'none' }}>Expedite</TableCell>
+                          <TableCell align='left' sx={{ fontWeight: 'bold', fontSize: '16px', py: 0, border: 'none' }}>{expedite}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell align='right' sx={{ fontWeight: 'bold', fontSize: '16px', py: 0, pr: 2, border: 'none' }}>Repeats</TableCell>
+                          <TableCell align='left' sx={{ fontWeight: 'bold', fontSize: '16px', py: 0, border: 'none' }}>{engRepeat}</TableCell>
                         </TableRow>
                       </TableBody>
                     </Table>
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2, width: '95%' }}>
-                      <Box>
-                        <Table>
-                          <TableBody>
-                            <TableRow>
-                              <TableCell align='right' sx={{ fontWeight: 'bold', fontSize: '16px', py: 0, pr: 2, border: 'none' }}>TBR</TableCell>
-                              <TableCell align='left' sx={{ fontWeight: 'bold', fontSize: '16px', py: 0, border: 'none' }}>{engTbr}</TableCell>
-                            </TableRow>
-                            <TableRow>
-                              <TableCell align='right' sx={{ fontWeight: 'bold', fontSize: '16px', py: 0, pr: 2, border: 'none' }}>Future</TableCell>
-                              <TableCell align='left' sx={{ fontWeight: 'bold', fontSize: '16px', py: 0, border: 'none' }}>{engFuture}</TableCell>
-                            </TableRow>
-                            <TableRow>
-                              <TableCell align='right' sx={{ fontWeight: 'bold', fontSize: '16px', py: 0, pr: 2, border: 'none' }}>Expedite</TableCell>
-                              <TableCell align='left' sx={{ fontWeight: 'bold', fontSize: '16px', py: 0, border: 'none' }}>{expedite}</TableCell>
-                            </TableRow>
-                            <TableRow>
-                              <TableCell align='right' sx={{ fontWeight: 'bold', fontSize: '16px', py: 0, pr: 2, border: 'none' }}>Repeats</TableCell>
-                              <TableCell align='left' sx={{ fontWeight: 'bold', fontSize: '16px', py: 0, border: 'none' }}>{engRepeat}</TableCell>
-                            </TableRow>
-                          </TableBody>
-                        </Table>
-                      </Box>
-                      <Box>
-                        <Table>
-                          <TableBody>
-                            <TableRow>
-                              <TableCell align='right' sx={{ fontWeight: 'bold', fontSize: '16px', py: 0, pr: 2, border: 'none' }}>Outsource</TableCell>
-                              <TableCell align='left' sx={{ fontWeight: 'bold', fontSize: '16px', py: 0, border: 'none' }}>{engOutsource}</TableCell>
-                            </TableRow>
-                            <TableRow>
-                              <TableCell align='right' sx={{ fontWeight: 'bold', fontSize: '16px', py: 0, pr: 2, border: 'none' }}>BD Test</TableCell>
-                              <TableCell align='left' sx={{ fontWeight: 'bold', fontSize: '16px', py: 0, border: 'none' }}>{testBD}</TableCell>
-                            </TableRow>
-                            <TableRow>
-                              <TableCell align='right' sx={{ fontWeight: 'bold', fontSize: '16px', py: 0, pr: 2, border: 'none' }}>Prototype</TableCell>
-                              <TableCell align='left' sx={{ fontWeight: 'bold', fontSize: '16px', py: 0, border: 'none' }}>{proto}</TableCell>
-                            </TableRow>
-                            <TableRow>
-                              <TableCell align='right' sx={{ fontWeight: 'bold', fontSize: '16px', py: 0, pr: 2, border: 'none' }}>
-                                <a href='http://localhost:3001/backlog/unconfirmed' target='_blank' rel='noopener noreferrer' style={{ fontWeight: 'bold', fontSize: '16px', textDecoration: 'none', color: 'inherit' }}>
-                                  Unconfirmed
-                                </a>
-                              </TableCell>
-                              <TableCell align='left' sx={{ fontWeight: 'bold', fontSize: '16px', py: 0, border: 'none' }}>{unconfirmedTotal}</TableCell>
-                            </TableRow>
-                          </TableBody>
-                        </Table>
-                      </Box>
-                    </Box>
                   </Box>
-
-                  {/* DOUGHNUT CHART */}
-                  <Box sx={{ border: '1px solid grey', borderRadius: '15px', pb: 2, display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%',  height: '250px' }}>
-                    <Doughnut data={donutData} options={donutOptions} style={{ width: '100%', maxWidth: '400px' }} />
+                  <Box>
+                    <Table>
+                      <TableBody>
+                        <TableRow>
+                          <TableCell align='right' sx={{ fontWeight: 'bold', fontSize: '16px', py: 0, pr: 2, border: 'none' }}>Outsource</TableCell>
+                          <TableCell align='left' sx={{ fontWeight: 'bold', fontSize: '16px', py: 0, border: 'none' }}>{engOutsource}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell align='right' sx={{ fontWeight: 'bold', fontSize: '16px', py: 0, pr: 2, border: 'none' }}>BD Test</TableCell>
+                          <TableCell align='left' sx={{ fontWeight: 'bold', fontSize: '16px', py: 0, border: 'none' }}>{testBD}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell align='right' sx={{ fontWeight: 'bold', fontSize: '16px', py: 0, pr: 2, border: 'none' }}>Prototype</TableCell>
+                          <TableCell align='left' sx={{ fontWeight: 'bold', fontSize: '16px', py: 0, border: 'none' }}>{proto}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell align='right' sx={{ fontWeight: 'bold', fontSize: '16px', py: 0, pr: 2, border: 'none' }}>
+                            <a href='http://localhost:3001/backlog/unconfirmed' target='_blank' rel='noopener noreferrer' style={{ fontWeight: 'bold', fontSize: '16px', textDecoration: 'none', color: 'inherit' }}>
+                              Unconfirmed
+                            </a>
+                          </TableCell>
+                          <TableCell align='left' sx={{ fontWeight: 'bold', fontSize: '16px', py: 0, border: 'none' }}>{unconfirmedTotal}</TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
                   </Box>
-                </Box>
-
-                {/* BAR CHART */}
-                <Box sx={{ flexGrow: 1, flexShrink: 1, minWidth: '400px', border: '1px solid grey', borderRadius: '15px', display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', pb: 3 }}>
-                  <Bar data={data} options={options} style={{ width: '100%', height: '100%' }}/>
                 </Box>
               </Box>
 
-              <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 5 }}>
-                <Typography sx={{ fontSize: '16px' }}>This Page Auto-Refreshes Every 30 Seconds</Typography>
+              {/* DOUGHNUT CHART */}
+              <Box sx={{ border: '1px solid grey', borderRadius: '15px', pb: 2, display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', height: '250px' }}>
+                <Doughnut data={donutData} options={donutOptions} style={{ width: '100%', maxWidth: '400px' }} />
               </Box>
-
-              <IconButton onClick={fetchData} sx={{ backgroundColor: '#111827', color: 'white', height: '52.5px', width: '52.5px', zIndex: 1000, position: 'fixed', bottom: '20px', right: '20px', '&:hover': { backgroundColor: '#374151' } }}>
-                <RefreshIcon fontSize='large' />
-              </IconButton>
             </Box>
-          ) : (
-            <NavLink to="/login" style={{ textDecoration: 'none' }}>
-              <Box sx={{ textAlign: 'center' }}>
-                <Button variant="contained" color="error" sx={{ m: 1 }}>
-                  Log In
-                </Button>
-              </Box>
-            </NavLink>
-          )}
+
+            {/* BAR CHART */}
+            <Box sx={{ flexGrow: 1, flexShrink: 1, minWidth: '400px', border: '1px solid grey', borderRadius: '15px', display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', pb: 3 }}>
+              <Bar data={data} options={options} style={{ width: '100%', height: '100%' }} />
+            </Box>
+          </Box>
+
+          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 5 }}>
+            <Typography sx={{ fontSize: '16px' }}>This Page Auto-Refreshes Every 30 Seconds</Typography>
+          </Box>
+
+          <IconButton onClick={fetchData} sx={{ backgroundColor: '#111827', color: 'white', height: '52.5px', width: '52.5px', zIndex: 1000, position: 'fixed', bottom: '20px', right: '20px', '&:hover': { backgroundColor: '#374151' } }}>
+            <RefreshIcon fontSize='large' />
+          </IconButton>
         </Box>
+      ) : (
+        <NavLink to="/login" style={{ textDecoration: 'none' }}>
+          <Box sx={{ textAlign: 'center' }}>
+            <Button variant="contained" color="error" sx={{ m: 1 }}>
+              Log In
+            </Button>
+          </Box>
+        </NavLink>
       )}
-    </Box>
+    </PageContainer>
   );
 }

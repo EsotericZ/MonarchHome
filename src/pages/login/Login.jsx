@@ -20,9 +20,7 @@ export const Login = () => {
     try {
       const res = await login(username, password);
       cookies.set('jwt', res.accessToken);
-      console.log(jwtDecode(cookies.get('jwt')));
       const decodedData = jwtDecode(cookies.get('jwt'));
-      console.log('Decoded Data:', decodedData);
       setCookieData(jwtDecode(cookies.get('jwt')));
       setLoggedIn(true);
       navigate('/');
