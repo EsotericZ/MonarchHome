@@ -5,6 +5,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { useUserContext } from '../../context/UserContext';
 
 import CopySnackbar from '../../components/shared/CopySnackbar';
+import CustomHeader from '../../components/programming/CustomHeader';
 import CustomSelect from '../../components/programming/CustomSelect';
 import DataTableCell from '../../components/shared/DataTableCell';
 import DepartmentTabs from '../../components/departments/DepartmentTabs';
@@ -324,6 +325,58 @@ export const Engineering = () => {
 
   let rowIndex = 0;
 
+  const tbrFutureColumnConfig = [
+    { label: 'Job No', width: '7%', isSearchable: true, value: searchedValueJobNo, onChange: (e) => setSearchedValueJobNo(e.target.value), placeholder: 'Job No' },
+    { label: 'Step No', width: '7%', isSearchable: false },
+    { label: 'Part No', width: '20%', isSearchable: true, value: searchedValuePartNo, onChange: (e) => setSearchedValuePartNo(e.target.value), placeholder: 'Part No' },
+    { label: 'Revision', width: '5%', isSearchable: false },
+    { label: 'Qty', width: '5%', isSearchable: false },
+    { label: 'Due Date', width: '7%', isSearchable: false },
+    { label: 'Customer', width: '12%', isSearchable: true, value: searchedValueCustomer, onChange: (e) => setSearchedValueCustomer(e.target.value), placeholder: 'Customer' },
+    { label: 'Type', width: '7%', isSearchable: true, value: searchedValueType, onChange: (e) => setSearchedValueType(e.target.value), placeholder: 'Type' },
+    { label: 'Engineer', width: '10%', isSearchable: true, value: searchedValueEngineer, onChange: (e) => setSearchedValueEngineer(e.target.value), placeholder: 'Engineer' },
+    { label: 'Quote', width: '6%', isSearchable: true, value: searchedValueQuote, onChange: (e) => setSearchedValueQuote(e.target.value), placeholder: 'Quote' },
+    { label: 'Model', width: '7%', isSearchable: false },
+    { label: 'Status', width: '10%', isSearchable: true, value: searchedValueStatus, onChange: (e) => setSearchedValueStatus(e.target.value), placeholder: 'Status' },
+  ];
+
+  const repeatColumnConfig = [
+    { label: 'Job No', width: '10%', isSearchable: true, value: searchedValueJobNo, onChange: (e) => setSearchedValueJobNo(e.target.value), placeholder: 'Job No' },
+    { label: 'Step No', width: '7%', isSearchable: false },
+    { label: 'Part No', width: '20%', isSearchable: true, value: searchedValuePartNo, onChange: (e) => setSearchedValuePartNo(e.target.value), placeholder: 'Part No' },
+    { label: 'Revision', width: '10%', isSearchable: false },
+    { label: 'Qty', width: '8%', isSearchable: false },
+    { label: 'Due Date', width: '10%', isSearchable: false },
+    { label: 'Customer', width: '10%', isSearchable: true, value: searchedValueCustomer, onChange: (e) => setSearchedValueCustomer(e.target.value), placeholder: 'Customer' },
+    { label: 'Type', width: '10%', isSearchable: true, value: searchedValueType, onChange: (e) => setSearchedValueType(e.target.value), placeholder: 'Type' },
+    { label: 'Next Step', width: '10%', isSearchable: true, value: searchedValueStep, onChange: (e) => setSearchedValueStep(e.target.value), placeholder: 'Next Step' },
+    { label: 'Print', width: '5%', isSearchable: false },
+  ];
+
+  const outsourceColumnConfig = [
+    { label: 'Job No', width: '10%', isSearchable: true, value: searchedValueJobNo, onChange: (e) => setSearchedValueJobNo(e.target.value), placeholder: 'Job No' },
+    { label: 'Step No', width: '7%', isSearchable: false },
+    { label: 'Part No', width: '20%', isSearchable: true, value: searchedValuePartNo, onChange: (e) => setSearchedValuePartNo(e.target.value), placeholder: 'Part No' },
+    { label: 'Revision', width: '10%', isSearchable: false },
+    { label: 'Qty', width: '8%', isSearchable: false },
+    { label: 'Due Date', width: '10%', isSearchable: false },
+    { label: 'Customer', width: '10%', isSearchable: true, value: searchedValueCustomer, onChange: (e) => setSearchedValueCustomer(e.target.value), placeholder: 'Customer' },
+    { label: 'Quote', width: '10%', isSearchable: true, value: searchedValueQuote, onChange: (e) => setSearchedValueQuote(e.target.value), placeholder: 'Quote' },
+    { label: 'Type', width: '10%', isSearchable: true, value: searchedValueType, onChange: (e) => setSearchedValueType(e.target.value), placeholder: 'Type' },
+    { label: 'Print', width: '5%', isSearchable: false },
+  ];
+
+  const activeColumnConfig = [
+    { label: 'Job No', width: '11%', isSearchable: true, value: searchedValueJobNo, onChange: (e) => setSearchedValueJobNo(e.target.value), placeholder: 'Job No' },
+    { label: 'Part No', width: '23%', isSearchable: true, value: searchedValuePartNo, onChange: (e) => setSearchedValuePartNo(e.target.value), placeholder: 'Part No' },
+    { label: 'Revision', width: '11%', isSearchable: false },
+    { label: 'Qty', width: '11%', isSearchable: false },
+    { label: 'Due Date', width: '11%', isSearchable: false },
+    { label: 'Customer', width: '11%', isSearchable: true, value: searchedValueCustomer, onChange: (e) => setSearchedValueCustomer(e.target.value), placeholder: 'Customer' },
+    { label: 'Type', width: '11%', isSearchable: true, value: searchedValueType, onChange: (e) => setSearchedValueType(e.target.value), placeholder: 'Type' },
+    { label: 'Area', width: '11%', isSearchable: true, value: searchedValueArea, onChange: (e) => setSearchedValueArea(e.target.value), placeholder: 'Area' },
+  ];
+
   return (
     <PageContainer loading={loading} title='Engineering'>
       <DepartmentTabs
@@ -340,55 +393,7 @@ export const Engineering = () => {
             <TableContainer component={Paper}>
               <Table>
                 <TableHead>
-                  <TableRow>
-                    <SearchTableCell
-                      width='7%'
-                      placeholder='Job No'
-                      value={searchedValueJobNo}
-                      onChange={(e) => setSearchedValueJobNo(e.target.value)}
-                    />
-                    <StandardTableCell width='7%'>Step No</StandardTableCell>
-                    <SearchTableCell
-                      width='20%'
-                      placeholder='Part No'
-                      value={searchedValuePartNo}
-                      onChange={(e) => setSearchedValuePartNo(e.target.value)}
-                    />
-                    <StandardTableCell width='5%'>Revision</StandardTableCell>
-                    <StandardTableCell width='5%'>Qty</StandardTableCell>
-                    <StandardTableCell width='7%'>Due Date</StandardTableCell>
-                    <SearchTableCell
-                      width='12%'
-                      placeholder='Customer'
-                      value={searchedValueCustomer}
-                      onChange={(e) => setSearchedValueCustomer(e.target.value)}
-                    />
-                    <SearchTableCell
-                      width='7%'
-                      placeholder='Type'
-                      value={searchedValueType}
-                      onChange={(e) => setSearchedValueType(e.target.value)}
-                    />
-                    <SearchTableCell
-                      width='10%'
-                      placeholder='Engineer'
-                      value={searchedValueEngineer}
-                      onChange={(e) => setSearchedValueEngineer(e.target.value)}
-                    />
-                    <SearchTableCell
-                      width='6%'
-                      placeholder='Quote'
-                      value={searchedValueQuote}
-                      onChange={(e) => setSearchedValueQuote(e.target.value)}
-                    />
-                    <StandardTableCell width='7%'>Model</StandardTableCell>
-                    <SearchTableCell
-                      width='10%'
-                      placeholder='Status'
-                      value={searchedValueStatus}
-                      onChange={(e) => setSearchedValueStatus(e.target.value)}
-                    />
-                  </TableRow>
+                  <CustomHeader columns={tbrFutureColumnConfig} />
                 </TableHead>
                 <TableBody>
                   {searchedTBR
@@ -522,55 +527,7 @@ export const Engineering = () => {
             <TableContainer component={Paper}>
               <Table>
                 <TableHead>
-                  <TableRow>
-                    <SearchTableCell
-                      width='7%'
-                      placeholder='Job No'
-                      value={searchedValueJobNo}
-                      onChange={(e) => setSearchedValueJobNo(e.target.value)}
-                    />
-                    <StandardTableCell width='7%'>Step No</StandardTableCell>
-                    <SearchTableCell
-                      width='20%'
-                      placeholder='Part No'
-                      value={searchedValuePartNo}
-                      onChange={(e) => setSearchedValuePartNo(e.target.value)}
-                    />
-                    <StandardTableCell width='5%'>Revision</StandardTableCell>
-                    <StandardTableCell width='5%'>Qty</StandardTableCell>
-                    <StandardTableCell width='7%'>Due Date</StandardTableCell>
-                    <SearchTableCell
-                      width='12%'
-                      placeholder='Customer'
-                      value={searchedValueCustomer}
-                      onChange={(e) => setSearchedValueCustomer(e.target.value)}
-                    />
-                    <SearchTableCell
-                      width='7%'
-                      placeholder='Type'
-                      value={searchedValueType}
-                      onChange={(e) => setSearchedValueType(e.target.value)}
-                    />
-                    <SearchTableCell
-                      width='10%'
-                      placeholder='Engineer'
-                      value={searchedValueEngineer}
-                      onChange={(e) => setSearchedValueEngineer(e.target.value)}
-                    />
-                    <SearchTableCell
-                      width='6%'
-                      placeholder='Quote'
-                      value={searchedValueQuote}
-                      onChange={(e) => setSearchedValueQuote(e.target.value)}
-                    />
-                    <StandardTableCell width='7%'>Model</StandardTableCell>
-                    <SearchTableCell
-                      width='10%'
-                      placeholder='Status'
-                      value={searchedValueStatus}
-                      onChange={(e) => setSearchedValueStatus(e.target.value)}
-                    />
-                  </TableRow>
+                  <CustomHeader columns={tbrFutureColumnConfig} />
                 </TableHead>
                 <TableBody>
                   {searchedFuture
@@ -706,38 +663,7 @@ export const Engineering = () => {
             <TableContainer component={Paper}>
               <Table>
                 <TableHead>
-                  <TableRow>
-                    <SearchTableCell
-                      width='10%'
-                      placeholder='Job No'
-                      value={searchedValueJobNo}
-                      onChange={(e) => setSearchedValueJobNo(e.target.value)}
-                    />
-                    <StandardTableCell width='7%'>Step No</StandardTableCell>
-                    <SearchTableCell
-                      width='20%'
-                      placeholder='Part No'
-                      value={searchedValuePartNo}
-                      onChange={(e) => setSearchedValuePartNo(e.target.value)}
-                    />
-                    <StandardTableCell width='10%'>Revision</StandardTableCell>
-                    <StandardTableCell width='8%'>Qty</StandardTableCell>
-                    <StandardTableCell width='10%'>Due Date</StandardTableCell>
-                    <SearchTableCell
-                      width='10%'
-                      placeholder='Customer'
-                      value={searchedValueCustomer}
-                      onChange={(e) => setSearchedValueCustomer(e.target.value)}
-                    />
-                    <StandardTableCell width='10%'>Type</StandardTableCell>
-                    <SearchTableCell
-                      width='10%'
-                      placeholder='Next Step'
-                      value={searchedValueStep}
-                      onChange={(e) => setSearchedValueStep(e.target.value)}
-                    />
-                    <StandardTableCell width='5%'>Print</StandardTableCell>
-                  </TableRow>
+                  <CustomHeader columns={repeatColumnConfig} />
                 </TableHead>
                 <TableBody>
                   {fullRepeats
@@ -808,43 +734,7 @@ export const Engineering = () => {
             <TableContainer component={Paper}>
               <Table>
                 <TableHead>
-                  <TableRow>
-                    <SearchTableCell
-                      width='10%'
-                      placeholder='Job No'
-                      value={searchedValueJobNo}
-                      onChange={(e) => setSearchedValueJobNo(e.target.value)}
-                    />
-                    <StandardTableCell width='7%'>Step No</StandardTableCell>
-                    <SearchTableCell
-                      width='20%'
-                      placeholder='Part No'
-                      value={searchedValuePartNo}
-                      onChange={(e) => setSearchedValuePartNo(e.target.value)}
-                    />
-                    <StandardTableCell width='10%'>Revision</StandardTableCell>
-                    <StandardTableCell width='8%'>Qty</StandardTableCell>
-                    <StandardTableCell width='10%'>Due Date</StandardTableCell>
-                    <SearchTableCell
-                      width='10%'
-                      placeholder='Customer'
-                      value={searchedValueCustomer}
-                      onChange={(e) => setSearchedValueCustomer(e.target.value)}
-                    />
-                    <SearchTableCell
-                      width='10%'
-                      placeholder='Quote'
-                      value={searchedValueQuote}
-                      onChange={(e) => setSearchedValueQuote(e.target.value)}
-                    />
-                    <SearchTableCell
-                      width='10%'
-                      placeholder='Type'
-                      value={searchedValueType}
-                      onChange={(e) => setSearchedValueType(e.target.value)}
-                    />
-                    <StandardTableCell width='5%'>Print</StandardTableCell>
-                  </TableRow>
+                  <CustomHeader columns={outsourceColumnConfig} />
                 </TableHead>
                 <TableBody>
                   {fullOutsource
@@ -915,41 +805,7 @@ export const Engineering = () => {
             <TableContainer component={Paper}>
               <Table>
                 <TableHead>
-                  <TableRow>
-                    <SearchTableCell
-                      width='11%'
-                      placeholder='Job No'
-                      value={searchedValueJobNo}
-                      onChange={(e) => setSearchedValueJobNo(e.target.value)}
-                    />
-                    <SearchTableCell
-                      width='23%'
-                      placeholder='Part No'
-                      value={searchedValuePartNo}
-                      onChange={(e) => setSearchedValuePartNo(e.target.value)}
-                    />
-                    <StandardTableCell width='11%'>Revision</StandardTableCell>
-                    <StandardTableCell width='11%'>Qty</StandardTableCell>
-                    <StandardTableCell width='11%'>Due Date</StandardTableCell>
-                    <SearchTableCell
-                      width='11%'
-                      placeholder='Customer'
-                      value={searchedValueCustomer}
-                      onChange={(e) => setSearchedValueCustomer(e.target.value)}
-                    />
-                    <SearchTableCell
-                      width='11%'
-                      placeholder='Type'
-                      value={searchedValueType}
-                      onChange={(e) => setSearchedValueType(e.target.value)}
-                    />
-                    <SearchTableCell
-                      width='11%'
-                      placeholder='Area'
-                      value={searchedValueArea}
-                      onChange={(e) => setSearchedValueArea(e.target.value)}
-                    />
-                  </TableRow>
+                  <CustomHeader columns={activeColumnConfig} />
                 </TableHead>
                 <TableBody>
                   {searchedEng
