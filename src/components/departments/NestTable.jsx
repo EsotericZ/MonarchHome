@@ -32,7 +32,6 @@ const NestTable = ({
       ...prev, 
       [key]: value 
     }));
-    console.log('Filtering material:', searchedValues.material);
   };
 
   const renderTableRows = (jobs, isFuture = false) => {

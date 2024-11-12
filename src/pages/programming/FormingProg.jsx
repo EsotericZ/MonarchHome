@@ -137,6 +137,8 @@ export const FormingProg = () => {
     fetchData();
   }, [loading]);
 
+  let rowIndex = 0
+
   return (
     <Box sx={{ width: '100%', textAlign: 'center', overflowY: 'auto', height: '100vh' }}>
       {loading ? (
@@ -439,8 +441,9 @@ export const FormingProg = () => {
                             const rowClass = job.WorkCode == 'HOT' ? 'expedite-row' : '';
                             const dropdownFutureTitle = dropdownFutureTitles[job.JobNo] || job.dataValues.formProgrammer;
                             const dropdownFutureStatus = dropdownFutureStatuses[job.JobNo] || job.dataValues.formStatus;
+                            rowIndex++;
                             return (
-                              <TableRow key={index} sx={{ backgroundColor: index % 2 === 0 ? '#f0f0f0' : '#fff' }} className={`${rowClass}`}>
+                              <TableRow key={index} sx={{ backgroundColor: rowIndex % 2 === 0 ? '#f0f0f0' : '#fff' }} className={`${rowClass}`}>
                                 <TableCell align='center' sx={{ fontWeight: 'bold', fontSize: '15px', p: 1.25 }}>{job.JobNo}</TableCell>
                                 <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>
                                   <CopyToClipboard text={job.PartNo} onCopy={() => { setShowToast(true); setPartCopy(`${job.PartNo}`); }}>
