@@ -5,7 +5,7 @@ import AddModal from '../../components/departments/AddModal';
 import AllJobsTable from '../../components/departments/AllJobsTable';
 import AllMaterialsModal from '../../components/departments/AllMaterialsModal';
 import CompleteModal from '../../components/departments/CompleteModal';
-import DepartmentTabs from '../../components/departments/DepartmentTabs';
+import CustomTabs from '../../components/shared/CustomTabs';
 import EditModal from '../../components/departments/EditModal';
 import MaterialTable from '../../components/departments/MaterialTable';
 import NestTable from '../../components/departments/NestTable';
@@ -254,7 +254,7 @@ export const Punch = () => {
         setPartCopy={setPartCopy}
       />
 
-      <DepartmentTabs
+      <CustomTabs
         selectedTab={selectedTab}
         handleTabChange={handleTabChange}
         tabLabels={['Ready to Nest', 'Material', 'Programs', 'All Jobs']}

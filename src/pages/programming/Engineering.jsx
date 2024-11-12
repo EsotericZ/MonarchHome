@@ -8,11 +8,9 @@ import CopySnackbar from '../../components/shared/CopySnackbar';
 import CustomHeader from '../../components/programming/CustomHeader';
 import CustomSelect from '../../components/programming/CustomSelect';
 import DataTableCell from '../../components/shared/DataTableCell';
-import DepartmentTabs from '../../components/departments/DepartmentTabs';
+import CustomTabs from '../../components/shared/CustomTabs';
 import PageContainer from '../../components/shared/PageContainer';
 import RefreshButton from '../../components/shared/RefreshButton';
-import SearchTableCell from '../../components/shared/SearchTableCell';
-import StandardTableCell from '../../components/shared/StandardTableCell';
 
 import CheckIcon from '@mui/icons-material/Check';
 
@@ -379,7 +377,7 @@ export const Engineering = () => {
 
   return (
     <PageContainer loading={loading} title='Engineering'>
-      <DepartmentTabs
+      <CustomTabs
         selectedTab={selectedTab}
         handleTabChange={handleTabChange}
         tabLabels={[tbr, future, repeat, outsource, 'Active']}

@@ -1,6 +1,6 @@
 import { Tab, Tabs } from '@mui/material';
 
-const DepartmentTabs = ({ selectedTab, handleTabChange, tabLabels }) => {
+const CustomTabs = ({ selectedTab, handleTabChange, tabLabels }) => {
   return (
     <Tabs
       value={selectedTab}
@@ -23,4 +23,4 @@ const DepartmentTabs = ({ selectedTab, handleTabChange, tabLabels }) => {
   );
 };
 
-export default DepartmentTabs;
+export default CustomTabs;
