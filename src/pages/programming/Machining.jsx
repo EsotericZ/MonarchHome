@@ -261,7 +261,7 @@ export const Machining = () => {
     fetchData();
   }, [loading, update]);
 
-  let rowIndex = 0;
+  let rowIndex = 1;
 
   const tbrFutureColumnConfig = [
     { label: 'Job No', width: '7%', isSearchable: true, value: searchedValueJobNo, onChange: (e) => setSearchedValueJobNo(e.target.value), placeholder: 'Job No' },
