@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Box, createTheme, CssBaseline, Collapse, Divider, Drawer as MuiDrawer, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, ThemeProvider, Tooltip } from '@mui/material';
 import {
   AdminPanelSettings as AdminPanelSettingsIcon,
+  Assessment as AssessmentIcon,
   ChevronLeft as ChevronLeftIcon,
   ChevronRight as ChevronRightIcon,
   ContentPaste as ContentPasteIcon,
@@ -96,6 +97,7 @@ export const SideNav = ({ children }) => {
   const [name, setName] = useState('');
   const [open, setOpen] = useState(false);
   const [programmingOpen, setProgrammingOpen] = useState(false);
+  const [specialtyOpen, setSpecialtyOpen] = useState(false);
 
   const handleDrawerToggle = () => {
     setOpen(!open);
@@ -122,6 +124,11 @@ export const SideNav = ({ children }) => {
     setProgrammingOpen(!programmingOpen);
   }
 
+  const handleSpecialtyClick = () => {
+    closeAllMenus();
+    setSpecialtyOpen(!specialtyOpen);
+  }
+
   const handleCloseAll = () => {
     setOpen(false);
     closeAllMenus();
@@ -132,6 +139,7 @@ export const SideNav = ({ children }) => {
     setHomeOpen(false);
     setInventoryOpen(false);
     setProgrammingOpen(false);
+    setSpecialtyOpen(false);
   }
 
   useEffect(() => {
@@ -459,6 +467,64 @@ export const SideNav = ({ children }) => {
                   </ListItem>
                 </List>
               </Collapse>
+
+            {/* SPECIALTY */}
+
+              {cookieData.specialty &&
+                <>
+                  <ListItem disablePadding>
+                    <Tooltip title='Specialty' placement='right' arrow>
+                      <ListItemButton
+                        onClick={() => {
+                          if (!open) {
+                            navigate('/specialty');
+                            handleCloseAll();
+                          }
+                        }}
+                      >
+                        <ListItemIcon sx={{ cursor: 'pointer', py: 1 }}>
+                          <AssessmentIcon />
+                        </ListItemIcon>
+                        {open && (
+                          <>
+                            <ListItemText
+                              primary='Specialty'
+                              onClick={() => { navigate('/specialty'); handleCloseAll(); }}
+                              sx={{ cursor: 'pointer' }}
+                            />
+                            <IconButton onClick={handleSpecialtyClick}>
+                              {specialtyOpen ? <ExpandLess /> : <ExpandMore />}
+                            </IconButton>
+                          </>
+                        )}
+                      </ListItemButton>
+                    </Tooltip>
+                  </ListItem>
+                  <Collapse in={specialtyOpen} timeout='auto' unmountOnExit>
+                    <List component='div' disablePadding sx={{ paddingLeft: 7 }}>
+                      <ListItem disablePadding>
+                        <ListItemButton onClick={() => { navigate('/efficiency'); handleCloseAll(); }}>
+                          <ListItemText primary='Efficiency' />
+                        </ListItemButton>
+                      </ListItem>
+                    </List>
+                    <List component='div' disablePadding sx={{ paddingLeft: 7 }}>
+                      <ListItem disablePadding>
+                        <ListItemButton onClick={() => { navigate('/sheetInventory'); handleCloseAll(); }}>
+                          <ListItemText primary='Sheet Inventory' />
+                        </ListItemButton>
+                      </ListItem>
+                    </List>
+                    <List component='div' disablePadding sx={{ paddingLeft: 7 }}>
+                      <ListItem disablePadding>
+                        <ListItemButton onClick={() => { navigate('/vtiger'); handleCloseAll(); }}>
+                          <ListItemText primary='VTiger' />
+                        </ListItemButton>
+                      </ListItem>
+                    </List>
+                  </Collapse>
+                </>
+              }
             </List>
 
             {/* DIVIDER */}

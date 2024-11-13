@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'universal-cookie';
 import { jwtDecode } from "jwt-decode";
-import { Alert, Box, Button, TextField, Typography } from '@mui/material';
+import { Alert, Box, TextField, Typography } from '@mui/material';
 
 import { useUserContext } from '../../context/UserContext';
 import login from '../../services/portal/login';
@@ -21,7 +21,6 @@ export const Login = () => {
     try {
       const res = await login(username, password);
       cookies.set('jwt', res.accessToken);
-      const decodedData = jwtDecode(cookies.get('jwt'));
       setCookieData(jwtDecode(cookies.get('jwt')));
       setLoggedIn(true);
       navigate('/');

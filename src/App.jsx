@@ -10,6 +10,7 @@ import { BendDeduction } from './pages/programming/BendDeduction';
 import { Dashboard } from './pages/home/Dashboard';
 import { Departments } from './pages/departments/Departments';
 import { Directory } from './pages/home/Directory';
+import { Efficiency } from './pages/specialty/Efficiency';
 import { Engineering } from './pages/programming/Engineering';
 import { FixtureLaser } from './pages/departments/FixtureLaser';
 import { Forming } from './pages/departments/Forming';
@@ -29,11 +30,14 @@ import { QualityInfo } from './pages/programming/QualityInfo';
 import { Saw } from './pages/departments/Saw';
 import { Scales } from './pages/inventory/Scales';
 import { Shear } from './pages/departments/Shear';
+import { SheetInventory } from './pages/specialty/SheetInventory';
+import { Specialty } from './pages/specialty/Specialty';
 import { StaticLaser } from './pages/departments/StaticLaser';
 import { Supplies } from './pages/inventory/Supplies';
 import { TapChart } from './pages/programming/TapChart';
 import { TubeLaser } from './pages/departments/TubeLaser';
 import { TubeLaserProg } from './pages/programming/TubeLaserProg';
+import { VTiger } from './pages/specialty/VTiger';
 
 export const App = () => {
   const { setCookieData } = useUserContext();
@@ -74,6 +78,7 @@ export const App = () => {
           <Route path='/departments' element={<Departments />} />
           <Route path='/directory' element={<Directory />} />
           <Route path='/engineering' element={<Engineering />} />
+          <Route path='/efficiency' element={<Efficiency />} />
           <Route path='/fixtureLaser' element={<FixtureLaser />} />
           <Route path='/forming' element={<Forming />} />
           <Route path='/formingProg' element={<FormingProg />} />
@@ -92,11 +97,14 @@ export const App = () => {
           <Route path='/saw' element={<Saw />} />
           <Route path='/scales' element={<Scales />} />
           <Route path='/shear' element={<Shear />} />
+          <Route path='/sheetInventory' element={<SheetInventory />} />
+          <Route path='/specialty' element={<Specialty />} />
           <Route path='/staticLaser' element={<StaticLaser />} />
           <Route path='/supplies' element={<Supplies />} />
           <Route path='/tapChart' element={<TapChart />} />
           <Route path='/tubeLaser' element={<TubeLaser />} />
           <Route path='/tubeLaserProg' element={<TubeLaserProg />} />
+          <Route path='/vtiger' element={<VTiger />} />
         </Routes>
       </SideNav>
     </Router>

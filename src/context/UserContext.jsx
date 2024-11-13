@@ -17,10 +17,11 @@ export const UserProvider = ({ children }) => {
       punch: false,
       purchasing: false,
       quality: false,
-      shipping: false,
-      tlaser: false,
       saw: false,
       shear: false,
+      shipping: false,
+      specialty: false,
+      tlaser: false,
     };
   });
 

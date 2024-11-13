@@ -117,6 +117,9 @@ const EmployeeCard = ({ user, handleOpenUpdate }) => {
           {user.backlog && (
             <Chip sx={{ fontSize: '13px', width: '105px', backgroundColor: 'gray', color: 'white', fontWeight: 'bold' }} label="Backlog" />
           )}
+          {user.specialty && (
+            <Chip sx={{ fontSize: '13px', width: '105px', backgroundColor: 'gray', color: 'white', fontWeight: 'bold' }} label="Specialty" />
+          )}
         </Box>
       </CardContent>
     </Card>

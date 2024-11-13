@@ -104,6 +104,7 @@ export const Dashboard = () => {
   let productionColor = 'lightgreen';
   let programmingColor = '#F75D59';
   let defaultColor = 'gray';
+  let specialtyColor = 'yellow';
 
   const options = {
     responsive: true,
@@ -314,8 +315,27 @@ export const Dashboard = () => {
                       <Chip
                         sx={{ fontSize: '12px', width: '100px', height: '25px', backgroundColor: defaultColor, color: 'white', fontWeight: 'bold' }}
                         label="Backlog"
-                      // onClick={() => navigate('/backlog')}
+                        onClick={() => navigate('/backlog')}
                       />
+                    )}
+                    {cookieData.specialty && (
+                      <>
+                        <Chip
+                          sx={{ fontSize: '12px', width: '100px', height: '25px', backgroundColor: specialtyColor, color: 'black', fontWeight: 'bold' }}
+                          label="Efficiency"
+                          onClick={() => navigate('/efficiency')}
+                        />
+                        <Chip
+                          sx={{ fontSize: '12px', width: '100px', height: '25px', backgroundColor: specialtyColor, color: 'black', fontWeight: 'bold' }}
+                          label="Sheet Inv"
+                          onClick={() => navigate('/sheetInventory')}
+                        />
+                        <Chip
+                          sx={{ fontSize: '12px', width: '100px', height: '25px', backgroundColor: specialtyColor, color: 'black', fontWeight: 'bold' }}
+                          label="VTiger"
+                          onClick={() => navigate('/vtiger')}
+                        />
+                      </>
                     )}
                   </Box>
                 </Box>

@@ -10,19 +10,20 @@ import getUserPassword from '../../services/users/getUserPassword';
 import createUser from '../../services/users/createUser';
 import deleteUser from '../../services/users/deleteUser';
 import updateUser from '../../services/users/updateUser';
+import updateBacklog from '../../services/users/updateBacklog';
 import updateEngineering from '../../services/users/updateEngineering';
 import updateForming from '../../services/users/updateForming';
 import updateLaser from '../../services/users/updateLaser';
 import updateMachining from '../../services/users/updateMachining';
 import updateMaintenance from '../../services/users/updateMaintenance';
 import updatePunch from '../../services/users/updatePunch';
+import updatePurchasing from '../../services/users/updatePurchasing';
 import updateQuality from '../../services/users/updateQuality';
 import updateSaw from '../../services/users/updateSaw';
 import updateShear from '../../services/users/updateShear';
 import updateShipping from '../../services/users/updateShipping';
+import updateSpecialty from '../../services/users/updateSpecialty';
 import updateTLaser from '../../services/users/updateTLaser';
-import updatePurchasing from '../../services/users/updatePurchasing';
-import updateBacklog from '../../services/users/updateBacklog';
 
 import AddUserModal from '../../components/admin/AddUserModal';
 import EmployeeCard from '../../components/admin/EmployeeCard';
@@ -53,6 +54,7 @@ export const Admin = () => {
     saw: 0,
     shear: 0,
     shipping: 0,
+    specialty: 0,
     tlaser: 0,
   });
   const [updateSingleUser, setUpdateSingleUser] = useState({
@@ -82,6 +84,7 @@ export const Admin = () => {
     { name: 'saw', label: 'Saw', checked: false },
     { name: 'shear', label: 'Shear', checked: false },
     { name: 'shipping', label: 'Shipping', checked: false },
+    { name: 'specialty', label: 'Specialty', checked: false },
     { name: 'tlaser', label: 'TLaser', checked: false },
   ]);
 
@@ -111,19 +114,20 @@ export const Admin = () => {
       )
     );
     const updateRoleFunctionMap = {
-      maintenance: updateMaintenance,
-      shipping: updateShipping,
-      purchasing: updatePurchasing,
       backlog: updateBacklog,
       engineering: updateEngineering,
-      tlaser: updateTLaser,
-      quality: updateQuality,
       forming: updateForming,
-      machining: updateMachining,
       laser: updateLaser,
-      saw: updateSaw,
+      machining: updateMachining,
+      maintenance: updateMaintenance,
       punch: updatePunch,
+      purchasing: updatePurchasing,
+      quality: updateQuality,
+      saw: updateSaw,
+      shipping: updateShipping,
       shear: updateShear,
+      specialty: updateSpecialty,
+      tlaser: updateTLaser,
     };
     if (updateRoleFunctionMap[roleName]) {
       updateRoleFunctionMap[roleName](userID);
@@ -204,19 +208,20 @@ export const Admin = () => {
   const filteredUsersByName = allUsers.filter(user => user.name.toLowerCase().includes(searchName.toLowerCase()));
 
   const departmentKeywords = [
-    'engineering',
-    'machining',
-    'quality',
-    'laser',
-    'forming',
-    'tlaser',
-    'saw',
-    'punch',
-    'shear',
-    'maintenance',
-    'shipping',
-    'purchasing',
     'backlog',
+    'engineering',
+    'forming',
+    'laser',
+    'machining',
+    'maintenance',
+    'punch',
+    'purchasing',
+    'quality',
+    'saw',
+    'shear',
+    'shipping',
+    'specialty',
+    'tlaser',
   ];
 
   const filteredUsersByDepartment = allUsers.filter(user => {
