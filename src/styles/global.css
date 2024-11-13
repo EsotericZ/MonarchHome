@@ -80,3 +80,46 @@
 .qc-row:nth-of-type(odd) {
   filter: brightness(0.93);
 }
+
+.custom-date-picker {
+  border: none;
+  background: none;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-size: 15px;
+  text-align: center;
+  color: black;
+  width: 100%; 
+  cursor: pointer;
+  outline: none;
+  padding: 4px 0;
+}
+
+.mmBtn {
+  width: 125px !important;
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff !important;
+  cursor: pointer;
+  height: 40px;
+  text-align: center;
+  border: none;
+  background-size: 300% 100%;
+  border-radius: 15px !important;
+  transition: all 0.4s ease-in-out, transform 0.1s;
+  background-image: linear-gradient(to right, #29323c, #485563, #485563, #29323c);
+  box-shadow: 0 4px 10px 0 rgba(45, 54, 65, 0.75);
+  outline: none;
+}
+
+.mmBtn:hover {
+  background-position: 100% 0;
+}
+
+.mmBtn:active {
+  transform: scale(0.98);
+  box-shadow: 0 2px 5px 0 rgba(45, 54, 65, 0.75);
+}
+
+.mmBtn:focus {
+  outline: none;
+}
