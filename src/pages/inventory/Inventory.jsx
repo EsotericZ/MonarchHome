@@ -5,7 +5,7 @@ import { useUserContext } from '../../context/UserContext';
 
 import PageContainer from '../../components/shared/PageContainer';
 
-export const Hardware = () => {
+export const Inventory = () => {
   const { cookieData } = useUserContext();
   const [loading, setLoading] = useState(true);
 
@@ -14,7 +14,7 @@ export const Hardware = () => {
   }, [loading]);
 
   return (
-    <PageContainer loading={loading} title='Hardware'>
+    <PageContainer loading={loading} title='Inventory'>
       <Box sx={{ padding: '12px' }}>
         <Typography>Under Construction</Typography>
       </Box>

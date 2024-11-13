@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Box, Button, Chip, IconButton, Table, TableBody, TableCell, TableRow, Typography } from '@mui/material';
+import { Box, Chip, IconButton, Table, TableBody, TableCell, TableRow, Typography } from '@mui/material';
 
 import { useUserContext } from '../../context/UserContext';
 import { NavLink } from 'react-router-dom';
@@ -11,6 +11,7 @@ import { Bar, Doughnut } from 'react-chartjs-2';
 import { ArcElement, BarElement, CategoryScale, Chart, Legend, LinearScale, Title, Tooltip } from 'chart.js';
 
 import MonarchButton from '../../components/shared/MonarchButton';
+import PageContainer from '../../components/shared/PageContainer';
 
 import getAllJobs from '../../services/engineering/getAllJobs';
 import getTBRJobs from '../../services/engineering/getTBRJobs';
@@ -19,7 +20,6 @@ import getRepeatJobs from '../../services/engineering/getRepeatJobs';
 import getOutsourceJobs from '../../services/engineering/getOutsourceJobs';
 import getUnconfirmedJobs from '../../services/engineering/getUnconfirmedJobs';
 
-import PageContainer from '../../components/shared/PageContainer';
 
 export const Dashboard = () => {
   Chart.register(
@@ -198,7 +198,7 @@ export const Dashboard = () => {
                   <PersonIcon sx={{ fontSize: 75 }} />
                 </IconButton>
                 <Box sx={{ ml: 2 }}>
-                  <Typography sx={{ fontSize: 32, fontWeight: 'bold' }}>{cookieData.name}</Typography>
+                  <Typography sx={{ fontSize: 28, fontWeight: 'bold' }}>{cookieData.name}</Typography>
                   <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
                     {cookieData.engineering && (
                       <Chip
@@ -331,7 +331,7 @@ export const Dashboard = () => {
                     </TableRow>
                   </TableBody>
                 </Table>
-                <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2, width: '95%' }}>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 1, width: '95%' }}>
                   <Box>
                     <Table>
                       <TableBody>

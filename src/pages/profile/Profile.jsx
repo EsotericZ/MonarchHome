@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import { Box, Typography } from '@mui/material';
 
-import PuffLoader from "react-spinners/PuffLoader";
-import { Box, Button, Typography } from '@mui/material';
+import { useUserContext } from '../../context/UserContext';
 
 import DepartmentCard from '../../components/shared/DepartmentCard';
 import MonarchButton from '../../components/shared/MonarchButton';
-import { useUserContext } from '../../context/UserContext';
+import PageContainer from '../../components/shared/PageContainer';
 
 export const Profile = ({ handleLogout }) => {
   const { loggedIn, cookieData, setCookieData } = useUserContext();
@@ -215,47 +215,34 @@ export const Profile = ({ handleLogout }) => {
   }, [cookieData]);
 
   return (
-    <Box sx={{ width: '100%', textAlign: 'center', overflowY: 'auto', height: '100vh' }}>
+    <PageContainer loading={loading} title={loggedIn ? '' : 'Monarch Metal'}>
       {loggedIn ? (
-        <>
-          {loading ? (
-            <Box sx={{ width: '100%' }}>
-              <Typography variant="h4" sx={{ fontWeight: 'bold', margin: '16px' }}>
-                Monarch Metal
-              </Typography>
-              <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginTop: '100px' }}>
-                <PuffLoader color='red' />
-              </Box>
+        <Box sx={{ width: '100%', p: 2 }}>
+          <Typography variant="h4" sx={{ fontWeight: 'bold', margin: '16px' }}>
+            {cookieData.name}
+          </Typography>
+          <Box sx={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: 2 }}>
+            {areas.map((area, index) => (
+              <DepartmentCard key={index} area={area} />
+            ))}
+          </Box>
+          <NavLink to="/" style={{ textDecoration: 'none' }}>
+            <Box sx={{ textAlign: 'center', m: 3 }}>
+              <MonarchButton onClick={handleLogout}>
+                Logout
+              </MonarchButton>
             </Box>
-          ) : (
-            <Box sx={{ width: '100%' }}>
-              <Typography variant="h4" sx={{ fontWeight: 'bold', margin: '16px' }}>
-                {cookieData.name}
-              </Typography>
-              <Box sx={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: 2 }}>
-                {areas.map((area, index) => (
-                  <DepartmentCard key={index} area={area} />
-                ))}
-              </Box>
-              <NavLink to="/" style={{ textDecoration: 'none' }}>
-                <Box sx={{ textAlign: 'center', m: 3 }}>
-                  <MonarchButton onClick={handleLogout}>
-                    Logout
-                  </MonarchButton>
-                </Box>
-              </NavLink>
-            </Box>
-          )}
-        </>
+          </NavLink>
+        </Box>
       ) : (
         <NavLink to="/login" style={{ textDecoration: 'none' }}>
-          <Box sx={{ textAlign: 'center', mt: 5 }}>
+          <Box sx={{ textAlign: 'center' }}>
             <MonarchButton>
               Log In
             </MonarchButton>
           </Box>
         </NavLink>
       )}
-    </Box>
+    </PageContainer>
   );
 }

@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Box, Typography } from '@mui/material';
+
 import { useUserContext } from '../../context/UserContext';
 
-import PuffLoader from 'react-spinners/PuffLoader';
+import PageContainer from '../../components/shared/PageContainer';;
 
 export const BendDeduction = () => {
   const { cookieData } = useUserContext();
@@ -13,22 +14,10 @@ export const BendDeduction = () => {
   }, [loading]);
 
   return (
-    <Box sx={{ width: '100%', textAlign: 'center', overflowY: 'auto', height: '100vh' }}>
-      {loading ? (
-        <Box>
-          <Typography variant='h4' sx={{ fontWeight: 'bold', margin: '16px' }}>Bend Deduction Chart</Typography>
-          <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginTop: '100px' }}>
-            <PuffLoader color='red' />
-          </Box>
-        </Box>
-      ) : (
-        <Box sx={{ width: '100%' }}>
-          <Typography variant='h4' sx={{ fontWeight: 'bold', margin: '16px' }}>Bend Deduction Chart</Typography>
-          <Box sx={{ padding: '12px' }}>
-            <Typography>New Site in Progress</Typography>
-          </Box>  
-        </Box>
-      )}
-    </Box>
+    <PageContainer loading={loading} title='Bend Deduction'>
+      <Box sx={{ padding: '12px' }}>
+        <Typography>New Site in Progress</Typography>
+      </Box>
+    </PageContainer>
   );
 }

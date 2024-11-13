@@ -1,24 +1,26 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Box, createTheme, CssBaseline, Collapse, Divider, Drawer as MuiDrawer, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, ThemeProvider, Tooltip } from '@mui/material';
-import { 
+import {
   AdminPanelSettings as AdminPanelSettingsIcon,
-  ChevronLeft as ChevronLeftIcon, 
-  ChevronRight as ChevronRightIcon, 
+  ChevronLeft as ChevronLeftIcon,
+  ChevronRight as ChevronRightIcon,
+  ContentPaste as ContentPasteIcon,
   Dashboard as DashboardIcon,
-  ExpandLess, 
-  ExpandMore, 
+  ExpandLess,
+  ExpandMore,
   Home as HomeIcon,
   Key as KeyIcon,
   Login as LoginIcon,
   Person as PersonIcon,
   Stream as StreamIcon,
 } from '@mui/icons-material';
+// import ContentPasteIcon from '@mui/icons-material/ContentPaste';
 import { styled, useTheme } from '@mui/material/styles';
 
 import Cookies from 'universal-cookie';
 import { jwtDecode } from 'jwt-decode';
-import { useUserContext } from '../context/UserContext';
+import { useUserContext } from '../../context/UserContext';
 
 const drawerWidth = 240;
 
@@ -87,11 +89,12 @@ export const SideNav = ({ children }) => {
   const theme = useTheme();
   const navigate = useNavigate();
 
-  const [name, setName] = useState('');
   const [admin, setAdmin] = useState(false);
-  const [open, setOpen] = useState(false);
   const [departmentOpen, setDepartmentOpen] = useState(false);
   const [homeOpen, setHomeOpen] = useState(false);
+  const [inventoryOpen, setInventoryOpen] = useState(false);
+  const [name, setName] = useState('');
+  const [open, setOpen] = useState(false);
   const [programmingOpen, setProgrammingOpen] = useState(false);
 
   const handleDrawerToggle = () => {
@@ -99,25 +102,35 @@ export const SideNav = ({ children }) => {
     closeAllMenus();
   }
 
-  const handleProgrammingClick = () => {
-    closeAllMenus();
-    setProgrammingOpen(!programmingOpen);
-  }
-  
   const handleDepartmentClick = () => {
     closeAllMenus();
     setDepartmentOpen(!departmentOpen);
   }
 
+  const handleHomeClick = () => {
+    closeAllMenus();
+    setHomeOpen(!homeOpen);
+  }
+
+  const handleInventoryClick = () => {
+    closeAllMenus();
+    setInventoryOpen(!inventoryOpen);
+  }
+
+  const handleProgrammingClick = () => {
+    closeAllMenus();
+    setProgrammingOpen(!programmingOpen);
+  }
+
   const handleCloseAll = () => {
-    setOpen(false); 
-    setProgrammingOpen(false);
-    setDepartmentOpen(false);
+    setOpen(false);
+    closeAllMenus();
   }
 
   const closeAllMenus = () => {
     setDepartmentOpen(false);
-    setHomeOpen(false)
+    setHomeOpen(false);
+    setInventoryOpen(false);
     setProgrammingOpen(false);
   }
 
@@ -151,29 +164,65 @@ export const SideNav = ({ children }) => {
 
             <Divider />
 
-{/* DASHBOARD */}
+            {/* HOME */}
 
             <List>
               <ListItem disablePadding>
                 <Tooltip title='Dashboard' placement='right' arrow>
-                  <ListItemButton onClick={() => { navigate('/dashboard'); handleCloseAll(); }}>
+                  <ListItemButton
+                    onClick={() => {
+                      if (!open) {
+                        navigate('/dashboard');
+                        handleCloseAll();
+                      }
+                    }}
+                  >
                     <ListItemIcon sx={{ cursor: 'pointer', py: 1 }}>
                       <HomeIcon />
                     </ListItemIcon>
-                    <ListItemText primary='Dashboard' />
+                    {open && (
+                      <>
+                        <ListItemText
+                          primary='Dashboard'
+                          onClick={() => { navigate('/dashboard'); handleCloseAll(); }}
+                          sx={{ cursor: 'pointer' }}
+                        />
+                        <IconButton onClick={handleHomeClick}>
+                          {homeOpen ? <ExpandLess /> : <ExpandMore />}
+                        </IconButton>
+                      </>
+                    )}
                   </ListItemButton>
                 </Tooltip>
               </ListItem>
-          
-{/* PROGRAMMING */}
+              <Collapse in={homeOpen} timeout='auto' unmountOnExit>
+                <List component='div' disablePadding sx={{ paddingLeft: 7 }}>
+                  <ListItem disablePadding>
+                    <a href="http://10.0.1.78/monarch_jobdisplay" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: 'inherit' }}>
+                      <ListItemButton onClick={handleCloseAll}>
+                        <ListItemText primary='Display List' />
+                      </ListItemButton>
+                    </a>
+                  </ListItem>
+                </List>
+                <List component='div' disablePadding sx={{ paddingLeft: 7 }}>
+                  <ListItem disablePadding>
+                    <ListItemButton onClick={() => { navigate('/directory'); handleCloseAll(); }}>
+                      <ListItemText primary='Directory' />
+                    </ListItemButton>
+                  </ListItem>
+                </List>
+              </Collapse>
+
+              {/* PROGRAMMING */}
 
               <ListItem disablePadding>
                 <Tooltip title='Programming' placement='right' arrow>
-                  <ListItemButton 
+                  <ListItemButton
                     onClick={() => {
                       if (!open) {
                         navigate('/programming');
-                        handleCloseAll(); 
+                        handleCloseAll();
                       }
                     }}
                   >
@@ -261,15 +310,15 @@ export const SideNav = ({ children }) => {
                 </List>
               </Collapse>
 
-{/* DEPARTMENTS */}
+              {/* DEPARTMENTS */}
 
               <ListItem disablePadding>
                 <Tooltip title='Departments' placement='right' arrow>
-                  <ListItemButton 
+                  <ListItemButton
                     onClick={() => {
                       if (!open) {
                         navigate('/departments');
-                        handleCloseAll(); 
+                        handleCloseAll();
                       }
                     }}
                   >
@@ -349,11 +398,74 @@ export const SideNav = ({ children }) => {
                   </ListItem>
                 </List>
               </Collapse>
+
+              {/* INVENTORY */}
+
+              <ListItem disablePadding>
+                <Tooltip title='Inventory' placement='right' arrow>
+                  <ListItemButton
+                    onClick={() => {
+                      if (!open) {
+                        navigate('/inventoryHome');
+                        handleCloseAll();
+                      }
+                    }}
+                  >
+                    <ListItemIcon sx={{ cursor: 'pointer', py: 1 }}>
+                      <ContentPasteIcon />
+                    </ListItemIcon>
+                    {open && (
+                      <>
+                        <ListItemText
+                          primary='Inventory'
+                          onClick={() => { navigate('/inventoryHome'); handleCloseAll(); }}
+                          sx={{ cursor: 'pointer' }}
+                        />
+                        <IconButton onClick={handleInventoryClick}>
+                          {inventoryOpen ? <ExpandLess /> : <ExpandMore />}
+                        </IconButton>
+                      </>
+                    )}
+                  </ListItemButton>
+                </Tooltip>
+              </ListItem>
+              <Collapse in={inventoryOpen} timeout='auto' unmountOnExit>
+                <List component='div' disablePadding sx={{ paddingLeft: 7 }}>
+                  <ListItem disablePadding>
+                    <ListItemButton onClick={() => { navigate('/inventory'); handleCloseAll(); }}>
+                      <ListItemText primary='Inventory' />
+                    </ListItemButton>
+                  </ListItem>
+                </List>
+                <List component='div' disablePadding sx={{ paddingLeft: 7 }}>
+                  <ListItem disablePadding>
+                    <ListItemButton onClick={() => { navigate('/purchasing'); handleCloseAll(); }}>
+                      <ListItemText primary='Purchasing' />
+                    </ListItemButton>
+                  </ListItem>
+                </List>
+                <List component='div' disablePadding sx={{ paddingLeft: 7 }}>
+                  <ListItem disablePadding>
+                    <ListItemButton onClick={() => { navigate('/scales'); handleCloseAll(); }}>
+                      <ListItemText primary='Scales' />
+                    </ListItemButton>
+                  </ListItem>
+                </List>
+                <List component='div' disablePadding sx={{ paddingLeft: 7 }}>
+                  <ListItem disablePadding>
+                    <ListItemButton onClick={() => { navigate('/supplies'); handleCloseAll(); }}>
+                      <ListItemText primary='Supplies' />
+                    </ListItemButton>
+                  </ListItem>
+                </List>
+              </Collapse>
             </List>
+
+            {/* DIVIDER */}
 
             <Divider />
 
-{/* LOGIN / PROFILE */}
+            {/* LOGIN / PROFILE */}
 
             <List>
               {name ? (
@@ -381,12 +493,12 @@ export const SideNav = ({ children }) => {
               )}
             </List>
 
-{/* ADMIN ONLY */}
-            
+            {/* ADMIN ONLY */}
+
             {admin && (
               <>
                 <Divider />
-                
+
                 <List>
                   <ListItem disablePadding>
                     <Tooltip title='Admin' placement='right' arrow>
@@ -416,19 +528,19 @@ export const SideNav = ({ children }) => {
 
           </Box>
 
-{/* USER INFO */} 
+          {/* USER INFO */}
 
           <Box sx={{ marginTop: 'auto', paddingBottom: 2 }}>
             <List>
               <ListItem disablePadding>
-                <ListItemText 
-                  primary={name ? name : 'Guest'} 
+                <ListItemText
+                  primary={name ? name : 'Guest'}
                   sx={{
                     textAlign: open ? 'center' : 'center',
                     transition: theme.transitions.create(['padding-left', 'text-align'], {
                       easing: theme.transitions.easing.sharp,
                       duration: theme.transitions.duration.enteringScreen,
-                    }), 
+                    }),
                   }}
                 />
               </ListItem>
