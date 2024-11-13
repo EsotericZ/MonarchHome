@@ -5,11 +5,12 @@ import { Box, Button, Chip, IconButton, Table, TableBody, TableCell, TableRow, T
 import { useUserContext } from '../../context/UserContext';
 import { NavLink } from 'react-router-dom';
 
-import PuffLoader from 'react-spinners/PuffLoader';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import PersonIcon from '@mui/icons-material/Person';
 import { Bar, Doughnut } from 'react-chartjs-2';
 import { ArcElement, BarElement, CategoryScale, Chart, Legend, LinearScale, Title, Tooltip } from 'chart.js';
+
+import MonarchButton from '../../components/shared/MonarchButton';
 
 import getAllJobs from '../../services/engineering/getAllJobs';
 import getTBRJobs from '../../services/engineering/getTBRJobs';
@@ -405,9 +406,9 @@ export const Dashboard = () => {
       ) : (
         <NavLink to="/login" style={{ textDecoration: 'none' }}>
           <Box sx={{ textAlign: 'center' }}>
-            <Button variant="contained" color="error" sx={{ m: 1 }}>
+            <MonarchButton>
               Log In
-            </Button>
+            </MonarchButton>
           </Box>
         </NavLink>
       )}

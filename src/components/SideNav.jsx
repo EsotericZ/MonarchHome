@@ -18,6 +18,7 @@ import { styled, useTheme } from '@mui/material/styles';
 
 import Cookies from 'universal-cookie';
 import { jwtDecode } from 'jwt-decode';
+import { useUserContext } from '../context/UserContext';
 
 const drawerWidth = 240;
 
@@ -80,7 +81,8 @@ const darkTheme = createTheme({
   },
 });
 
-export const SideNav = ({ children, loggedIn }) => {
+export const SideNav = ({ children }) => {
+  const { loggedIn, cookieData } = useUserContext();
   const cookies = new Cookies();
   const theme = useTheme();
   const navigate = useNavigate();
@@ -133,7 +135,7 @@ export const SideNav = ({ children, loggedIn }) => {
       setName('');
       setAdmin(false);
     }
-  }, [loggedIn]);
+  }, [loggedIn, cookieData]);
 
   return (
     <Box sx={{ display: 'flex', height: '100vh', width: '100vw' }}>

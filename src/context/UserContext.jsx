@@ -24,12 +24,22 @@ export const UserProvider = ({ children }) => {
     };
   });
 
+  const [loggedIn, setLoggedIn] = useState(() => {
+    return cookieData && cookieData.name ? true : false;
+  });
+
   useEffect(() => {
     localStorage.setItem('cookieData', JSON.stringify(cookieData));
+    setLoggedIn(cookieData && cookieData.name ? true : false);
   }, [cookieData]);
 
   return (
-    <UserContext.Provider value={{ cookieData, setCookieData }}>
+    <UserContext.Provider value={{ 
+      cookieData, 
+      setCookieData,
+      loggedIn,
+      setLoggedIn,
+    }}>
       {children}
     </UserContext.Provider>
   );

@@ -3,16 +3,17 @@ import { useNavigate } from 'react-router-dom';
 import Cookies from 'universal-cookie';
 import { jwtDecode } from "jwt-decode";
 import { Alert, Box, Button, TextField, Typography } from '@mui/material';
+
 import { useUserContext } from '../../context/UserContext';
 import login from '../../services/portal/login';
+import MonarchButton from '../../components/shared/MonarchButton';
 
 export const Login = () => {
   const navigate = useNavigate();
-  const { cookieData, setCookieData } = useUserContext();
+  const { cookieData, setCookieData, loggedIn, setLoggedIn } = useUserContext();
   const cookies = new Cookies();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [loggedIn, setLoggedIn] = useState(false);
   const [loginFail, setLoginFail] = useState(false);
 
   const handleSubmit = async (e) => {
@@ -64,9 +65,9 @@ export const Login = () => {
               onChange={(e) => setPassword(e.target.value)}
             />
             <Box sx={{ marginTop: 2 }}>
-              <Button fullWidth variant="contained" color="error" type="submit">
+              <MonarchButton type='submit'>
                 Submit
-              </Button>
+              </MonarchButton>
             </Box>
             <Typography variant="body2" align="right" sx={{ marginTop: 2 }}>
               Forgot <a href="#">password?</a>

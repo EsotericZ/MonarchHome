@@ -1,202 +1,178 @@
 import { useEffect, useState } from 'react';
-import Cookies from 'universal-cookie';
-import { jwtDecode } from 'jwt-decode';
 import { NavLink } from 'react-router-dom';
 
 import PuffLoader from "react-spinners/PuffLoader";
 import { Box, Button, Typography } from '@mui/material';
 
 import DepartmentCard from '../../components/shared/DepartmentCard';
+import MonarchButton from '../../components/shared/MonarchButton';
+import { useUserContext } from '../../context/UserContext';
 
-export const Profile = ({ loggedIn, handleLogout }) => {
-  const cookies = new Cookies();
-  const [cookieData, setCookieData] = useState('');
+export const Profile = ({ handleLogout }) => {
+  const { loggedIn, cookieData, setCookieData } = useUserContext();
   const [areas, setAreas] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (loggedIn) {
-      try {
-        setCookieData(jwtDecode(cookies.get('jwt')));
-      } catch {
-        setCookieData('');
-      }
-    }
-  }, [loggedIn]);
+    const newAreas = [];
 
-  useEffect(() => {
     {
       cookieData.engineering &&
-      setAreas(prevAreas => [
-        ...prevAreas,
+      newAreas.push(
         {
           area: 'Engineering',
           link: '/engineering',
           image: 'engineering',
           areaType: 'programming',
-        },
-      ])
+        }
+      )
     }
     {
       cookieData.machining &&
-      setAreas(prevAreas => [
-        ...prevAreas,
+      newAreas.push(
         {
           area: 'Machining',
           link: '/machining',
           image: 'machining',
           areaType: 'programming',
-        },
-      ])
+        }
+      )
     }
     {
       cookieData.quality &&
-      setAreas(prevAreas => [
-        ...prevAreas,
+      newAreas.push(
         {
           area: 'Quality',
           link: '/quality',
           image: 'quality',
           areaType: 'programming',
-        },
-      ])
+        }
+      )
     }
     {
       cookieData.tlaser &&
-      setAreas(prevAreas => [
-        ...prevAreas,
+      newAreas.push(
         {
           area: 'Tube Laser',
           link: '/tubelaserprog',
           image: 'tlaser',
           areaType: 'programming',
-        },
-      ])
+        }
+      )
     }
     {
       cookieData.forming &&
-      setAreas(prevAreas => [
-        ...prevAreas,
+      newAreas.push(
         {
           area: 'Forming',
           link: '/formingprog',
           image: 'forming',
           areaType: 'programming',
-        },
-      ])
+        }
+      )
     }
     {
       cookieData.laser &&
-      setAreas(prevAreas => [
-        ...prevAreas,
+      newAreas.push(
         {
           area: 'Fixture Laser',
           link: '/fixturelaser',
           image: 'flaser',
           areaType: 'production',
-        },
-      ])
+        }
+      )
     }
     {
       cookieData.forming &&
-      setAreas(prevAreas => [
-        ...prevAreas,
+      newAreas.push(
         {
           area: 'Forming',
           link: '/forming',
           image: 'forming',
           areaType: 'production',
-        },
-      ])
+        }
+      )
     }
     {
       cookieData.laser &&
-      setAreas(prevAreas => [
-        ...prevAreas,
+      newAreas.push(
         {
           area: 'Laser',
           link: '/laser',
           image: 'laser',
           areaType: 'production',
-        },
-      ])
+        }
+      )
     }
     {
       cookieData.punch &&
-      setAreas(prevAreas => [
-        ...prevAreas,
+      newAreas.push(
         {
           area: 'Punch',
           link: '/punch',
           image: 'punch',
           areaType: 'production',
-        },
-      ])
+        }
+      )
     }
     {
-      cookieData.forming &&
-      setAreas(prevAreas => [
-        ...prevAreas,
+      cookieData.saw &&
+      newAreas.push(
         {
           area: 'Saw',
           link: '/saw',
           image: 'saw',
           areaType: 'production',
-        },
-      ])
+        }
+      )
     }
     {
       cookieData.shear &&
-      setAreas(prevAreas => [
-        ...prevAreas,
+      newAreas.push(
         {
           area: 'Shear',
           link: '/shear',
           image: 'shear',
           areaType: 'production',
-        },
-      ])
+        }
+      )
     }
     {
       cookieData.laser &&
-      setAreas(prevAreas => [
-        ...prevAreas,
+      newAreas.push(
         {
           area: 'Static Laser',
           link: '/staticlaser',
           image: 'slaser',
           areaType: 'production',
-        },
-      ])
+        }
+      )
     }
     {
       cookieData.tlaser &&
-      setAreas(prevAreas => [
-        ...prevAreas,
+      newAreas.push(
         {
           area: 'Tube Laser',
           link: '/tubelaser',
           image: 'tlaser',
           areaType: 'production',
-        },
-      ])
+        }
+      )
     }
     {
       (cookieData.engineering || cookieData.quality) &&
-      setAreas(prevAreas => [
-        ...prevAreas,
+      newAreas.push(
         {
           area: 'QC Info',
           link: '/qualityinfo',
           image: 'qcInfo',
           areaType: 'tooling',
-        },
-      ])
+        }
+      )
     }
     {
       (cookieData.engineering || cookieData.quality || cookieData.machining) &&
-      setAreas(prevAreas => [
-        ...prevAreas,
+      newAreas.push(
         {
           area: 'Tap Chart',
           link: '/tapchart',
@@ -208,33 +184,33 @@ export const Profile = ({ loggedIn, handleLogout }) => {
           link: '/hardware',
           image: 'hardware',
           areaType: 'tooling',
-        },
-      ])
+        }
+      )
     }
     {
       (cookieData.engineering || cookieData.forming) &&
-      setAreas(prevAreas => [
-        ...prevAreas,
+      newAreas.push(
         {
           area: 'Bend Deduction',
           link: '/benddeduction',
           image: 'bd',
           areaType: 'tooling',
-        },
-      ]);
+        }
+      )
     }
     {
       (cookieData.purchasing) &&
-      setAreas(prevAreas => [
-        ...prevAreas,
+      newAreas.push(
         {
           area: 'Purchasing',
           link: '/purchasing',
           image: 'bd',
           areaType: 'misc',
-        },
-      ]);
+        }
+      )
     }
+
+    setAreas(newAreas);
     setLoading(false);
   }, [cookieData]);
 
@@ -263,9 +239,9 @@ export const Profile = ({ loggedIn, handleLogout }) => {
               </Box>
               <NavLink to="/" style={{ textDecoration: 'none' }}>
                 <Box sx={{ textAlign: 'center', m: 3 }}>
-                  <Button variant="contained" color="error" onClick={handleLogout}>
+                  <MonarchButton onClick={handleLogout}>
                     Logout
-                  </Button>
+                  </MonarchButton>
                 </Box>
               </NavLink>
             </Box>
@@ -274,9 +250,9 @@ export const Profile = ({ loggedIn, handleLogout }) => {
       ) : (
         <NavLink to="/login" style={{ textDecoration: 'none' }}>
           <Box sx={{ textAlign: 'center', mt: 5 }}>
-            <Button variant="contained" color="error" sx={{ m: 5 }}>
+            <MonarchButton>
               Log In
-            </Button>
+            </MonarchButton>
           </Box>
         </NavLink>
       )}
