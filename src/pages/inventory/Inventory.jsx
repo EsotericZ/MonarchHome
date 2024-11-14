@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
 import { Box, Typography } from '@mui/material';
+import { format, parseISO } from 'date-fns';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 
-import { useUserContext } from '../../context/UserContext';
+// import { useUserContext } from '../../context/UserContext';
 
 import PageContainer from '../../components/shared/PageContainer';
 
 export const Inventory = () => {
-  const { cookieData } = useUserContext();
+  // const { cookieData } = useUserContext();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
