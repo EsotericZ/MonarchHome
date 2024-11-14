@@ -32,6 +32,12 @@ const DepartmentCard = ({ area }) => {
     case 'misc':
       backgroundColor = 'yellow';
       break;
+    case 'inventory':
+      backgroundColor = '#b069db';
+      break;
+    case 'specialty':
+      backgroundColor = 'yellow';
+      break;
     default:
       backgroundColor = 'white';
       break;

@@ -14,7 +14,7 @@ export const Inventory = () => {
   }, [loading]);
 
   return (
-    <PageContainer loading={loading} title='Inventory'>
+    <PageContainer loading={loading} title='Inventory Home'>
       <Box sx={{ padding: '12px' }}>
         <Typography>Under Construction</Typography>
       </Box>

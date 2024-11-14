@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react';
-import { useUserContext } from '../../context/UserContext';
-import { Box, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 
 import DepartmentCard from '../../components/shared/DepartmentCard';
+import PageContainer from '../../components/shared/PageContainer';
 
 export const Programming = () => {
-  const { cookieData } = useUserContext();
   const [areas, setAreas] = useState([]);
   const [tools, setTools] = useState([]);
 
@@ -74,22 +73,17 @@ export const Programming = () => {
   }, []);
 
   return (
-    <Box sx={{ width: '100%', textAlign: 'center', overflowY: 'auto', height: '100vh' }}>
-      <Box sx={{ display: 'block', width: '100%', padding: 2 }}>
-        <Typography variant='h4' sx={{ fontWeight: 'bold', margin: '16px' }}>
-          Programming
-        </Typography>
-        <Box sx={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: 2 }}>
-          {areas.map((area, index) => (
-            <DepartmentCard key={index} area={area} />
-          ))}
-        </Box>
-        <Box sx={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: 2, marginTop: 3 }}>
-          {tools.map((area, index) => (
-            <DepartmentCard key={index} area={area} />
-          ))}
-        </Box>
+    <PageContainer title='Programming'>
+      <Box sx={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: 2 }}>
+        {areas.map((area, index) => (
+          <DepartmentCard key={index} area={area} />
+        ))}
       </Box>
-    </Box>
+      <Box sx={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: 2, marginTop: 3 }}>
+        {tools.map((area, index) => (
+          <DepartmentCard key={index} area={area} />
+        ))}
+      </Box>
+    </PageContainer>
   );
 };

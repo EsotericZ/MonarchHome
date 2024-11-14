@@ -1,22 +1,47 @@
 import { useEffect, useState } from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 
-import { useUserContext } from '../../context/UserContext';
-
+import DepartmentCard from '../../components/shared/DepartmentCard';
 import PageContainer from '../../components/shared/PageContainer';
 
 export const InventoryHome = () => {
-  const { cookieData } = useUserContext();
-  const [loading, setLoading] = useState(true);
+  const [areas, setAreas] = useState([]);
 
   useEffect(() => {
-    setLoading(false);
-  }, [loading]);
+    setAreas([
+      {
+        area: 'Inventory',
+        link: '/inventory',
+        image: 'inventory',
+        areaType: 'inventory',
+      },
+      {
+        area: 'Purchasing',
+        link: '/purchasing',
+        image: 'purchasing',
+        areaType: 'inventory',
+      },
+      {
+        area: 'Supplies',
+        link: '/supplies',
+        image: 'supplies',
+        areaType: 'inventory',
+      },
+      {
+        area: 'Scales',
+        link: '/scales',
+        image: 'scales',
+        areaType: 'inventory',
+      },
+    ]);
+  }, []);
 
   return (
-    <PageContainer loading={loading} title='Inventory Home'>
-      <Box sx={{ padding: '12px' }}>
-        <Typography>Under Construction</Typography>
+    <PageContainer title='Inventory'>
+      <Box sx={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: 2 }}>
+        {areas.map((area, index) => (
+          <DepartmentCard key={index} area={area} />
+        ))}
       </Box>
     </PageContainer>
   );

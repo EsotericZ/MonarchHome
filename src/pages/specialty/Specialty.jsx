@@ -1,29 +1,42 @@
 import { useEffect, useState } from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 
-import { useUserContext } from '../../context/UserContext';
-
+import DepartmentCard from '../../components/shared/DepartmentCard';
 import PageContainer from '../../components/shared/PageContainer';
 
 export const Specialty = () => {
-  const { cookieData } = useUserContext();
-  const [loading, setLoading] = useState(true);
+  const [areas, setAreas] = useState([]);
 
   useEffect(() => {
-    setLoading(false);
-  }, [loading]);
+    setAreas([
+      {
+        area: 'Efficiency',
+        link: '/efficiency',
+        image: 'efficiency',
+        areaType: 'specialty',
+      },
+      {
+        area: 'Sheet Inventory',
+        link: '/sheetInventory',
+        image: 'sheetInventory',
+        areaType: 'specialty',
+      },
+      {
+        area: 'VTiger',
+        link: '/vtiger',
+        image: 'vtiger',
+        areaType: 'specialty',
+      },
+    ]);
+  }, []);
 
   return (
-    <PageContainer loading={loading} title='Specialty'>
-      {cookieData.specialty ? (
-        <Box sx={{ padding: '12px' }}>
-          <Typography>Under Construction</Typography>
-        </Box>
-      ) : (
-        <Box sx={{ width: '100%', textAlign: 'center', overflowY: 'auto', height: '100vh', paddingTop: '25vh' }}>
-          <Typography variant='h4' sx={{ fontWeight: 'bold', margin: '16px' }}>You Don't Have Access To This Page</Typography>
-        </Box>
-      )}
+    <PageContainer title='Specialty'>
+      <Box sx={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: 2 }}>
+        {areas.map((area, index) => (
+          <DepartmentCard key={index} area={area} />
+        ))}
+      </Box>
     </PageContainer>
   );
 };

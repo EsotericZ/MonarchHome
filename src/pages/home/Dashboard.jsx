@@ -105,6 +105,7 @@ export const Dashboard = () => {
   let programmingColor = '#F75D59';
   let defaultColor = 'gray';
   let specialtyColor = 'yellow';
+  let inventoryColor = '#b069db';
 
   const options = {
     responsive: true,
@@ -306,9 +307,9 @@ export const Dashboard = () => {
                     )}
                     {cookieData.purchasing && (
                       <Chip
-                        sx={{ fontSize: '12px', width: '100px', height: '25px', backgroundColor: defaultColor, color: 'white', fontWeight: 'bold' }}
+                        sx={{ fontSize: '12px', width: '100px', height: '25px', backgroundColor: inventoryColor, color: 'white', fontWeight: 'bold' }}
                         label="Purchasing"
-                      // onClick={() => navigate('/engineering')}
+                        onClick={() => navigate('/purchasing')}
                       />
                     )}
                     {cookieData.backlog && (

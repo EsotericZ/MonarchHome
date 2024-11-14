@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 
 import DepartmentCard from '../../components/shared/DepartmentCard';
+import PageContainer from '../../components/shared/PageContainer';
 
 export const Departments = () => {
   const [areas, setAreas] = useState([]);
@@ -60,17 +61,12 @@ export const Departments = () => {
   }, []);
 
   return (
-    <Box sx={{ width: '100%', textAlign: 'center', overflowY: 'auto', height: '100vh' }}>
-      <Box sx={{ display: 'block', width: '100%', padding: 2 }}>
-        <Typography variant='h4' sx={{ fontWeight: 'bold', margin: '16px' }}>
-          Departments
-        </Typography>
-        <Box sx={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: 2 }}>
-          {areas.map((area, index) => (
-            <DepartmentCard key={index} area={area} />
-          ))}
-        </Box>
+    <PageContainer title='Departments'>
+      <Box sx={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: 2 }}>
+        {areas.map((area, index) => (
+          <DepartmentCard key={index} area={area} />
+        ))}
       </Box>
-    </Box>
+    </PageContainer>
   );
 };
