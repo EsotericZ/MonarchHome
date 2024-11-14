@@ -15,7 +15,7 @@ const RefreshButton = ({ onClick, sxProps }) => {
         bottom: '20px',
         right: '20px',
         '&:hover': { backgroundColor: '#374151' },
-        ...sxProps, // Allows additional custom styles to be passed
+        ...sxProps,
       }}
     >
       <RefreshIcon fontSize="large" />

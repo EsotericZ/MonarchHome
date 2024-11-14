@@ -1,4 +1,7 @@
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
+import { Box, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
+
+import CancelButton from '../shared/CancelButton';
+import SaveButton from '../shared/SaveButton';
 
 const SuppliesModal = ({
   show,
@@ -85,12 +88,12 @@ const SuppliesModal = ({
       </DialogContent>
       <DialogActions>
         <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', gap: 2, pb: 2 }}>
-          <Button onClick={handleClose} variant="contained" color="error">
+          <CancelButton onClick={handleClose}>
             Cancel
-          </Button>
-          <Button onClick={handleSave} variant="contained" color="success">
+          </CancelButton>
+          <SaveButton onClick={handleSave}>
             {isEdit ? 'Update' : 'Save'}
-          </Button>
+          </SaveButton>
         </Box>
       </DialogActions>
     </Dialog>

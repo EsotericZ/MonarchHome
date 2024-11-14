@@ -1,6 +1,7 @@
-import React from 'react';
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, List, ListItem, Typography } from '@mui/material';
+import { Box, Dialog, DialogActions, DialogContent, DialogTitle, List, ListItem, Typography } from '@mui/material';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
+
+import CancelButton from '../shared/CancelButton';
 
 const AllMaterialsModal = ({
   show,
@@ -42,9 +43,9 @@ const AllMaterialsModal = ({
       </DialogContent>
       <DialogActions>
         <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', gap: 2, paddingBottom: 2 }}>
-          <Button onClick={handleClose} variant="contained" color="error">
+          <CancelButton onClick={handleClose}>
             Close
-          </Button>
+          </CancelButton>
         </Box>
       </DialogActions>
     </Dialog>

@@ -1,4 +1,7 @@
-import { Box, Button, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, TextField, Typography } from '@mui/material';
+import { Box, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, TextField, Typography } from '@mui/material';
+
+import CancelButton from '../shared/CancelButton';
+import SaveButton from '../shared/SaveButton';
 
 const UpdateUserModal = ({
   open,
@@ -68,12 +71,12 @@ const UpdateUserModal = ({
       </DialogContent>
       <DialogActions>
         <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', gap: 2, paddingBottom: 2 }}>
-          <Button onClick={onClose} color="error" variant="contained">
+          <CancelButton onClick={onClose}>
             Cancel
-          </Button>
-          <Button onClick={onUpdate} color="success" variant="contained">
+          </CancelButton>
+          <SaveButton onClick={onUpdate}>
             Save
-          </Button>
+          </SaveButton>
         </Box>
       </DialogActions>
     </Dialog>

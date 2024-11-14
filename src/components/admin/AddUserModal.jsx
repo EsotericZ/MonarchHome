@@ -1,4 +1,7 @@
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Typography } from '@mui/material';
+import { Box, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Typography } from '@mui/material';
+
+import CancelButton from '../shared/CancelButton';
+import SaveButton from '../shared/SaveButton';
 
 const AddUserModal = ({ open, onClose, onChange, onSave }) => {
   return (
@@ -16,8 +19,12 @@ const AddUserModal = ({ open, onClose, onChange, onSave }) => {
       </DialogContent>
       <DialogActions>
         <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', gap: 2, paddingBottom: 2 }}>
-          <Button onClick={onClose} color="error" variant="contained">Cancel</Button>
-          <Button onClick={onSave} color="success" variant="contained">Save</Button>
+          <CancelButton onClick={onClose}>
+            Cancel
+          </CancelButton>
+          <SaveButton onClick={onSave}>
+            Save
+          </SaveButton>
         </Box>
       </DialogActions>
     </Dialog>

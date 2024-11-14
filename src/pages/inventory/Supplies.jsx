@@ -67,7 +67,6 @@ export const Supplies = () => {
   };
 
   const handleUpdateItem = (item) => {
-    console.log('hi')
     setId(item.id);
     setSupplies(item.supplies);
     setDepartment(item.department);

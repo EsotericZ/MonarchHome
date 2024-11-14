@@ -1,4 +1,7 @@
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Typography } from '@mui/material';
+import { Box, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Typography } from '@mui/material';
+
+import CancelButton from '../shared/CancelButton';
+import SaveButton from '../shared/SaveButton';
 
 const AddModal = ({
   show,
@@ -52,12 +55,12 @@ const AddModal = ({
       </DialogContent>
       <DialogActions>
         <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', gap: 2, paddingBottom: 2 }}>
-          <Button onClick={handleCancel} variant="contained" color="error">
+          <CancelButton onClick={handleCancel}>
             Cancel
-          </Button>
-          <Button onClick={handleSave} variant="contained" color="success">
+          </CancelButton>
+          <SaveButton onClick={handleSave}>
             Save
-          </Button>
+          </SaveButton>
         </Box>
       </DialogActions>
     </Dialog>
