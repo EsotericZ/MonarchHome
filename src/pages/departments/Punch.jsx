@@ -91,7 +91,10 @@ export const Punch = () => {
     }
   }
 
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    setShow(false);
+    setShowEdit(false);
+  }
 
   const handleSave = async () => {
     try {
@@ -237,6 +240,7 @@ export const Punch = () => {
         jobNo={jobNo}
         setJobNo={setJobNo}
         areaName='Punch'
+        onClose={handleClose}
       />
 
       <CompleteModal

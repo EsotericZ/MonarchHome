@@ -91,7 +91,10 @@ export const Saw = () => {
     }
   }
 
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    setShow(false);
+    setShowEdit(false);
+  }
 
   const handleSave = async () => {
     try {
@@ -237,6 +240,7 @@ export const Saw = () => {
         jobNo={jobNo}
         setJobNo={setJobNo}
         areaName='Saw'
+        onClose={handleClose}
       />
 
       <CompleteModal

@@ -12,9 +12,10 @@ const EditModal = ({
   jobNo,
   setJobNo,
   areaName = '',
+  onClose,
 }) => {
   return (
-    <Dialog open={show} onClose={handleClose} fullWidth>
+    <Dialog open={show} onClose={onClose} fullWidth>
       <DialogTitle>
         <Typography sx={{ fontWeight: 'bold', textAlign: 'center', fontSize: '30px' }}>
           Update Program

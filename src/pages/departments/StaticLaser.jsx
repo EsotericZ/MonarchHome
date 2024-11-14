@@ -91,7 +91,10 @@ export const StaticLaser = () => {
     }
   }
 
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    setShow(false);
+    setShowEdit(false);
+  }
 
   const handleSave = async () => {
     try {
@@ -237,6 +240,7 @@ export const StaticLaser = () => {
         jobNo={jobNo}
         setJobNo={setJobNo}
         areaName='Static Laser'
+        onClose={handleClose}
       />
 
       <CompleteModal

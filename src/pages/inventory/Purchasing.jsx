@@ -303,7 +303,7 @@ export const Purchasing = () => {
                           {cookieData.purchasing &&
                             <>
                               <DataTableCell padding={0}>
-                                <IconButton onClick={() => toggleOnOrderSupplies(job)}>
+                                <IconButton onClick={() => toggleOnOrderSupplies(item)}>
                                   {item.onOrder && <CheckIcon sx={{ fontSize: '20px', fontWeight: 'bold' }} />}
                                 </IconButton>
                               </DataTableCell>

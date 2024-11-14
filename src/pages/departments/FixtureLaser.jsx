@@ -91,7 +91,10 @@ export const FixtureLaser = () => {
     }
   }
 
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    setShow(false);
+    setShowEdit(false);
+  }
 
   const handleSave = async () => {
     try {
@@ -237,6 +240,7 @@ export const FixtureLaser = () => {
         jobNo={jobNo}
         setJobNo={setJobNo}
         areaName='Fixture Laser'
+        onClose={handleClose}
       />
 
       <CompleteModal

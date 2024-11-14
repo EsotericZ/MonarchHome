@@ -91,7 +91,10 @@ export const Shear = () => {
     }
   }
 
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    setShow(false);
+    setShowEdit(false);
+  }
 
   const handleSave = async () => {
     try {
@@ -237,6 +240,7 @@ export const Shear = () => {
         jobNo={jobNo}
         setJobNo={setJobNo}
         areaName='Shear'
+        onClose={handleClose}
       />
 
       <CompleteModal

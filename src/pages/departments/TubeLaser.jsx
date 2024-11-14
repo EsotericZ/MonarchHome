@@ -91,7 +91,10 @@ export const TubeLaser = () => {
     }
   }
 
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    setShow(false);
+    setShowEdit(false);
+  }
 
   const handleSave = async () => {
     try {
@@ -237,6 +240,7 @@ export const TubeLaser = () => {
         jobNo={jobNo}
         setJobNo={setJobNo}
         areaName='Tube Laser'
+        onClose={handleClose}
       />
 
       <CompleteModal
