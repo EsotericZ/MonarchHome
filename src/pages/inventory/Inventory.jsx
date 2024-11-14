@@ -93,6 +93,7 @@ export const Inventory = () => {
     );
 
   const currentRows = filteredData.slice(indexOfFirstRow, Math.min(indexOfLastRow, filteredData.length));
+  const totalPages = Math.ceil(filteredData.length / rowsPerPage);
 
   const handleDelete = async (record) => {
     try {
@@ -377,36 +378,38 @@ export const Inventory = () => {
             </Table>
           </TableContainer>
 
-          <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
-            <div className="pagination-container">
-              <Button
-                onClick={() => setCurrentPage(currentPage - 1)}
-                disabled={currentPage === 1}
-                className="pagination-arrow"
-              >
-                &larr; Previous
-              </Button>
-
-              {generatePageNumbers().map((page, index) => (
+          {totalPages > 1 && (
+            <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+              <div className="pagination-container">
                 <Button
-                  key={index}
-                  onClick={() => page !== '...' && setCurrentPage(page)}
-                  disabled={page === '...'}
-                  className={`pagination-number ${page === currentPage ? 'selected' : ''}`}
+                  onClick={() => setCurrentPage(currentPage - 1)}
+                  disabled={currentPage === 1}
+                  className="pagination-arrow"
                 >
-                  {page}
+                  &larr; Previous
                 </Button>
-              ))}
 
-              <Button
-                onClick={() => setCurrentPage(currentPage + 1)}
-                disabled={currentPage === Math.ceil(logData.length / rowsPerPage)}
-                className="pagination-arrow"
-              >
-                Next &rarr;
-              </Button>
+                {generatePageNumbers().map((page, index) => (
+                  <Button
+                    key={index}
+                    onClick={() => page !== '...' && setCurrentPage(page)}
+                    disabled={page === '...'}
+                    className={`pagination-number ${page === currentPage ? 'selected' : ''}`}
+                  >
+                    {page}
+                  </Button>
+                ))}
+
+                <Button
+                  onClick={() => setCurrentPage(currentPage + 1)}
+                  disabled={currentPage === Math.ceil(logData.length / rowsPerPage)}
+                  className="pagination-arrow"
+                >
+                  Next &rarr;
+                </Button>
+              </div>
             </div>
-          </div>
+          )}
 
           <RefreshButton onClick={fetchData} />
           <CopySnackbar
