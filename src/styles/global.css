@@ -183,3 +183,76 @@
 .cancelBtn:focus {
   outline: none;
 }
+
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;    
+  width: 100%;            
+  margin-top: 20px;
+}
+
+.pagination-arrow {
+  border: none;
+  background-color: transparent !important;
+  font-weight: bold;
+  cursor: pointer;
+  margin: 0 10px;
+  box-shadow: none !important;
+  text-decoration: none;
+  color: black !important;
+}
+
+.pagination-arrow:hover,
+.pagination-arrow:focus {
+  background-color: transparent !important;
+  outline: none;
+}
+
+.pagination-arrow:disabled {
+  color: #ddd;
+  cursor: not-allowed;
+  background-color: transparent !important;
+}
+
+.pagination-number {
+  border: 2px solid #ddd; 
+  background-color: transparent !important; 
+  padding: 5px 10px;
+  margin: 0 5px;
+  cursor: pointer;
+  border-radius: 4px;
+  box-shadow: none !important;
+  transition: all 0.2s ease;
+  color: black !important;
+}
+
+.pagination-number[disabled] {
+  border: none !important;
+  cursor: default;
+  color: #000 !important; 
+  padding: 5px 10px;
+  margin: 0 5px;
+  background-color: transparent !important;
+}
+
+.pagination-number[disabled]:hover {
+  cursor: default;
+}
+
+.pagination-number:hover {
+  background-color: transparent !important;
+  border-color: #ddd !important;
+  color: inherit !important;
+  box-shadow: none !important;
+  padding: 5px 10px;  
+  border-width: 2px !important;
+}
+
+.pagination-number.selected {
+  border: 1px solid lightgrey;
+  font-weight: bold;
+  background-color: transparent !important;
+  padding: 5px 10px;
+  border-width: 1px !important;
+}
