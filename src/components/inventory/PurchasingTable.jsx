@@ -33,31 +33,31 @@ const PurchasingTable = ({
           <TableHead>
             <TableRow>
               <SearchTableCell
-                width="10%"
-                placeholder="Program No"
+                width='10%'
+                placeholder='Program No'
                 value={searchedValueProgramNo}
                 onChange={(e) => setSearchedValueProgramNo(e.target.value)}
               />
               <SearchTableCell
-                width="25%"
-                placeholder="Material"
+                width='25%'
+                placeholder='Material'
                 value={searchedValueMaterial}
                 onChange={(e) => setSearchedValueMaterial(e.target.value)}
               />
               <SearchTableCell
-                width="15%"
-                placeholder="Job No"
+                width='15%'
+                placeholder='Job No'
                 value={searchedValueJobNo}
                 onChange={(e) => setSearchedValueJobNo(e.target.value)}
               />
-              <StandardTableCell width="10%">Area</StandardTableCell>
-              <StandardTableCell width="8%">Created</StandardTableCell>
-              <StandardTableCell width="8%">Need</StandardTableCell>
+              <StandardTableCell width='10%'>Area</StandardTableCell>
+              <StandardTableCell width='8%'>Created</StandardTableCell>
+              <StandardTableCell width='8%'>Need</StandardTableCell>
               {cookieData.purchasing && (
                 <>
-                  <StandardTableCell width="8%">On Order</StandardTableCell>
-                  <StandardTableCell width="8%">Expected</StandardTableCell>
-                  <StandardTableCell width="8%">Verified</StandardTableCell>
+                  <StandardTableCell width='8%'>On Order</StandardTableCell>
+                  <StandardTableCell width='8%'>Expected</StandardTableCell>
+                  <StandardTableCell width='8%'>Verified</StandardTableCell>
                 </>
               )}
             </TableRow>
@@ -105,8 +105,8 @@ const PurchasingTable = ({
                           <DatePicker
                             selected={selectedDatesMaterial[job.id] || (job.expected ? new Date(job.expected + 'T00:00:00') : null)}
                             onChange={(date) => handleDateChange(job.id, date)}
-                            dateFormat="MM/dd"
-                            className="custom-date-picker"
+                            dateFormat='MM/dd'
+                            className='custom-date-picker'
                           />
                         </DataTableCell>
                         <DataTableCell padding={0}>

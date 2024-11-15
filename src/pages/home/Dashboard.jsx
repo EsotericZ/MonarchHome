@@ -205,21 +205,21 @@ export const Dashboard = () => {
                     {cookieData.engineering && (
                       <Chip
                         sx={{ fontSize: '12px', width: '100px', height: '25px', backgroundColor: programmingColor, color: 'white', fontWeight: 'bold' }}
-                        label="Engineering"
+                        label='Engineering'
                         onClick={() => navigate('/engineering')}
                       />
                     )}
                     {cookieData.machining && (
                       <Chip
                         sx={{ fontSize: '12px', width: '100px', height: '25px', backgroundColor: programmingColor, color: 'white', fontWeight: 'bold' }}
-                        label="Machining"
+                        label='Machining'
                         onClick={() => navigate('/machining')}
                       />
                     )}
                     {cookieData.quality && (
                       <Chip
                         sx={{ fontSize: '12px', width: '100px', height: '25px', backgroundColor: programmingColor, color: 'white', fontWeight: 'bold' }}
-                        label="Quality"
+                        label='Quality'
                         onClick={() => navigate('/quality')}
                       />
                     )}
@@ -227,17 +227,17 @@ export const Dashboard = () => {
                       <>
                         <Chip
                           sx={{ fontSize: '12px', width: '100px', height: '25px', backgroundColor: productionColor, color: 'black', fontWeight: 'bold' }}
-                          label="Laser"
+                          label='Laser'
                           onClick={() => navigate('/laser')}
                         />
                         <Chip
                           sx={{ fontSize: '12px', width: '100px', height: '25px', backgroundColor: productionColor, color: 'black', fontWeight: 'bold' }}
-                          label="FLaser"
+                          label='FLaser'
                           onClick={() => navigate('/fixtureLaser')}
                         />
                         <Chip
                           sx={{ fontSize: '12px', width: '100px', height: '25px', backgroundColor: productionColor, color: 'black', fontWeight: 'bold' }}
-                          label="SLaser"
+                          label='SLaser'
                           onClick={() => navigate('/staticLaser')}
                         />
                       </>
@@ -246,12 +246,12 @@ export const Dashboard = () => {
                       <>
                         <Chip
                           sx={{ fontSize: '12px', width: '100px', height: '25px', backgroundColor: programmingColor, color: 'white', fontWeight: 'bold' }}
-                          label="Forming"
+                          label='Forming'
                           onClick={() => navigate('/formingprog')}
                         />
                         <Chip
                           sx={{ fontSize: '12px', width: '100px', height: '25px', backgroundColor: productionColor, color: 'black', fontWeight: 'bold' }}
-                          label="Forming"
+                          label='Forming'
                           onClick={() => navigate('/forming')}
                         />
                       </>
@@ -260,12 +260,12 @@ export const Dashboard = () => {
                       <>
                         <Chip
                           sx={{ fontSize: '12px', width: '100px', height: '25px', backgroundColor: programmingColor, color: 'white', fontWeight: 'bold' }}
-                          label="TLaser"
+                          label='TLaser'
                           onClick={() => navigate('/tubeLaserProg')}
                         />
                         <Chip
                           sx={{ fontSize: '12px', width: '100px', height: '25px', backgroundColor: productionColor, color: 'black', fontWeight: 'bold' }}
-                          label="TLaser"
+                          label='TLaser'
                           onClick={() => navigate('/tubeLaser')}
                         />
                       </>
@@ -273,49 +273,49 @@ export const Dashboard = () => {
                     {cookieData.saw && (
                       <Chip
                         sx={{ fontSize: '12px', width: '100px', height: '25px', backgroundColor: productionColor, color: 'black', fontWeight: 'bold' }}
-                        label="Saw"
+                        label='Saw'
                         onClick={() => navigate('/saw')}
                       />
                     )}
                     {cookieData.shear && (
                       <Chip
                         sx={{ fontSize: '12px', width: '100px', height: '25px', backgroundColor: productionColor, color: 'black', fontWeight: 'bold' }}
-                        label="Shear"
+                        label='Shear'
                         onClick={() => navigate('/shear')}
                       />
                     )}
                     {cookieData.punch && (
                       <Chip
                         sx={{ fontSize: '12px', width: '100px', height: '25px', backgroundColor: productionColor, color: 'black', fontWeight: 'bold' }}
-                        label="Punch"
+                        label='Punch'
                         onClick={() => navigate('/punch')}
                       />
                     )}
                     {cookieData.maintenance && (
                       <Chip
                         sx={{ fontSize: '12px', width: '100px', height: '25px', backgroundColor: defaultColor, color: 'white', fontWeight: 'bold' }}
-                        label="Maintenance"
+                        label='Maintenance'
                       // onClick={() => navigate('/engineering')} 
                       />
                     )}
                     {cookieData.shipping && (
                       <Chip
                         sx={{ fontSize: '12px', width: '100px', height: '25px', backgroundColor: defaultColor, color: 'white', fontWeight: 'bold' }}
-                        label="Shipping"
+                        label='Shipping'
                       // onClick={() => navigate('/engineering')}
                       />
                     )}
                     {cookieData.purchasing && (
                       <Chip
                         sx={{ fontSize: '12px', width: '100px', height: '25px', backgroundColor: inventoryColor, color: 'white', fontWeight: 'bold' }}
-                        label="Purchasing"
+                        label='Purchasing'
                         onClick={() => navigate('/purchasing')}
                       />
                     )}
                     {cookieData.backlog && (
                       <Chip
                         sx={{ fontSize: '12px', width: '100px', height: '25px', backgroundColor: defaultColor, color: 'white', fontWeight: 'bold' }}
-                        label="Backlog"
+                        label='Backlog'
                         onClick={() => navigate('/backlog')}
                       />
                     )}
@@ -323,17 +323,17 @@ export const Dashboard = () => {
                       <>
                         <Chip
                           sx={{ fontSize: '12px', width: '100px', height: '25px', backgroundColor: specialtyColor, color: 'black', fontWeight: 'bold' }}
-                          label="Efficiency"
+                          label='Efficiency'
                           onClick={() => navigate('/efficiency')}
                         />
                         <Chip
                           sx={{ fontSize: '12px', width: '100px', height: '25px', backgroundColor: specialtyColor, color: 'black', fontWeight: 'bold' }}
-                          label="Sheet Inv"
+                          label='Sheet Inv'
                           onClick={() => navigate('/sheetInventory')}
                         />
                         <Chip
                           sx={{ fontSize: '12px', width: '100px', height: '25px', backgroundColor: specialtyColor, color: 'black', fontWeight: 'bold' }}
-                          label="VTiger"
+                          label='VTiger'
                           onClick={() => navigate('/vtiger')}
                         />
                       </>
@@ -425,7 +425,7 @@ export const Dashboard = () => {
           </IconButton>
         </Box>
       ) : (
-        <NavLink to="/login" style={{ textDecoration: 'none' }}>
+        <NavLink to='/login' style={{ textDecoration: 'none' }}>
           <Box sx={{ textAlign: 'center' }}>
             <MonarchButton>
               Log In

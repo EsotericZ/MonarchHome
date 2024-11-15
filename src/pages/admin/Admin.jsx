@@ -237,13 +237,13 @@ export const Admin = () => {
           <Box sx={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: 2, pb: 2 }}>
             <FormControl sx={{ width: '35%' }}>
               <TextField
-                placeholder="Search by Name"
+                placeholder='Search by Name'
                 onChange={(e) => setSearchName(e.target.value)}
               />
             </FormControl>
             <FormControl sx={{ width: '35%' }}>
               <TextField
-                placeholder="Search by Department"
+                placeholder='Search by Department'
                 onChange={(e) => setSearchDepartment(e.target.value)}
               />
             </FormControl>

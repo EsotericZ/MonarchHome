@@ -2,9 +2,9 @@ import { TableCell } from '@mui/material';
 
 const SearchTableCell = ({ width, placeholder, value, onChange }) => {
   return (
-    <TableCell align="center" sx={{ width }}>
+    <TableCell align='center' sx={{ width }}>
       <input
-        type="text"
+        type='text'
         placeholder={placeholder}
         value={value || ''}
         onChange={onChange}

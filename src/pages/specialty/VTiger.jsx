@@ -310,57 +310,57 @@ export const VTiger = () => {
     <PageContainer title='VTiger'>
       {cookieData.specialty ? (
         <Box sx={{ padding: '12px' }}>
-        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '30vh' }}>
-          <Box sx={{ width: 'fit-content', marginTop: '20px' }}>
-            <Typography variant='h4' sx={{ fontWeight: 'bold', margin: '16px' }}>Company Info</Typography>
-            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}>
-              <TextField
-                variant='outlined'
-                label='Customer Code'
-                onChange={(e) => setCustCode(e.target.value)}
-                sx={{ marginRight: '20px' }}
-              />
-              <MonarchButton onClick={fetchOneExportCSV}>
-                Submit
-              </MonarchButton>
+          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '30vh' }}>
+            <Box sx={{ width: 'fit-content', marginTop: '20px' }}>
+              <Typography variant='h4' sx={{ fontWeight: 'bold', margin: '16px' }}>Company Info</Typography>
+              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}>
+                <TextField
+                  variant='outlined'
+                  label='Customer Code'
+                  onChange={(e) => setCustCode(e.target.value)}
+                  sx={{ marginRight: '20px' }}
+                />
+                <MonarchButton onClick={fetchOneExportCSV}>
+                  Submit
+                </MonarchButton>
+              </Box>
+              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <MonarchButton onClick={fetchAllExportCSV}>
+                  Get All
+                </MonarchButton>
+              </Box>
             </Box>
-            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <MonarchButton onClick={fetchAllExportCSV}>
-                Get All
-              </MonarchButton>
+        
+            <Box sx={{ width: 'fit-content', marginTop: '40px' }}>
+              <Typography variant='h4' sx={{ fontWeight: 'bold', margin: '16px' }}>Contact Info</Typography>
+              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}>
+                <TextField
+                  variant='outlined'
+                  label='Customer Code'
+                  onChange={(e) => setCustCode(e.target.value)}
+                  sx={{ marginRight: '20px' }}
+                />
+                <MonarchButton onClick={fetchOneContactCSV}>
+                  Submit
+                </MonarchButton>
+              </Box>
+              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <MonarchButton onClick={fetchAllContactCSV}>
+                  Get All
+                </MonarchButton>
+              </Box>
             </Box>
-          </Box>
       
-          <Box sx={{ width: 'fit-content', marginTop: '40px' }}>
-            <Typography variant='h4' sx={{ fontWeight: 'bold', margin: '16px' }}>Contact Info</Typography>
-            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}>
-              <TextField
-                variant='outlined'
-                label='Customer Code'
-                onChange={(e) => setCustCode(e.target.value)}
-                sx={{ marginRight: '20px' }}
-              />
-              <MonarchButton onClick={fetchOneContactCSV}>
-                Submit
-              </MonarchButton>
-            </Box>
-            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <MonarchButton onClick={fetchAllContactCSV}>
-                Get All
-              </MonarchButton>
-            </Box>
-          </Box>
-      
-          <Box sx={{ width: 'fit-content', marginTop: '40px' }}>
-            <Typography variant='h4' sx={{ fontWeight: 'bold', margin: '16px' }}>Quotes</Typography>
-            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <MonarchButton onClick={fetchAllQuotesCSV}>
-                Get All
-              </MonarchButton>
+            <Box sx={{ width: 'fit-content', marginTop: '40px' }}>
+              <Typography variant='h4' sx={{ fontWeight: 'bold', margin: '16px' }}>Quotes</Typography>
+              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <MonarchButton onClick={fetchAllQuotesCSV}>
+                  Get All
+                </MonarchButton>
+              </Box>
             </Box>
           </Box>
         </Box>
-      </Box>
       ) : (
         <Box sx={{ width: '100%', textAlign: 'center', overflowY: 'auto', height: '100vh', paddingTop: '25vh' }}>
           <Typography variant='h4' sx={{ fontWeight: 'bold', margin: '16px' }}>You Don't Have Access To This Page</Typography>

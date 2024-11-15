@@ -25,28 +25,28 @@ const AddModal = ({
       </DialogTitle>
       <DialogContent>
         <TextField
-          label="Program No"
+          label='Program No'
           fullWidth
           value={programNo}
           onChange={(e) => setProgramNo(e.target.value)}
           sx={{ mb: 2, mt: 1 }}
         />
         <TextField
-          label="Material"
+          label='Material'
           fullWidth
           value={material}
           onChange={(e) => setMaterial(e.target.value)}
           sx={{ mb: 2, mt: 1 }}
         />
         <TextField
-          label="Jobs"
+          label='Jobs'
           fullWidth
           value={jobNo}
           onChange={(e) => setJobNo(e.target.value)}
           sx={{ mb: 2, mt: 1 }}
         />
         <TextField
-          label="Area"
+          label='Area'
           fullWidth
           defaultValue={areaName}
           sx={{ mb: 2, mt: 1 }}

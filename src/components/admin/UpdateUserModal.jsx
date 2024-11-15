@@ -21,35 +21,35 @@ const UpdateUserModal = ({
       </DialogTitle>
       <DialogContent>
         <TextField
-          label="Employee Name"
+          label='Employee Name'
           fullWidth
           defaultValue={employeeData.name}
-          name="name"
+          name='name'
           onChange={onChange}
           sx={{ mb: 2, mt: 1 }}
         />
         <TextField
-          label="Username"
+          label='Username'
           fullWidth
           defaultValue={employeeData.username}
-          name="username"
+          name='username'
           onChange={onChange}
           sx={{ mb: 2, mt: 1 }}
         />
         <TextField
-          label="Employee Number"
+          label='Employee Number'
           fullWidth
           defaultValue={employeeData.number}
-          name="number"
+          name='number'
           onChange={onChange}
           sx={{ mb: 2, mt: 1 }}
         />
         <TextField
-          label="Password"
+          label='Password'
           fullWidth
           defaultValue={employeeData.password}
-          name="password"
-          type="password"
+          name='password'
+          type='password'
           onChange={onChange}
           sx={{ mb: 2, mt: 1 }}
         />

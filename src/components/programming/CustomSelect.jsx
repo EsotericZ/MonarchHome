@@ -2,7 +2,7 @@ import { FormControl, Select } from '@mui/material';
 
 const CustomSelect = ({ value, onChange, sx, children }) => {
   return (
-    <FormControl variant="standard" fullWidth>
+    <FormControl variant='standard' fullWidth>
       <Select
         value={value || ''}
         onChange={onChange}

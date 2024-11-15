@@ -14,7 +14,7 @@ import RefreshButton from '../../components/shared/RefreshButton';
 
 import addNewScaleLog from '../../services/scaleLogs/addNewScaleLog';
 import deleteScaleLog from '../../services/scaleLogs/deleteScaleLog';
-import getAllScales from "../../services/scales/getAllScales";
+import getAllScales from '../../services/scales/getAllScales';
 import getMMItems from '../../services/scales/getMMItems';
 import getMMScaleLogs from '../../services/scaleLogs/getMMScaleLogs';
 import getNewRFIDLogs from '../../services/rfid/getNewRFIDLogs';
@@ -380,11 +380,11 @@ export const Inventory = () => {
 
           {totalPages > 1 && (
             <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
-              <div className="pagination-container">
+              <div className='pagination-container'>
                 <Button
                   onClick={() => setCurrentPage(currentPage - 1)}
                   disabled={currentPage === 1}
-                  className="pagination-arrow"
+                  className='pagination-arrow'
                 >
                   &larr; Previous
                 </Button>
@@ -403,7 +403,7 @@ export const Inventory = () => {
                 <Button
                   onClick={() => setCurrentPage(currentPage + 1)}
                   disabled={currentPage === Math.ceil(logData.length / rowsPerPage)}
-                  className="pagination-arrow"
+                  className='pagination-arrow'
                 >
                   Next &rarr;
                 </Button>

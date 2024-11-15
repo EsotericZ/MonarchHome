@@ -12,10 +12,10 @@ const AddUserModal = ({ open, onClose, onChange, onSave }) => {
         </Typography>
       </DialogTitle>
       <DialogContent>
-        <TextField label="Employee Name" fullWidth name="name" onChange={onChange} sx={{ mb: 2, mt: 1 }} />
-        <TextField label="Username" fullWidth name="username" onChange={onChange} sx={{ mb: 2, mt: 1 }} />
-        <TextField label="Employee Number" fullWidth name="number" onChange={onChange} sx={{ mb: 2, mt: 1 }} />
-        <TextField label="Password" fullWidth name="password" type="password" onChange={onChange} sx={{ mb: 2, mt: 1 }} />
+        <TextField label='Employee Name' fullWidth name='name' onChange={onChange} sx={{ mb: 2, mt: 1 }} />
+        <TextField label='Username' fullWidth name='username' onChange={onChange} sx={{ mb: 2, mt: 1 }} />
+        <TextField label='Employee Number' fullWidth name='number' onChange={onChange} sx={{ mb: 2, mt: 1 }} />
+        <TextField label='Password' fullWidth name='password' type='password' onChange={onChange} sx={{ mb: 2, mt: 1 }} />
       </DialogContent>
       <DialogActions>
         <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', gap: 2, paddingBottom: 2 }}>

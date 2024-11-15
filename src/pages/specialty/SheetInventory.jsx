@@ -83,8 +83,8 @@ export const SheetInventory = () => {
               <Box sx={{ width: 'fit-content', marginTop: '20px' }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   <TextField
-                    variant="outlined"
-                    label="PO Number"
+                    variant='outlined'
+                    label='PO Number'
                     onChange={(e) => setPoNum(e.target.value)}
                     sx={{ marginRight: '20px' }}
                   />
@@ -94,17 +94,17 @@ export const SheetInventory = () => {
                 </Box>
                 <Box sx={{ display: 'flex', alignItems: 'center', paddingTop: '60px' }}>
                   <TextField
-                    type="date"
+                    type='date'
                     value={startDate}
                     onChange={(e) => setStartDate(e.target.value)}
-                    variant="outlined"
+                    variant='outlined'
                     sx={{ marginRight: '20px' }}
                   />
                   <TextField
-                    type="date"
+                    type='date'
                     value={endDate}
                     onChange={(e) => setEndDate(e.target.value)}
-                    variant="outlined"
+                    variant='outlined'
                     sx={{ marginRight: '20px' }}
                   />
                   <MonarchButton onClick={fetchPODate}>

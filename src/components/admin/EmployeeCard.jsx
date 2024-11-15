@@ -55,18 +55,18 @@ const EmployeeCard = ({ user, handleOpenUpdate }) => {
               <Typography sx={{ fontSize: '17px', marginLeft: '5px' }}>
                 {user.etch !== '-' ? (
                   <a
-                    href="http://10.0.1.45:3000/"
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    href='http://10.0.1.45:3000/'
+                    target='_blank'
+                    rel='noopener noreferrer'
                     style={{ textDecoration: 'none', color: 'inherit' }}
                   >
                     {user.etch}
                   </a>
                 ) : (
                   <a
-                    href="http://10.0.1.45:3000/"
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    href='http://10.0.1.45:3000/'
+                    target='_blank'
+                    rel='noopener noreferrer'
                     style={{ textDecoration: 'none', color: 'inherit' }}
                   >
                     None Assigned
@@ -79,46 +79,46 @@ const EmployeeCard = ({ user, handleOpenUpdate }) => {
 
         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, marginTop: 2 }}>
           {user.engineering && (
-            <Chip sx={{ fontSize: '13px', width: '105px', backgroundColor: 'gray', color: 'white', fontWeight: 'bold' }} label="Engineering" />
+            <Chip sx={{ fontSize: '13px', width: '105px', backgroundColor: 'gray', color: 'white', fontWeight: 'bold' }} label='Engineering' />
           )}
           {user.machining && (
-            <Chip sx={{ fontSize: '13px', width: '105px', backgroundColor: 'gray', color: 'white', fontWeight: 'bold' }} label="Machining" />
+            <Chip sx={{ fontSize: '13px', width: '105px', backgroundColor: 'gray', color: 'white', fontWeight: 'bold' }} label='Machining' />
           )}
           {user.quality && (
-            <Chip sx={{ fontSize: '13px', width: '105px', backgroundColor: 'gray', color: 'white', fontWeight: 'bold' }} label="Quality" />
+            <Chip sx={{ fontSize: '13px', width: '105px', backgroundColor: 'gray', color: 'white', fontWeight: 'bold' }} label='Quality' />
           )}
           {user.laser && (
-            <Chip sx={{ fontSize: '13px', width: '105px', backgroundColor: 'gray', color: 'white', fontWeight: 'bold' }} label="Laser" />
+            <Chip sx={{ fontSize: '13px', width: '105px', backgroundColor: 'gray', color: 'white', fontWeight: 'bold' }} label='Laser' />
           )}
           {user.forming && (
-            <Chip sx={{ fontSize: '13px', width: '105px', backgroundColor: 'gray', color: 'white', fontWeight: 'bold' }} label="Forming" />
+            <Chip sx={{ fontSize: '13px', width: '105px', backgroundColor: 'gray', color: 'white', fontWeight: 'bold' }} label='Forming' />
           )}
           {user.tlaser && (
-            <Chip sx={{ fontSize: '13px', width: '105px', backgroundColor: 'gray', color: 'white', fontWeight: 'bold' }} label="TLaser" />
+            <Chip sx={{ fontSize: '13px', width: '105px', backgroundColor: 'gray', color: 'white', fontWeight: 'bold' }} label='TLaser' />
           )}
           {user.saw && (
-            <Chip sx={{ fontSize: '13px', width: '105px', backgroundColor: 'gray', color: 'white', fontWeight: 'bold' }} label="Saw" />
+            <Chip sx={{ fontSize: '13px', width: '105px', backgroundColor: 'gray', color: 'white', fontWeight: 'bold' }} label='Saw' />
           )}
           {user.punch && (
-            <Chip sx={{ fontSize: '13px', width: '105px', backgroundColor: 'gray', color: 'white', fontWeight: 'bold' }} label="Punch" />
+            <Chip sx={{ fontSize: '13px', width: '105px', backgroundColor: 'gray', color: 'white', fontWeight: 'bold' }} label='Punch' />
           )}
           {user.shear && (
-            <Chip sx={{ fontSize: '13px', width: '105px', backgroundColor: 'gray', color: 'white', fontWeight: 'bold' }} label="Shear" />
+            <Chip sx={{ fontSize: '13px', width: '105px', backgroundColor: 'gray', color: 'white', fontWeight: 'bold' }} label='Shear' />
           )}
           {user.maintenance && (
-            <Chip sx={{ fontSize: '13px', width: '105px', backgroundColor: 'gray', color: 'white', fontWeight: 'bold' }} label="Maintenance" />
+            <Chip sx={{ fontSize: '13px', width: '105px', backgroundColor: 'gray', color: 'white', fontWeight: 'bold' }} label='Maintenance' />
           )}
           {user.shipping && (
-            <Chip sx={{ fontSize: '13px', width: '105px', backgroundColor: 'gray', color: 'white', fontWeight: 'bold' }} label="Shipping" />
+            <Chip sx={{ fontSize: '13px', width: '105px', backgroundColor: 'gray', color: 'white', fontWeight: 'bold' }} label='Shipping' />
           )}
           {user.purchasing && (
-            <Chip sx={{ fontSize: '13px', width: '105px', backgroundColor: 'gray', color: 'white', fontWeight: 'bold' }} label="Purchasing" />
+            <Chip sx={{ fontSize: '13px', width: '105px', backgroundColor: 'gray', color: 'white', fontWeight: 'bold' }} label='Purchasing' />
           )}
           {user.backlog && (
-            <Chip sx={{ fontSize: '13px', width: '105px', backgroundColor: 'gray', color: 'white', fontWeight: 'bold' }} label="Backlog" />
+            <Chip sx={{ fontSize: '13px', width: '105px', backgroundColor: 'gray', color: 'white', fontWeight: 'bold' }} label='Backlog' />
           )}
           {user.specialty && (
-            <Chip sx={{ fontSize: '13px', width: '105px', backgroundColor: 'gray', color: 'white', fontWeight: 'bold' }} label="Specialty" />
+            <Chip sx={{ fontSize: '13px', width: '105px', backgroundColor: 'gray', color: 'white', fontWeight: 'bold' }} label='Specialty' />
           )}
         </Box>
       </CardContent>

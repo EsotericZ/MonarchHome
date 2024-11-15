@@ -313,7 +313,7 @@ export const Purchasing = () => {
                                   onChange={(date) => {
                                     handleDateChange(item.id, date)
                                   }}
-                                  dateFormat="MM/dd"
+                                  dateFormat='MM/dd'
                                   className='custom-date-picker'
                                 />
                               </DataTableCell>

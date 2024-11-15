@@ -218,7 +218,7 @@ export const Profile = ({ handleLogout }) => {
     <PageContainer loading={loading} title={loggedIn ? '' : 'Monarch Metal'}>
       {loggedIn ? (
         <Box sx={{ width: '100%', p: 2 }}>
-          <Typography variant="h4" sx={{ fontWeight: 'bold', margin: '16px' }}>
+          <Typography variant='h4' sx={{ fontWeight: 'bold', margin: '16px' }}>
             {cookieData.name}
           </Typography>
           <Box sx={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: 2 }}>
@@ -226,7 +226,7 @@ export const Profile = ({ handleLogout }) => {
               <DepartmentCard key={index} area={area} />
             ))}
           </Box>
-          <NavLink to="/" style={{ textDecoration: 'none' }}>
+          <NavLink to='/' style={{ textDecoration: 'none' }}>
             <Box sx={{ textAlign: 'center', m: 3 }}>
               <MonarchButton onClick={handleLogout}>
                 Logout
@@ -235,7 +235,7 @@ export const Profile = ({ handleLogout }) => {
           </NavLink>
         </Box>
       ) : (
-        <NavLink to="/login" style={{ textDecoration: 'none' }}>
+        <NavLink to='/login' style={{ textDecoration: 'none' }}>
           <Box sx={{ textAlign: 'center' }}>
             <MonarchButton>
               Log In

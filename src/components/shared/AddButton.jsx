@@ -18,7 +18,7 @@ const AddButton = ({ onClick, sxProps }) => {
         ...sxProps,
       }}
     >
-      <AddIcon fontSize="large" />
+      <AddIcon fontSize='large' />
     </IconButton>
   );
 };

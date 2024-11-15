@@ -164,7 +164,7 @@ const AllJobsTable = ({
               <TableBody>
                 {searchedTBR.length >= 1 && (
                   <TableRow>
-                    <TableCell colSpan={10} align="center" sx={{ fontWeight: 'bold', fontSize: '15px', backgroundColor: '#D1BBA8', p: 1.25 }}>
+                    <TableCell colSpan={10} align='center' sx={{ fontWeight: 'bold', fontSize: '15px', backgroundColor: '#D1BBA8', p: 1.25 }}>
                       TBR
                     </TableCell>
                   </TableRow>
@@ -172,7 +172,7 @@ const AllJobsTable = ({
                 {renderTableRows(searchedTBR)}
                 {searchedFR.length >= 1 && (
                   <TableRow>
-                    <TableCell colSpan={10} align="center" sx={{ fontWeight: 'bold', fontSize: '15px', backgroundColor: '#D1BBA8', p: 1.25 }}>
+                    <TableCell colSpan={10} align='center' sx={{ fontWeight: 'bold', fontSize: '15px', backgroundColor: '#D1BBA8', p: 1.25 }}>
                       FUTURE
                     </TableCell>
                   </TableRow>

@@ -18,7 +18,7 @@ const RefreshButton = ({ onClick, sxProps }) => {
         ...sxProps,
       }}
     >
-      <RefreshIcon fontSize="large" />
+      <RefreshIcon fontSize='large' />
     </IconButton>
   );
 };

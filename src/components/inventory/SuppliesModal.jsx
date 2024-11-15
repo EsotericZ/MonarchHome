@@ -28,59 +28,59 @@ const SuppliesModal = ({
       </DialogTitle>
       <DialogContent>
         <TextField
-          label="Supplies Requested"
+          label='Supplies Requested'
           fullWidth
           value={supplies}
           onChange={(e) => setSupplies(e.target.value)}
           sx={{ mb: 2, mt: 1 }}
         />
         <TextField
-          label="Requested By"
+          label='Requested By'
           fullWidth
           value={requestedBy}
           onChange={(e) => setRequestedBy(e.target.value)}
           sx={{ mb: 2 }}
         />
         <FormControl fullWidth sx={{ mb: 2 }}>
-          <InputLabel id="department-label">Department</InputLabel>
+          <InputLabel id='department-label'>Department</InputLabel>
           <Select
-            labelId="department-label"
+            labelId='department-label'
             value={department}
             onChange={(e) => {
               setDepartment(e.target.value);
               document.activeElement.blur();
             }}
-            label="Department"
+            label='Department'
             onClose={() => document.activeElement.blur()}
             inputProps={{
               'aria-label': 'Department',
             }}
           >
-            <MenuItem value="">
+            <MenuItem value=''>
               <em>None</em>
             </MenuItem>
-            <MenuItem value="Welding">Welding</MenuItem>
-            <MenuItem value="Paint">Paint</MenuItem>
-            <MenuItem value="Shop">Shop</MenuItem>
-            <MenuItem value="Other">Other</MenuItem>
+            <MenuItem value='Welding'>Welding</MenuItem>
+            <MenuItem value='Paint'>Paint</MenuItem>
+            <MenuItem value='Shop'>Shop</MenuItem>
+            <MenuItem value='Other'>Other</MenuItem>
           </Select>
         </FormControl>
         <TextField
-          label="Description / Notes"
+          label='Description / Notes'
           fullWidth
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
           sx={{ mb: 2 }}
         />
         <TextField
-          label="Product Link"
+          label='Product Link'
           fullWidth
           value={productLink}
           onChange={(e) => setProductLink(e.target.value)}
           sx={{ mb: 2 }}
         />
         <TextField
-          label="Job No"
+          label='Job No'
           fullWidth
           value={jobNo}
           onChange={(e) => setJobNo(e.target.value)}

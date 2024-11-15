@@ -206,7 +206,7 @@ export const SideNav = ({ children }) => {
               <Collapse in={homeOpen} timeout='auto' unmountOnExit>
                 <List component='div' disablePadding sx={{ paddingLeft: 7 }}>
                   <ListItem disablePadding>
-                    <a href="http://10.0.1.78/monarch_jobdisplay" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: 'inherit' }}>
+                    <a href='http://10.0.1.78/monarch_jobdisplay' target='_blank' rel='noopener noreferrer' style={{ textDecoration: 'none', color: 'inherit' }}>
                       <ListItemButton onClick={handleCloseAll}>
                         <ListItemText primary='Display List' />
                       </ListItemButton>
@@ -578,7 +578,7 @@ export const SideNav = ({ children }) => {
                   </ListItem>
                   <ListItem disablePadding>
                     <Tooltip title='RFID' placement='right' arrow>
-                      <a href="http://10.0.1.45:3000/" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: 'inherit' }}>
+                      <a href='http://10.0.1.45:3000/' target='_blank' rel='noopener noreferrer' style={{ textDecoration: 'none', color: 'inherit' }}>
                         <ListItemButton onClick={handleCloseAll}>
                           <ListItemIcon sx={{ cursor: 'pointer', py: 1 }}>
                             <KeyIcon />

@@ -1,4 +1,4 @@
-import apiScales from "../../api/apiScales";
+import apiScales from '../../api/apiScales';
 
 const zeroScale = async (data) => {
   try {

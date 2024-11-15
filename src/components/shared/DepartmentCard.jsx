@@ -77,14 +77,14 @@ const DepartmentCard = ({ area }) => {
       >
         {imageSrc && (
           <CardMedia
-            component="img"
+            component='img'
             image={imageSrc}
             alt={`${area.area} icon`}
             sx={{ height: '150px', objectFit: 'contain' }}
           />
         )}
         <CardContent>
-          <Typography variant="h6" align="center" fontWeight="bold">
+          <Typography variant='h6' align='center' fontWeight='bold'>
             {area.area}
           </Typography>
         </CardContent>
