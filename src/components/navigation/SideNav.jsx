@@ -10,6 +10,7 @@ import {
   Dashboard as DashboardIcon,
   ExpandLess,
   ExpandMore,
+  FormatListBulleted as FormatListBulletedIcon,
   Home as HomeIcon,
   Key as KeyIcon,
   Login as LoginIcon,
@@ -531,20 +532,32 @@ export const SideNav = ({ children }) => {
 
             <Divider />
 
-            {/* LOGIN / PROFILE */}
+            {/* LOGIN / PROFILE / TASKS */}
 
             <List>
               {name ? (
-                <ListItem disablePadding>
-                  <Tooltip title='Profile' placement='right' arrow>
-                    <ListItemButton onClick={() => { navigate('/profile'); handleCloseAll(); }}>
-                      <ListItemIcon sx={{ cursor: 'pointer', py: 1 }}>
-                        <PersonIcon />
-                      </ListItemIcon>
-                      <ListItemText primary='Profile' />
-                    </ListItemButton>
-                  </Tooltip>
-                </ListItem>
+                <>
+                  <ListItem disablePadding>
+                    <Tooltip title='Profile' placement='right' arrow>
+                      <ListItemButton onClick={() => { navigate('/profile'); handleCloseAll(); }}>
+                        <ListItemIcon sx={{ cursor: 'pointer', py: 1 }}>
+                          <PersonIcon />
+                        </ListItemIcon>
+                        <ListItemText primary='Profile' />
+                      </ListItemButton>
+                    </Tooltip>
+                  </ListItem>
+                  <ListItem disablePadding>
+                    <Tooltip title='Tasks' placement='right' arrow>
+                      <ListItemButton onClick={() => { navigate('/tasks'); handleCloseAll(); }}>
+                        <ListItemIcon sx={{ cursor: 'pointer', py: 1 }}>
+                          <FormatListBulletedIcon />
+                        </ListItemIcon>
+                        <ListItemText primary='Tasks' />
+                      </ListItemButton>
+                    </Tooltip>
+                  </ListItem>
+                </>
               ) : (
                 <ListItem disablePadding>
                   <Tooltip title='Login' placement='right' arrow>

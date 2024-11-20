@@ -35,6 +35,7 @@ import { Specialty } from './pages/specialty/Specialty';
 import { StaticLaser } from './pages/departments/StaticLaser';
 import { Supplies } from './pages/inventory/Supplies';
 import { TapChart } from './pages/programming/TapChart';
+import { Tasks } from './pages/tasks/Tasks';
 import { TubeLaser } from './pages/departments/TubeLaser';
 import { TubeLaserProg } from './pages/programming/TubeLaserProg';
 import { VTiger } from './pages/specialty/VTiger';
@@ -62,6 +63,7 @@ export const App = () => {
       'tlaser': false,
       'saw': false,
       'shear': false,
+      'specialty': false,
     });
     setLoggedIn(false);
   };
@@ -102,6 +104,7 @@ export const App = () => {
           <Route path='/staticLaser' element={<StaticLaser />} />
           <Route path='/supplies' element={<Supplies />} />
           <Route path='/tapChart' element={<TapChart />} />
+          <Route path='/tasks' element={<Tasks />} />
           <Route path='/tubeLaser' element={<TubeLaser />} />
           <Route path='/tubeLaserProg' element={<TubeLaserProg />} />
           <Route path='/vtiger' element={<VTiger />} />
