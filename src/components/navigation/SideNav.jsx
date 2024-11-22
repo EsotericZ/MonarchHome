@@ -17,7 +17,6 @@ import {
   Person as PersonIcon,
   Stream as StreamIcon,
 } from '@mui/icons-material';
-// import ContentPasteIcon from '@mui/icons-material/ContentPaste';
 import { styled, useTheme } from '@mui/material/styles';
 
 import Cookies from 'universal-cookie';
