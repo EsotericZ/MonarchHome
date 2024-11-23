@@ -1,3 +1,7 @@
+// TEST IF ADD MODAL WORKS
+// IF SO ADD THE ABILITY TO DO NOTES AND UPDATE
+// THEN DONE WITH THIS
+
 import { useEffect, useState } from 'react';
 import { Box, Typography } from '@mui/material';
 
