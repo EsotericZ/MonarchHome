@@ -6,6 +6,7 @@ export const UserProvider = ({ children }) => {
   const [cookieData, setCookieData] = useState(() => {
     const savedData = localStorage.getItem('cookieData');
     return savedData ? JSON.parse(savedData) : {
+      id: '',
       name: '',
       role: 'employee',
       backlog: false,

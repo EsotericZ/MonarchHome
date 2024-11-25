@@ -48,6 +48,7 @@ export const App = () => {
     const cookies = new Cookies();
     cookies.remove('jwt', { path: '/', domain: '' });
     setCookieData({
+      'id': '',
       'name': '',
       'role': 'employee',
       'backlog': false,

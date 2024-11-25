@@ -90,8 +90,6 @@ const AddTaskModal = ({
             >
               <MenuItem value="Active">Active</MenuItem>
               <MenuItem value="Process">Future</MenuItem>
-              <MenuItem value="Hold">On Hold</MenuItem>
-              <MenuItem value="Complete">Complete</MenuItem>
             </Select>
           </FormControl>
         </Box>

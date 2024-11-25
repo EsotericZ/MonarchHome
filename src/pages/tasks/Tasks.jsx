@@ -1,7 +1,3 @@
-// TEST IF ADD MODAL WORKS
-// IF SO ADD THE ABILITY TO DO NOTES AND UPDATE
-// THEN DONE WITH THIS
-
 import { useEffect, useState } from 'react';
 import { Box, Typography } from '@mui/material';
 
@@ -13,8 +9,10 @@ import PageContainer from '../../components/shared/PageContainer';
 import RefreshButton from '../../components/shared/RefreshButton';
 import AddTaskModal from '../../components/tasks/AddTaskModal';
 
+import createTask from '../../services/tasks/createTask';
 import getAllTasks from '../../services/tasks/getAllTasks';
 import getAllUsers from '../../services/users/getAllUsers';
+import getUserTasks from '../../services/tasks/getUserTasks';
 
 export const Tasks = () => {
   const { cookieData } = useUserContext();
@@ -23,20 +21,32 @@ export const Tasks = () => {
   const [loading, setLoading] = useState(true);
 
   const [allUsers, setAllUsers] = useState([]);
+  const [allTasks, setAllTasks] = useState([]);
   const [assignedBy, setAssignedBy] = useState('');
   const [assignedTo, setAssignedTo] = useState([]);
   const [description, setDescription] = useState('');
   const [priority, setPriority] = useState('');
   const [status, setStatus] = useState('');
   const [id, setId] = useState(0);
-  
+
   const [active, setActive] = useState('Active');
   
   const handleClose = () => setShow(false);
 
   const handleSave = async () => {
     try {
-      console.log('Save')
+      const assignedById = allUsers.find((user) => user.name === assignedBy)?.id;
+      const assignedToIds = assignedTo.map(
+        (name) => allUsers.find((user) => user.name === name)?.id
+      );
+  
+      if (!assignedById || assignedToIds.includes(undefined)) {
+        console.error('Invalid user mapping');
+        return;
+      }
+
+      await createTask(assignedById, assignedToIds, description, priority, status);
+
       handleClose();
       fetchData();
     } catch (err) {
@@ -65,7 +75,6 @@ export const Tasks = () => {
 
   const handleUpdate = async () => {
     try {
-      console.log('Update')
       handleClose();
       fetchData();
     } catch (err) {
@@ -76,8 +85,10 @@ export const Tasks = () => {
   const fetchData = async () => {
     try {
       const allTasks = await getAllTasks();
-      console.log(allTasks)
       const allUsersData = await getAllUsers();
+      const userTaskData = await getUserTasks(cookieData.id);
+      console.log(userTaskData);
+      setAllTasks(allTasks);
       setAllUsers(allUsersData.data || []);
     } catch (err) {
       console.error(err);
@@ -108,7 +119,7 @@ export const Tasks = () => {
         priority={priority}
         setPriority={setPriority}
         status={status}
-        setSatus={setStatus}
+        setStatus={setStatus}
         allUsers={allUsers}
       />
       <CustomTabs
