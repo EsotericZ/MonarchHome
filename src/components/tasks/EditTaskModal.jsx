@@ -3,10 +3,10 @@ import { Box, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, In
 import CancelButton from '../shared/CancelButton';
 import SaveButton from '../shared/SaveButton';
 
-const AddTaskModal = ({
-  show,
+const EditTaskModal = ({
+  showEdit,
   handleClose,
-  handleSave,
+  handleUpdate,
   assignedBy,
   assignedTo,
   setAssignedTo,
@@ -21,7 +21,7 @@ const AddTaskModal = ({
   allUsers,
 }) => {
   return (
-    <Dialog open={show} onClose={handleClose} fullWidth>
+    <Dialog open={showEdit} onClose={handleClose} fullWidth>
       <DialogTitle sx={{ textAlign: 'center', fontWeight: 'bold' }}>
         Create Task
       </DialogTitle>
@@ -38,7 +38,7 @@ const AddTaskModal = ({
               WebkitTextFillColor: 'black',
             },
             '& .MuiInputLabel-root.Mui-disabled': {
-              color: 'rgba(0, 0, 0, 0.6)', 
+              color: 'rgba(0, 0, 0, 0.6)',
             },
           }}
         />
@@ -124,6 +124,8 @@ const AddTaskModal = ({
             >
               <MenuItem value="Active">Active</MenuItem>
               <MenuItem value="Process">Future</MenuItem>
+              <MenuItem value="Hold">On Hold</MenuItem>
+              <MenuItem value="Complete">Complete</MenuItem>
             </Select>
           </FormControl>
         </Box>
@@ -132,11 +134,11 @@ const AddTaskModal = ({
       <DialogActions>
         <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', gap: 2, pb: 2 }}>
           <CancelButton onClick={handleClose}>Cancel</CancelButton>
-          <SaveButton onClick={handleSave}>Save</SaveButton>
+          <SaveButton onClick={handleUpdate}>Update</SaveButton>
         </Box>
       </DialogActions>
     </Dialog>
   );
 };
 
-export default AddTaskModal;
+export default EditTaskModal;
