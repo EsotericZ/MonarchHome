@@ -99,7 +99,6 @@ export const Tasks = () => {
 
       setAllUsers(allUsersData.data || []);
       setUserTasks(userTaskData.data);
-      console.log(userTaskData.data)
     } catch (err) {
       console.error(err);
     } finally {
@@ -159,33 +158,81 @@ export const Tasks = () => {
         tabLabels={['Active', 'On Hold', 'Completed']}
       />
 
-      {selectedTab == 0 &&
+      {selectedTab == 0 && (
         <Box sx={{ padding: '12px' }}>
           <Box sx={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: 1 }}>
-            {Array.isArray(userTasks) && userTasks.length > 0 ? (
-              userTasks.map((task, index) => (
-                <TaskCard key={index} task={task} handleUpdateTask={handleUpdateTask} />
-              ))
-            ) : (
-              <Box sx={{ width: '100%', textAlign: 'center', alignContent: 'center', overflowY: 'auto', height: '15vh' }}>
-                <Typography variant='h4' sx={{ fontWeight: 'bold', margin: '16px' }}>No Active Tasks</Typography>
-              </Box>
-            )}
+            {Array.isArray(userTasks) ? (
+              userTasks
+                .filter((task) => task.status === 'Active' || task.status === 'Process')
+                .map((task, index) => (
+                  <TaskCard key={index} task={task} handleUpdateTask={handleUpdateTask} />
+                )).length > 0 ? (
+                userTasks
+                  .filter((task) => task.status === 'Active' || task.status === 'Process')
+                  .map((task, index) => (
+                    <TaskCard key={index} task={task} handleUpdateTask={handleUpdateTask} />
+                  ))
+              ) : (
+                <Box
+                  sx={{
+                    width: '100%',
+                    textAlign: 'center',
+                    alignContent: 'center',
+                    overflowY: 'auto',
+                    height: '15vh',
+                  }}
+                >
+                  <Typography variant="h4" sx={{ fontWeight: 'bold', margin: '16px' }}>
+                    No Active Tasks
+                  </Typography>
+                </Box>
+              )
+            ) : null}
           </Box>
 
-          {cookieData.name &&
-            <AddButton onClick={handleShow} />
-          }
+          {cookieData.name && <AddButton onClick={handleShow} />}
           <RefreshButton onClick={fetchData} />
         </Box>
-      }
+      )}
 
-      {selectedTab == 1 &&
+
+      {selectedTab == 1 && (
         <Box sx={{ padding: '12px' }}>
-          <Typography>On Hold</Typography>
-          <Typography>Under Construction</Typography>
+          <Box sx={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: 1 }}>
+            {Array.isArray(userTasks) ? (
+              userTasks
+                .filter((task) => task.status === 'Hold')
+                .map((task, index) => (
+                  <TaskCard key={index} task={task} handleUpdateTask={handleUpdateTask} />
+                )).length > 0 ? (
+                userTasks
+                  .filter((task) => task.status === 'Hold')
+                  .map((task, index) => (
+                    <TaskCard key={index} task={task} handleUpdateTask={handleUpdateTask} />
+                  ))
+              ) : (
+                <Box
+                  sx={{
+                    width: '100%',
+                    textAlign: 'center',
+                    alignContent: 'center',
+                    overflowY: 'auto',
+                    height: '15vh',
+                  }}
+                >
+                  <Typography variant="h4" sx={{ fontWeight: 'bold', margin: '16px' }}>
+                    No Tasks on Hold
+                  </Typography>
+                </Box>
+              )
+            ) : null}
+          </Box>
+
+          {cookieData.name && <AddButton onClick={handleShow} />}
+          <RefreshButton onClick={fetchData} />
         </Box>
-      }
+      )}
+
 
       {selectedTab == 2 &&
         <Box sx={{ padding: '12px' }}>
