@@ -19,6 +19,7 @@ import getFutureJobs from '../../services/engineering/getFutureJobs';
 import getRepeatJobs from '../../services/engineering/getRepeatJobs';
 import getOutsourceJobs from '../../services/engineering/getOutsourceJobs';
 import getUnconfirmedJobs from '../../services/engineering/getUnconfirmedJobs';
+import getUserTasks from '../../services/tasks/getUserTasks';
 
 
 export const Dashboard = () => {
@@ -50,17 +51,20 @@ export const Dashboard = () => {
   const [proto, setProto] = useState(0);
   const [unconfirmedJobs, setUnconfirmedJobs] = useState(0);
   const [unconfirmedTotal, setUnconfirmedTotal] = useState(0);
+  const [userTasksActive, setUserTasksActive] = useState(0);
+  const [userTasksHold, setUserTasksHold] = useState(0);
   const [loading, setLoading] = useState(true);
 
   const fetchData = async () => {
     try {
-      const [engRes, tbrRes, futureRes, repeatRes, outsourceRes, unconfirmedRes] = await Promise.all([
+      const [engRes, tbrRes, futureRes, repeatRes, outsourceRes, unconfirmedRes, userTaskRes] = await Promise.all([
         getAllJobs(),
         getTBRJobs(),
         getFutureJobs(),
         getRepeatJobs(),
         getOutsourceJobs(),
         getUnconfirmedJobs(),
+        getUserTasks(cookieData.id),
       ]);
 
       setEngTotal(engRes.filter(row => typeof row.JobNo !== 'undefined').length);
@@ -69,6 +73,8 @@ export const Dashboard = () => {
       setEngFuture(futureRes.filter(row => typeof row.JobNo !== 'undefined' && row.User_Text3 !== 'REPEAT').length);
       setEngRepeat(repeatRes.length);
       setEngOutsource(outsourceRes.length);
+      setUserTasksActive(userTaskRes.data.filter((task) => task.status === 'Active' || task.status === 'Process').length);
+      setUserTasksHold(userTaskRes.data.filter((task) => task.status === 'Hold').length);
 
       setFormTbr(((tbrRes.filter(row => (typeof row.JobNo !== 'undefined' && row.dataValues.jobStatus == 'FORMING'))).length));
       setFormFuture(((futureRes.filter(row => (typeof row.JobNo !== 'undefined' && row.dataValues.jobStatus == 'FORMING'))).length));
@@ -195,12 +201,12 @@ export const Dashboard = () => {
             <Box sx={{ flexGrow: 1, flexShrink: 1, minWidth: '300px', maxWidth: { xs: '100%', md: '30%' }, display: 'flex', flexDirection: 'column', gap: 2 }}>
 
               {/* USER INFORMATION */}
-              <Box sx={{ display: 'flex', alignItems: 'center', border: '1px solid grey', borderRadius: '15px', p: 1 }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', border: '1px solid grey', borderRadius: '15px', p: 2, backgroundColor: 'rgba(0, 0, 0, 0.05)' }}>
                 <IconButton onClick={() => { navigate('/profile') }}>
-                  <PersonIcon sx={{ fontSize: 75 }} />
+                  <PersonIcon sx={{ fontSize: 55 }} />
                 </IconButton>
                 <Box sx={{ ml: 2 }}>
-                  <Typography sx={{ fontSize: 28, fontWeight: 'bold' }}>{cookieData.name}</Typography>
+                  {/* <Typography sx={{ fontSize: 28, fontWeight: 'bold' }}>{cookieData.name}</Typography> */}
                   <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
                     {cookieData.engineering && (
                       <Chip
@@ -343,7 +349,7 @@ export const Dashboard = () => {
               </Box>
 
               {/* JOB SUMMARY */}
-              <Box sx={{ border: '1px solid grey', borderRadius: '15px', p: 2 }}>
+              <Box sx={{ border: '1px solid grey', borderRadius: '15px', p: 2, backgroundColor: 'rgba(0, 0, 0, 0.05)' }}>
                 <Table sx={{ borderCollapse: 'collapse' }}>
                   <TableBody>
                     <TableRow>
@@ -404,14 +410,36 @@ export const Dashboard = () => {
                 </Box>
               </Box>
 
+              {/* TASKS */}
+              {(userTasksActive > 0 || userTasksHold > 0) && (
+                <Box 
+                  sx={{ border: '1px solid grey', borderRadius: '15px', p: 2,  cursor: 'pointer', backgroundColor: 'rgba(0, 0, 0, 0.05)',
+                    '&:hover': {
+                      backgroundColor: 'rgba(0, 0, 0, 0.15)',
+                    }, 
+                  }}
+                  onClick={() => navigate('/tasks')}
+                >
+                  <Table sx={{ borderCollapse: 'collapse' }}>
+                    <TableBody>
+                      <TableRow>
+                        <TableCell sx={{ fontWeight: 'bold', fontSize: '22px', py: 0, border: 'none' }}>Tasks</TableCell>
+                        <TableCell sx={{ fontWeight: 'bold', fontSize: '18px', py: 0, border: 'none' }}>Active: {userTasksActive}</TableCell>
+                        <TableCell sx={{ fontWeight: 'bold', fontSize: '18px', py: 0, border: 'none' }}>On Hold: {userTasksHold}</TableCell>
+                      </TableRow>
+                    </TableBody>
+                  </Table>
+                </Box>
+              )}
+
               {/* DOUGHNUT CHART */}
-              <Box sx={{ border: '1px solid grey', borderRadius: '15px', pb: 2, display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', height: '250px' }}>
+              <Box sx={{ border: '1px solid grey', borderRadius: '15px', pb: 2, display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', height: '250px', backgroundColor: 'rgba(0, 0, 0, 0.05)' }}>
                 <Doughnut data={donutData} options={donutOptions} style={{ width: '100%', maxWidth: '400px' }} />
               </Box>
             </Box>
 
             {/* BAR CHART */}
-            <Box sx={{ flexGrow: 1, flexShrink: 1, minWidth: '400px', border: '1px solid grey', borderRadius: '15px', display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', pb: 3 }}>
+            <Box sx={{ flexGrow: 1, flexShrink: 1, minWidth: '400px', border: '1px solid grey', borderRadius: '15px', display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', pb: 3, backgroundColor: 'rgba(0, 0, 0, 0.05)' }}>
               <Bar data={data} options={options} style={{ width: '100%', height: '100%' }} />
             </Box>
           </Box>
