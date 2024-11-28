@@ -1,3 +1,6 @@
+// NEED TO ADD NOTES
+// CAN USE THIS SAME THING ON MAINTNENANCE
+
 import { useEffect, useState } from 'react';
 import { Box, Typography } from '@mui/material';
 
