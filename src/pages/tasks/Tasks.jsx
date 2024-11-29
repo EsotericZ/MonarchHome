@@ -1,6 +1,3 @@
-// NEED TO ADD NOTES
-// CAN USE THIS SAME THING ON MAINTNENANCE
-
 import { useEffect, useState } from 'react';
 import { Box, Typography } from '@mui/material';
 
@@ -9,12 +6,14 @@ import { useUserContext } from '../../context/UserContext';
 import AddButton from '../../components/shared/AddButton';
 import AddTaskModal from '../../components/tasks/AddTaskModal';
 import CustomTabs from '../../components/shared/CustomTabs';
+import EditTaskModal from '../../components/tasks/EditTaskModal'
+import NotesModal from '../../components/tasks/NotesModal';
 import PageContainer from '../../components/shared/PageContainer';
 import RefreshButton from '../../components/shared/RefreshButton';
 import TaskCard from '../../components/tasks/TaskCard';
-import EditTaskModal from '../../components/tasks/EditTaskModal'
 
 import createTask from '../../services/tasks/createTask';
+import createTaskNote from '../../services/tasks/createTaskNote';
 import getAllUsers from '../../services/users/getAllUsers';
 import getUserTasks from '../../services/tasks/getUserTasks';
 import updateTask from '../../services/tasks/updateTask';
@@ -24,6 +23,7 @@ export const Tasks = () => {
   const [selectedTab, setSelectedTab] = useState(0);
   const [show, setShow] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
+  const [showNotesModal, setShowNotesModal] = useState(false);
   const [loading, setLoading] = useState(true);
 
   const [allUsers, setAllUsers] = useState([]);
@@ -35,6 +35,8 @@ export const Tasks = () => {
   const [priority, setPriority] = useState('');
   const [status, setStatus] = useState('');
   const [id, setId] = useState(0);
+  const [selectedTask, setSelectedTask] = useState(null);
+  const [notes, setNotes] = useState([]);
 
   const handleClose = () => {
     setShow(false);
@@ -91,7 +93,29 @@ export const Tasks = () => {
     } catch (err) {
       console.error(err);
     }
-  }
+  };
+
+  const handleOpenNotesModal = (task) => {
+    if (task) {
+      setSelectedTask(task);
+      setNotes(task.notes || []);
+      setShowNotesModal(true);
+    }
+  };
+
+  const handleAddNote = async (taskId, note) => {
+    await createTaskNote(taskId, note, cookieData.id, new Date().toISOString());
+    const newNote = { note, name: cookieData.name, date: new Date().toISOString() };
+    setNotes((prevNotes) => [...prevNotes, newNote]);
+    fetchData();
+  };
+
+  const handleCompleteTask = async (taskId) => {
+    // Call your API to complete the task
+    console.log(`Completing task ${taskId}`);
+    setShowNotesModal(false);
+    fetchData();
+  };
 
   const fetchData = async () => {
     try {
@@ -155,6 +179,16 @@ export const Tasks = () => {
         allUsers={allUsers}
       />
 
+      <NotesModal
+        show={showNotesModal}
+        handleClose={() => setShowNotesModal(false)}
+        task={selectedTask}
+        notes={notes}
+        allUsers={allUsers}
+        handleAddNote={handleAddNote}
+        handleCompleteTask={handleCompleteTask}
+      />
+
       <CustomTabs
         selectedTab={selectedTab}
         handleTabChange={handleTabChange}
@@ -173,7 +207,7 @@ export const Tasks = () => {
                 userTasks
                   .filter((task) => task.status === 'Active' || task.status === 'Process')
                   .map((task, index) => (
-                    <TaskCard key={index} task={task} handleUpdateTask={handleUpdateTask} />
+                    <TaskCard key={index} task={task} handleUpdateTask={handleUpdateTask} handleOpenNotesModal={handleOpenNotesModal} />
                   ))
               ) : (
                 <Box

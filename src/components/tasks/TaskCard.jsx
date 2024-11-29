@@ -1,9 +1,8 @@
-import { Box, Card, CardContent, Typography } from '@mui/material';
-import { IconButton } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
+import { Box, Card, CardContent, IconButton, Typography } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
+import SpeakerNotesIcon from '@mui/icons-material/SpeakerNotes';
 
-const TaskCard = ({ task, handleUpdateTask }) => {
+const TaskCard = ({ task, handleUpdateTask, handleOpenNotesModal }) => {
   let backgroundColor;
   switch (task.priority) {
     case 'Low':
@@ -86,8 +85,8 @@ const TaskCard = ({ task, handleUpdateTask }) => {
           <IconButton size='small' color='black' onClick={(e) => { e.stopPropagation(); handleUpdateTask(task); }}>
             <EditIcon />
           </IconButton>
-          <IconButton size='small' color='black' onClick={(e) => { e.stopPropagation(); }}>
-            <AddIcon />
+          <IconButton size='small' color='black' onClick={(e) => { e.stopPropagation(); handleOpenNotesModal(task); }}>
+            <SpeakerNotesIcon />
           </IconButton>
         </Box>
       </CardContent>
