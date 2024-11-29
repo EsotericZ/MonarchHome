@@ -1,17 +1,20 @@
 import { useEffect, useState } from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material';
 
 import { useUserContext } from '../../context/UserContext';
 
 import AddButton from '../../components/shared/AddButton';
 import AddTaskModal from '../../components/tasks/AddTaskModal';
+import CompleteModal from '../../components/tasks/CompleteModal';
 import CustomTabs from '../../components/shared/CustomTabs';
 import EditTaskModal from '../../components/tasks/EditTaskModal'
 import NotesModal from '../../components/tasks/NotesModal';
 import PageContainer from '../../components/shared/PageContainer';
 import RefreshButton from '../../components/shared/RefreshButton';
 import TaskCard from '../../components/tasks/TaskCard';
+import TaskTable from '../../components/tasks/TaskTable';
 
+import completeTask from '../../services/tasks/completeTask';
 import createTask from '../../services/tasks/createTask';
 import createTaskNote from '../../services/tasks/createTaskNote';
 import getAllUsers from '../../services/users/getAllUsers';
@@ -22,6 +25,7 @@ export const Tasks = () => {
   const { cookieData } = useUserContext();
   const [selectedTab, setSelectedTab] = useState(0);
   const [show, setShow] = useState(false);
+  const [showCompleteModal, setShowCompleteModal] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
   const [showNotesModal, setShowNotesModal] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -36,6 +40,7 @@ export const Tasks = () => {
   const [status, setStatus] = useState('');
   const [id, setId] = useState(0);
   const [selectedTask, setSelectedTask] = useState(null);
+  const [selectedCompletedTask, setSelectedCompletedTask] = useState(null);
   const [notes, setNotes] = useState([]);
 
   const handleClose = () => {
@@ -111,10 +116,14 @@ export const Tasks = () => {
   };
 
   const handleCompleteTask = async (taskId) => {
-    // Call your API to complete the task
-    console.log(`Completing task ${taskId}`);
+    await completeTask(taskId);
     setShowNotesModal(false);
     fetchData();
+  };
+
+  const handleRowClick = (task) => {
+    setSelectedCompletedTask(task);
+    setShowCompleteModal(true);
   };
 
   const fetchData = async () => {
@@ -187,6 +196,14 @@ export const Tasks = () => {
         allUsers={allUsers}
         handleAddNote={handleAddNote}
         handleCompleteTask={handleCompleteTask}
+      />
+
+      <CompleteModal
+        show={showCompleteModal}
+        handleClose={() => setShowCompleteModal(false)}
+        task={selectedCompletedTask}
+        notes={selectedCompletedTask?.notes || []}
+        allUsers={allUsers}
       />
 
       <CustomTabs
@@ -273,8 +290,12 @@ export const Tasks = () => {
 
       {selectedTab == 2 &&
         <Box sx={{ padding: '12px' }}>
-          <Typography>Completed</Typography>
-          <Typography>Under Construction</Typography>
+          <TaskTable
+            tasks={userTasks}
+            filterStatus="Complete"
+            fallbackMessage="No Completed Tasks"
+            onRowClick={handleRowClick}
+          />
         </Box>
       }
     </PageContainer>

@@ -1,7 +1,12 @@
 import { useState } from 'react';
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Table, TableBody, TableCell, TableHead, TableRow, TextField } from '@mui/material';
+import { format, parseISO } from 'date-fns';
 import AddIcon from '@mui/icons-material/Add';
 import CheckIcon from '@mui/icons-material/Check';
+
+import CancelButton from '../shared/CancelButton';
+import DataTableCell from '../shared/DataTableCell';
+import StandardTableCell from '../shared/StandardTableCell';
 
 const NotesModal = ({ show, handleClose, task, notes, allUsers, handleAddNote, handleCompleteTask }) => {
   const [newNote, setNewNote] = useState('');
@@ -38,17 +43,17 @@ const NotesModal = ({ show, handleClose, task, notes, allUsers, handleAddNote, h
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell sx={{ fontWeight: 'bold' }}>Note</TableCell>
-              <TableCell sx={{ fontWeight: 'bold' }}>Updated By</TableCell>
-              <TableCell sx={{ fontWeight: 'bold' }}>Date</TableCell>
+              <StandardTableCell width='60%'>Note</StandardTableCell>
+              <StandardTableCell width='20%'>Updated By</StandardTableCell>
+              <StandardTableCell width='20%'>Date</StandardTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {resolvedNotes.map((note, index) => (
               <TableRow key={index}>
-                <TableCell>{note.note}</TableCell>
-                <TableCell>{note.name}</TableCell>
-                <TableCell>{new Date(note.date).toLocaleString()}</TableCell>
+                <DataTableCell>{note.note}</DataTableCell>
+                <DataTableCell>{note.name}</DataTableCell>
+                <DataTableCell>{note.date && format(parseISO(note.date), 'MM/dd h:mmb')}</DataTableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -75,9 +80,9 @@ const NotesModal = ({ show, handleClose, task, notes, allUsers, handleAddNote, h
           >
             Complete Task
           </Button>
-          <Button variant="outlined" onClick={handleClose}>
+          <CancelButton onClick={handleClose}>
             Close
-          </Button>
+          </CancelButton>
         </Box>
       </DialogActions>
     </Dialog>
