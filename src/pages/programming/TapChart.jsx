@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
-import { Box, Button, Dialog, DialogTitle, DialogContent, DialogActions, FormControl, InputLabel, TextField, Select, MenuItem, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, IconButton } from '@mui/material';
+import { Box, Table, TableBody, TableContainer, TableHead, TableRow } from '@mui/material';
 
-import { useUserContext } from '../../context/UserContext';
-
-import PuffLoader from 'react-spinners/PuffLoader';
-import AddIcon from '@mui/icons-material/Add';
+import AddButtonBottom from '../../components/shared/AddButtonBottom';
+import AddTapModal from '../../components/programming/AddTapModal';
+import CustomHeader from '../../components/programming/CustomHeader';
+import DataTableCell from '../../components/shared/DataTableCell';
+import EditTapModal from '../../components/programming/EditTapModal';
+import PageContainer from '../../components/shared/PageContainer';
 
 import createTap from '../../services/taps/createTap';
 import getMetricTaps from '../../services/taps/getMetricTaps';
@@ -12,7 +14,6 @@ import getStandardTaps from '../../services/taps/getStandardTaps';
 import updateTap from '../../services/taps/updateTap';
 
 export const TapChart = () => {
-  const { cookieData } = useUserContext();
   const [searchedValueTapStandard, setSearchedValueTapStandard] = useState('');
   const [searchedValueTapMetric, setSearchedValueTapMetric] = useState('');
   const [searchedStandard, setSearchedStandard] = useState([]);
@@ -43,17 +44,13 @@ export const TapChart = () => {
     }
   }
 
-  const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
   const handleSave = async () => {
     try {
       await createTap(tapName, holeSize, type, notes);
       setShow(false);
-      setTapName('');
-      setHoleSize('');
-      setType('Standard');
-      setNotes('-');
+      resetFields();
     } catch (err) {
       console.error(err);
     } finally {
@@ -73,12 +70,8 @@ export const TapChart = () => {
   const handleUpdate = async () => {
     try {
       await updateTap(id, tapName, holeSize, type, notes);
-      setId(0);
-      setTapName('');
-      setHoleSize('');
-      setType('');
-      setNotes('');
       setShowEdit(false);
+      resetFields();
     } catch (err) {
       console.error(err);
     } finally {
@@ -87,166 +80,125 @@ export const TapChart = () => {
   }
 
   const handleCancel = () => {
+    setShowEdit(false);
+    setShow(false);
+    resetFields();
+  }
+
+  const resetFields = () => {
     setTapName('');
     setHoleSize('');
-    setType('');
-    setNotes('');
-    setShowEdit(false);
-  }
+    setType('Standard');
+    setNotes('-');
+    setId(0);
+  };
 
   useEffect(() => {
     fetchData();
   }, [loading]);
 
+  const standardConfig = [
+    { label: 'Tap Name', width: '28%', isSearchable: true, value: searchedValueTapStandard, onChange: (e) => setSearchedValueTapStandard(e.target.value), placeholder: 'Tap Name' },
+    { label: 'Hole', width: '28%', isSearchable: false },
+    { label: 'Notes', width: '44%', isSearchable: false },
+  ];
+
+  const metricConfig = [
+    { label: 'Tap Name', width: '28%', isSearchable: true, value: searchedValueTapMetric, onChange: (e) => setSearchedValueTapMetric(e.target.value), placeholder: 'Tap Name' },
+    { label: 'Hole', width: '28%', isSearchable: false },
+    { label: 'Notes', width: '44%', isSearchable: false },
+  ];
+
   return (
-    <Box sx={{ width: '100%', textAlign: 'center', overflowY: 'auto', height: '100vh' }}>
-      {loading ? (
-        <Box>
-          <Typography variant='h4' sx={{ fontWeight: 'bold', margin: '16px' }}>Tap Chart</Typography>
-          <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginTop: '100px' }}>
-            <PuffLoader color='red' />
-          </Box>
+    <PageContainer loading={loading} title='Tap Chart'>
+
+      {/* MODALS */}
+
+      <AddTapModal
+        open={show}
+        onClose={handleCancel}
+        tapName={tapName}
+        setTapName={setTapName}
+        holeSize={holeSize}
+        setHoleSize={setHoleSize}
+        type={type}
+        setType={setType}
+        notes={notes}
+        setNotes={setNotes}
+        onSave={handleSave}
+      />
+
+      <EditTapModal
+        open={showEdit}
+        onClose={handleCancel}
+        tapName={tapName}
+        setTapName={setTapName}
+        holeSize={holeSize}
+        setHoleSize={setHoleSize}
+        type={type}
+        setType={setType}
+        notes={notes}
+        setNotes={setNotes}
+        onUpdate={handleUpdate}
+      />
+
+      {/* DATA TABLES */}
+
+      <Box sx={{ display: 'flex', justifyContent: 'space-around', width: '100%' }}>
+        <Box sx={{ width: '45%' }}>
+          <TableContainer>
+            <Table>
+              <TableHead>
+                <CustomHeader columns={standardConfig} />
+              </TableHead>
+              <TableBody>
+                {searchedStandard
+                  .filter((row) =>
+                    !searchedValueTapStandard || row.tapName.toString().toLowerCase().includes(searchedValueTapStandard.toLowerCase())
+                  )
+                  .map((tap, index) => {
+                    return (
+                      <TableRow key={index} sx={{ backgroundColor: index % 2 === 0 ? '#f0f0f0' : '#fff' }}>
+                        <DataTableCell onClick={() => handleOpenTap(tap)}>{tap.tapName}</DataTableCell>
+                        <DataTableCell>{tap.holeSize}</DataTableCell>
+                        <DataTableCell>{tap.notes}</DataTableCell>
+                      </TableRow>
+                    )
+                  })
+                }
+              </TableBody>
+            </Table>
+          </TableContainer>
         </Box>
-      ) : (
-        <Box sx={{ width: '100%' }}>
-          <Typography variant='h4' sx={{ fontWeight: 'bold', margin: '16px' }}>Tap Chart</Typography>
 
-{/* Add Modal */}
-
-          <Dialog open={show} onClose={handleClose} fullWidth>
-            <DialogTitle>
-              <Typography sx={{ fontWeight: 'bold', textAlign: 'center', fontSize: '30px' }}>
-                Add Tap
-              </Typography>
-            </DialogTitle>
-            <DialogContent>
-              <TextField label='Tap Name' fullWidth value={tapName} onChange={(e) => setTapName(e.target.value)} sx={{ mb: 2, mt: 1 }} />
-              <TextField label='Hole Size' fullWidth value={holeSize} onChange={(e) => setHoleSize(e.target.value)} sx={{ mb: 2, mt: 1 }} />
-              <FormControl fullWidth sx={{ mb: 2, mt: 1 }}>
-                <InputLabel id="tap-type-label">Type</InputLabel>
-                <Select
-                  labelId="tap-type-label"
-                  value={type}
-                  onChange={(e) => setType(e.target.value)}
-                  label="Type"
-                >
-                  <MenuItem value="Standard">Standard</MenuItem>
-                  <MenuItem value="Metric">Metric</MenuItem>
-                </Select>
-              </FormControl>
-              <TextField label='Notes' fullWidth value={notes} onChange={(e) => setNotes(e.target.value)} sx={{ mb: 2, mt: 1 }} />
-            </DialogContent>
-            <DialogActions>
-              <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', gap: 2, paddingBottom: 2 }}>
-                <Button onClick={handleClose} variant='contained' color='error'>Cancel</Button>
-                <Button onClick={handleSave} variant='contained' color='success'>Save</Button>
-              </Box>
-            </DialogActions>
-          </Dialog>
-
-{/* Edit Modal */}
-
-          <Dialog open={showEdit} onClose={handleCancel} fullWidth>
-            <DialogTitle>
-              <Typography sx={{ fontWeight: 'bold', textAlign: 'center', fontSize: '30px' }}>
-                Update Tap
-              </Typography>
-            </DialogTitle>
-            <DialogContent>
-              <TextField label='Tap Name' fullWidth value={tapName} onChange={(e) => setTapName(e.target.value)} sx={{ mb: 2, mt: 1 }} />
-              <TextField label='Hole Size' fullWidth value={holeSize} onChange={(e) => setHoleSize(e.target.value)} sx={{ mb: 2, mt: 1 }} />
-              <FormControl fullWidth sx={{ mb: 2, mt: 1 }}>
-                <InputLabel>Type</InputLabel>
-                <Select value={type} onChange={(e) => setType(e.target.value)} label='Type'>
-                  <MenuItem value='Standard'>Standard</MenuItem>
-                  <MenuItem value='Metric'>Metric</MenuItem>
-                </Select>
-              </FormControl>
-              <TextField label='Notes' fullWidth value={notes} onChange={(e) => setNotes(e.target.value)} sx={{ mb: 2, mt: 1 }} />
-            </DialogContent>
-            <DialogActions>
-              <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', gap: 2, paddingBottom: 2 }}>
-                <Button onClick={handleCancel} variant='contained' color='error'>Cancel</Button>
-                <Button onClick={handleUpdate} variant='contained' color='success'>Save</Button>
-              </Box>
-            </DialogActions>
-          </Dialog>
-
-{/* Data Table */}
-
-          <Box sx={{ display: 'flex', justifyContent: 'space-around', width: '100%' }}>
-            <Box sx={{ width: '45%' }}>
-              <TableContainer>
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell align='center'><input type='text' placeholder='Tap' value={searchedValueTapStandard || ''} onChange={(e) => setSearchedValueTapStandard(e.target.value)} style={{ width: '100%', fontWeight: 'bold', fontSize: '15px', border: 'none', outline: 'none', background: 'transparent', color: '#000', textAlign: 'center' }} /></TableCell>
-                      <TableCell align='center' sx={{ fontWeight: 'bold', fontSize: '15px' }}>Hole</TableCell>
-                      <TableCell align='center' sx={{ fontWeight: 'bold', fontSize: '15px' }}>Notes</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {searchedStandard
-                      .filter((row) =>
-                        !searchedValueTapStandard || row.tapName
-                          .toString()
-                          .toLowerCase()
-                          .includes(searchedValueTapStandard.toLowerCase())
-                      )
-                      .map((tap, index) => {
-                        return (
-                          <TableRow key={index} sx={{ backgroundColor: index % 2 === 0 ? '#f0f0f0' : '#fff' }}>
-                            <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }} onClick={() => handleOpenTap(tap)}>{tap.tapName}</TableCell>
-                            <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{tap.holeSize}</TableCell>
-                            <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{tap.notes}</TableCell>
-                          </TableRow>
-                        )
-                      })
-                    }
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </Box>
-
-            <Box sx={{ width: '45%' }}>
-              <TableContainer>
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell align='center'><input type='text' placeholder='Tap' value={searchedValueTapMetric || ''} onChange={(e) => setSearchedValueTapMetric(e.target.value)} style={{ width: '100%', fontWeight: 'bold', fontSize: '15px', border: 'none', outline: 'none', background: 'transparent', color: '#000', textAlign: 'center' }} /></TableCell>
-                      <TableCell align='center' sx={{ fontWeight: 'bold', fontSize: '15px' }}>Hole</TableCell>
-                      <TableCell align='center' sx={{ fontWeight: 'bold', fontSize: '15px' }}>Notes</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {searchedMetric
-                      .filter((row) =>
-                        !searchedValueTapMetric || row.tapName
-                          .toString()
-                          .toLowerCase()
-                          .includes(searchedValueTapMetric.toLowerCase())
-                      )
-                      .map((tap, index) => {
-                        return (
-                          <TableRow key={index} sx={{ backgroundColor: index % 2 === 0 ? '#f0f0f0' : '#fff' }}>
-                            <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }} onClick={() => handleOpenTap(tap)}>{tap.tapName}</TableCell>
-                            <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{tap.holeSize}</TableCell>
-                            <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{tap.notes}</TableCell>
-                          </TableRow>
-                        )
-                      })
-                    }
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </Box>
-          </Box>
-
-          <IconButton onClick={handleShow} sx={{ backgroundColor: '#111827', color: 'white', height: '52.5px', width: '52.5px', zIndex: 1000, position: 'fixed', bottom: '20px', right: '20px', '&:hover': { backgroundColor: '#374151', }, }}>
-            <AddIcon />
-          </IconButton>
+        <Box sx={{ width: '45%' }}>
+          <TableContainer>
+            <Table>
+              <TableHead>
+                <CustomHeader columns={metricConfig} />
+              </TableHead>
+              <TableBody>
+                {searchedMetric
+                  .filter((row) =>
+                    !searchedValueTapMetric || row.tapName.toString().toLowerCase().includes(searchedValueTapMetric.toLowerCase())
+                  )
+                  .map((tap, index) => {
+                    return (
+                      <TableRow key={index} sx={{ backgroundColor: index % 2 === 0 ? '#f0f0f0' : '#fff' }}>
+                        <DataTableCell onClick={() => handleOpenTap(tap)}>{tap.tapName}</DataTableCell>
+                        <DataTableCell>{tap.holeSize}</DataTableCell>
+                        <DataTableCell>{tap.notes}</DataTableCell>
+                      </TableRow>
+                    )
+                  })
+                }
+              </TableBody>
+            </Table>
+          </TableContainer>
         </Box>
-      )}
-    </Box>
+      </Box>
+
+      <AddButtonBottom onClick={handleShow} />
+    </PageContainer>
   );
 };
