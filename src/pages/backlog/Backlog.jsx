@@ -6,6 +6,7 @@ import { useUserContext } from '../../context/UserContext';
 import PageContainer from '../../components/shared/PageContainer';
 import CustomTabs from '../../components/shared/CustomTabs';
 import CustomHeader from '../../components/programming/CustomHeader';
+import DataTableCell from '../../components/shared/DataTableCell';
 
 import PuffLoader from 'react-spinners/PuffLoader';
 import AddIcon from '@mui/icons-material/Add';
@@ -649,7 +650,7 @@ export const Backlog = () => {
                               <Fragment key={index}>
                                 <TableRow sx={{ backgroundColor: rowIndex % 2 === 0 ? '#f0f0f0' : '#fff' }} className={`${expediteClass} ${holdClass} ${profitClass} ${shipClass}`}>
                                   {job.HasSubs ?
-                                    <TableCell align='center' sx={{ fontSize: '15px', p: 0 }}>
+                                    <DataTableCell padding={0}>
                                       <IconButton
                                         onClick={() => toggleSub(job.JobNo)}
                                         sx={{
@@ -663,60 +664,60 @@ export const Backlog = () => {
                                       >
                                         {job.JobNo && <AddIcon sx={{ fontSize: '20px', fontWeight: 'bold' }} />}
                                       </IconButton>
-                                    </TableCell>
+                                    </DataTableCell>
                                     :
-                                    <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}></TableCell>
+                                    <DataTableCell></DataTableCell>
                                   }
-                                  <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }} onClick={() => handleOpenJob(job)}>{job.OrderNo}</TableCell>
-                                  <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }} onClick={() => handleOpenJob(job)}>{job.JobNo}</TableCell>
-                                  <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.DueDate.split('-')[1] + '/' + job.DueDate.split('-')[2].split('T')[0]}</TableCell>
-                                  <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.CustCode}</TableCell>
-                                  <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.QtyOrdered - job.QtyShipped2Cust}</TableCell>
-                                  <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{((job.QtyOrdered - job.QtyShipped2Cust) * job.UnitPrice).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</TableCell>
+                                  <DataTableCell onClick={() => handleOpenJob(job)}>{job.OrderNo}</DataTableCell>
+                                  <DataTableCell onClick={() => handleOpenJob(job)}>{job.JobNo}</DataTableCell>
+                                  <DataTableCell>{job.DueDate.split('-')[1] + '/' + job.DueDate.split('-')[2].split('T')[0]}</DataTableCell>
+                                  <DataTableCell>{job.CustCode}</DataTableCell>
+                                  <DataTableCell>{job.QtyOrdered - job.QtyShipped2Cust}</DataTableCell>
+                                  <DataTableCell>{((job.QtyOrdered - job.QtyShipped2Cust) * job.UnitPrice).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</DataTableCell>
                                   {job.WorkCntr && job.User_Text2 !== '4. DONE' ?
-                                    <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }} onClick={() => toggleRoute(job)}>{(job.WorkCntr).split(' ')[1]}</TableCell>
+                                    <DataTableCell onClick={() => toggleRoute(job)}>{(job.WorkCntr).split(' ')[1]}</DataTableCell>
                                     :
-                                    <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }} onClick={() => toggleRoute(job)}>{(job.User_Text2).split(' ')[1]}</TableCell>
+                                    <DataTableCell onClick={() => toggleRoute(job)}>{(job.User_Text2).split(' ')[1]}</DataTableCell>
                                   }
                                   {job.User_Text2 == '6. OUTSOURCE' ?
-                                    <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.VendCode}</TableCell>
+                                    <DataTableCell>{job.VendCode}</DataTableCell>
                                     :
-                                    <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}></TableCell>
+                                    <DataTableCell></DataTableCell>
                                   }
-                                  <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }} onClick={() => handleOpenJob(job)}>{job.dataValues?.osvnotes}</TableCell>
+                                  <DataTableCell onClick={() => handleOpenJob(job)}>{job.dataValues?.osvnotes}</DataTableCell>
                                   {job.dataValues?.cdate ?
-                                    <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }} onClick={() => handleOpenJob(job)}>{(job.dataValues.cdate).split('-')[1] + '/' + (job.dataValues.cdate).split('-')[2] + '/' + (job.dataValues.cdate).split('-')[0]}</TableCell>
+                                    <DataTableCell onClick={() => handleOpenJob(job)}>{(job.dataValues.cdate).split('-')[1] + '/' + (job.dataValues.cdate).split('-')[2] + '/' + (job.dataValues.cdate).split('-')[0]}</DataTableCell>
                                     :
-                                    <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }} onClick={() => handleOpenJob(job)}></TableCell>
+                                    <DataTableCell onClick={() => handleOpenJob(job)}></DataTableCell>
                                   }
-                                  <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }} onClick={() => handleOpenJob(job)}>{job.dataValues?.blnotes}</TableCell>
+                                  <DataTableCell onClick={() => handleOpenJob(job)}>{job.dataValues?.blnotes}</DataTableCell>
                                 </TableRow>
                                 {expandedRows.includes(job.JobNo) && subJobs[job.JobNo] && subJobs[job.JobNo].map((subJob, subIndex) => (
                                   <TableRow key={subIndex} sx={{ backgroundColor: index % 2 === 0 ? '#f0f0f0' : '#fff' }} className='subjob-row'>
-                                    <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}></TableCell>
-                                    <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{subJob.OrderNo}</TableCell>
-                                    <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{subJob.JobNo}</TableCell>
-                                    <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{(subJob.DueDate).split('-')[1] + '/' + ((subJob.DueDate).split('-')[2]).split('T')[0]}</TableCell>
-                                    <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{subJob.CustCode}</TableCell>
-                                    <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{subJob.QtyOrdered - subJob.QtyShipped2Cust}</TableCell>
-                                    <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{((subJob.QtyOrdered - subJob.QtyShipped2Cust) * subJob.UnitPrice).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</TableCell>
+                                    <DataTableCell></DataTableCell>
+                                    <DataTableCell>{subJob.OrderNo}</DataTableCell>
+                                    <DataTableCell>{subJob.JobNo}</DataTableCell>
+                                    <DataTableCell>{(subJob.DueDate).split('-')[1] + '/' + ((subJob.DueDate).split('-')[2]).split('T')[0]}</DataTableCell>
+                                    <DataTableCell>{subJob.CustCode}</DataTableCell>
+                                    <DataTableCell>{subJob.QtyOrdered - subJob.QtyShipped2Cust}</DataTableCell>
+                                    <DataTableCell>{((subJob.QtyOrdered - subJob.QtyShipped2Cust) * subJob.UnitPrice).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</DataTableCell>
                                     {subJob.WorkCntr && subJob.User_Text2 !== '4. DONE' ?
-                                      <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }} onClick={() => toggleRoute(subJob)}>{(subJob.WorkCntr).split(' ')[1]}</TableCell>
+                                      <DataTableCell onClick={() => toggleRoute(subJob)}>{(subJob.WorkCntr).split(' ')[1]}</DataTableCell>
                                       :
-                                      <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }} onClick={() => toggleRoute(subJob)}>{(subJob.User_Text2).split(' ')[1]}</TableCell>
+                                      <DataTableCell onClick={() => toggleRoute(subJob)}>{(subJob.User_Text2).split(' ')[1]}</DataTableCell>
                                     }
                                     {subJob.User_Text2 == '6. OUTSOURCE' ?
-                                      <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{subJob.VendCode}</TableCell>
+                                      <DataTableCell>{subJob.VendCode}</DataTableCell>
                                       :
-                                      <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}></TableCell>
+                                      <DataTableCell></DataTableCell>
                                     }
-                                    <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }} onClick={() => handleOpenJob(subJob)}>{subJob.dataValues?.osvnotes}</TableCell>
+                                    <DataTableCell onClick={() => handleOpenJob(subJob)}>{subJob.dataValues?.osvnotes}</DataTableCell>
                                     {subJob.dataValues?.cdate ?
-                                      <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }} onClick={() => handleOpenJob(subJob)}>{(subJob.dataValues.cdate).split('-')[1] + '/' + (subJob.dataValues.cdate).split('-')[2] + '/' + (subJob.dataValues.cdate).split('-')[0]}</TableCell>
+                                      <DataTableCell onClick={() => handleOpenJob(subJob)}>{(subJob.dataValues.cdate).split('-')[1] + '/' + (subJob.dataValues.cdate).split('-')[2] + '/' + (subJob.dataValues.cdate).split('-')[0]}</DataTableCell>
                                       :
-                                      <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }} onClick={() => handleOpenJob(subJob)}></TableCell>
+                                      <DataTableCell onClick={() => handleOpenJob(subJob)}></DataTableCell>
                                     }
-                                    <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }} onClick={() => handleOpenJob(subJob)}>{subJob.dataValues?.blnotes}</TableCell>
+                                    <DataTableCell onClick={() => handleOpenJob(subJob)}>{subJob.dataValues?.blnotes}</DataTableCell>
                                   </TableRow>
                                 ))}
                               </Fragment>
@@ -731,22 +732,13 @@ export const Backlog = () => {
 
                       {futureJobs
                         .filter((row) =>
-                          !searchedValueOrderNo || row.OrderNo
-                            .toString()
-                            .toLowerCase()
-                            .includes(searchedValueOrderNo.toString().toLowerCase())
+                          !searchedValueOrderNo || row.OrderNo.toString().toLowerCase().includes(searchedValueOrderNo.toString().toLowerCase())
                         )
                         .filter((row) =>
-                          !searchedValueJobNo || row.JobNo
-                            .toString()
-                            .toLowerCase()
-                            .includes(searchedValueJobNo.toString().toLowerCase())
+                          !searchedValueJobNo || row.JobNo.toString().toLowerCase().includes(searchedValueJobNo.toString().toLowerCase())
                         )
                         .filter((row) =>
-                          !searchedValueCustomer || row.CustCode
-                            .toString()
-                            .toLowerCase()
-                            .includes(searchedValueCustomer.toString().toLowerCase())
+                          !searchedValueCustomer || row.CustCode.toString().toLowerCase().includes(searchedValueCustomer.toString().toLowerCase())
                         )
                         .filter((row) => {
                           const searchTarget = row.WorkCntr && row.User_Text2 !== '4. DONE' ? row.WorkCntr : row.User_Text2;
@@ -757,10 +749,7 @@ export const Backlog = () => {
                           if (!searchedValueOSV) { return true; }
                           if (!row || !row.VendCode) { return false; }
 
-                          return row.VendCode
-                            .toString()
-                            .toLowerCase()
-                            .includes(searchedValueOSV.toString().toLowerCase())
+                          return row.VendCode.toString().toLowerCase().includes(searchedValueOSV.toString().toLowerCase())
                         })
                         .map((job, index) => {
                           const profitClass = job.OrderTotal > 5000 ? 'profit-row' : '';
@@ -773,7 +762,7 @@ export const Backlog = () => {
                               <Fragment key={index}>
                                 <TableRow sx={{ backgroundColor: rowIndex % 2 === 0 ? '#f0f0f0' : '#fff' }} className={`${expediteClass} ${holdClass} ${profitClass} ${shipClass}`}>
                                   {job.HasSubs ?
-                                    <TableCell align='center' sx={{ fontSize: '15px', p: 0 }}>
+                                    <DataTableCell padding={0}>
                                       <IconButton
                                         onClick={() => toggleSub(job.JobNo)}
                                         sx={{
@@ -787,60 +776,60 @@ export const Backlog = () => {
                                       >
                                         {job.JobNo && <AddIcon sx={{ fontSize: '20px', fontWeight: 'bold' }} />}
                                       </IconButton>
-                                    </TableCell>
+                                    </DataTableCell>
                                     :
-                                    <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}></TableCell>
+                                    <DataTableCell></DataTableCell>
                                   }
-                                  <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }} onClick={() => handleOpenJob(job)}>{job.OrderNo}</TableCell>
-                                  <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }} onClick={() => handleOpenJob(job)}>{job.JobNo}</TableCell>
-                                  <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.DueDate.split('-')[1] + '/' + job.DueDate.split('-')[2].split('T')[0]}</TableCell>
-                                  <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.CustCode}</TableCell>
-                                  <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.QtyOrdered - job.QtyShipped2Cust}</TableCell>
-                                  <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{((job.QtyOrdered - job.QtyShipped2Cust) * job.UnitPrice).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</TableCell>
+                                  <DataTableCell onClick={() => handleOpenJob(job)}>{job.OrderNo}</DataTableCell>
+                                  <DataTableCell onClick={() => handleOpenJob(job)}>{job.JobNo}</DataTableCell>
+                                  <DataTableCell>{job.DueDate.split('-')[1] + '/' + job.DueDate.split('-')[2].split('T')[0]}</DataTableCell>
+                                  <DataTableCell>{job.CustCode}</DataTableCell>
+                                  <DataTableCell>{job.QtyOrdered - job.QtyShipped2Cust}</DataTableCell>
+                                  <DataTableCell>{((job.QtyOrdered - job.QtyShipped2Cust) * job.UnitPrice).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</DataTableCell>
                                   {job.WorkCntr && job.User_Text2 !== '4. DONE' ?
-                                    <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }} onClick={() => toggleRoute(job)}>{(job.WorkCntr).split(' ')[1]}</TableCell>
+                                    <DataTableCell onClick={() => toggleRoute(job)}>{(job.WorkCntr).split(' ')[1]}</DataTableCell>
                                     :
-                                    <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }} onClick={() => toggleRoute(job)}>{(job.User_Text2).split(' ')[1]}</TableCell>
+                                    <DataTableCell onClick={() => toggleRoute(job)}>{(job.User_Text2).split(' ')[1]}</DataTableCell>
                                   }
                                   {job.User_Text2 == '6. OUTSOURCE' ?
-                                    <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{job.VendCode}</TableCell>
+                                    <DataTableCell>{job.VendCode}</DataTableCell>
                                     :
-                                    <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}></TableCell>
+                                    <DataTableCell></DataTableCell>
                                   }
-                                  <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }} onClick={() => handleOpenJob(job)}>{job.dataValues?.osvnotes}</TableCell>
+                                  <DataTableCell onClick={() => handleOpenJob(job)}>{job.dataValues?.osvnotes}</DataTableCell>
                                   {job.dataValues?.cdate ?
-                                    <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }} onClick={() => handleOpenJob(job)}>{(job.dataValues.cdate).split('-')[1] + '/' + (job.dataValues.cdate).split('-')[2] + '/' + (job.dataValues.cdate).split('-')[0]}</TableCell>
+                                    <DataTableCell onClick={() => handleOpenJob(job)}>{(job.dataValues.cdate).split('-')[1] + '/' + (job.dataValues.cdate).split('-')[2] + '/' + (job.dataValues.cdate).split('-')[0]}</DataTableCell>
                                     :
-                                    <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }} onClick={() => handleOpenJob(job)}></TableCell>
+                                    <DataTableCell onClick={() => handleOpenJob(job)}></DataTableCell>
                                   }
-                                  <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }} onClick={() => handleOpenJob(job)}>{job.dataValues?.blnotes}</TableCell>
+                                  <DataTableCell onClick={() => handleOpenJob(job)}>{job.dataValues?.blnotes}</DataTableCell>
                                 </TableRow>
                                 {expandedRows.includes(job.JobNo) && subJobs[job.JobNo] && subJobs[job.JobNo].map((subJob, subIndex) => (
                                   <TableRow key={subIndex} sx={{ backgroundColor: index % 2 === 0 ? '#f0f0f0' : '#fff' }} className='subjob-row'>
-                                    <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}></TableCell>
-                                    <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{subJob.OrderNo}</TableCell>
-                                    <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{subJob.JobNo}</TableCell>
-                                    <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{(subJob.DueDate).split('-')[1] + '/' + ((subJob.DueDate).split('-')[2]).split('T')[0]}</TableCell>
-                                    <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{subJob.CustCode}</TableCell>
-                                    <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{subJob.QtyOrdered - subJob.QtyShipped2Cust}</TableCell>
-                                    <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{((subJob.QtyOrdered - subJob.QtyShipped2Cust) * subJob.UnitPrice).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</TableCell>
+                                    <DataTableCell></DataTableCell>
+                                    <DataTableCell>{subJob.OrderNo}</DataTableCell>
+                                    <DataTableCell>{subJob.JobNo}</DataTableCell>
+                                    <DataTableCell>{(subJob.DueDate).split('-')[1] + '/' + ((subJob.DueDate).split('-')[2]).split('T')[0]}</DataTableCell>
+                                    <DataTableCell>{subJob.CustCode}</DataTableCell>
+                                    <DataTableCell>{subJob.QtyOrdered - subJob.QtyShipped2Cust}</DataTableCell>
+                                    <DataTableCell>{((subJob.QtyOrdered - subJob.QtyShipped2Cust) * subJob.UnitPrice).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</DataTableCell>
                                     {subJob.WorkCntr && subJob.User_Text2 !== '4. DONE' ?
-                                      <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }} onClick={() => toggleRoute(subJob)}>{(subJob.WorkCntr).split(' ')[1]}</TableCell>
+                                      <DataTableCell onClick={() => toggleRoute(subJob)}>{(subJob.WorkCntr).split(' ')[1]}</DataTableCell>
                                       :
-                                      <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }} onClick={() => toggleRoute(subJob)}>{(subJob.User_Text2).split(' ')[1]}</TableCell>
+                                      <DataTableCell onClick={() => toggleRoute(subJob)}>{(subJob.User_Text2).split(' ')[1]}</DataTableCell>
                                     }
                                     {subJob.User_Text2 == '6. OUTSOURCE' ?
-                                      <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}>{subJob.VendCode}</TableCell>
+                                      <DataTableCell>{subJob.VendCode}</DataTableCell>
                                       :
-                                      <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }}></TableCell>
+                                      <DataTableCell></DataTableCell>
                                     }
-                                    <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }} onClick={() => handleOpenJob(subJob)}>{subJob.dataValues?.osvnotes}</TableCell>
+                                    <DataTableCell onClick={() => handleOpenJob(subJob)}>{subJob.dataValues?.osvnotes}</DataTableCell>
                                     {subJob.dataValues?.cdate ?
-                                      <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }} onClick={() => handleOpenJob(subJob)}>{(subJob.dataValues.cdate).split('-')[1] + '/' + (subJob.dataValues.cdate).split('-')[2] + '/' + (subJob.dataValues.cdate).split('-')[0]}</TableCell>
+                                      <DataTableCell onClick={() => handleOpenJob(subJob)}>{(subJob.dataValues.cdate).split('-')[1] + '/' + (subJob.dataValues.cdate).split('-')[2] + '/' + (subJob.dataValues.cdate).split('-')[0]}</DataTableCell>
                                       :
-                                      <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }} onClick={() => handleOpenJob(subJob)}></TableCell>
+                                      <DataTableCell onClick={() => handleOpenJob(subJob)}></DataTableCell>
                                     }
-                                    <TableCell align='center' sx={{ fontSize: '15px', p: 1.25 }} onClick={() => handleOpenJob(subJob)}>{subJob.dataValues?.blnotes}</TableCell>
+                                    <DataTableCell onClick={() => handleOpenJob(subJob)}>{subJob.dataValues?.blnotes}</DataTableCell>
                                   </TableRow>
                                 ))}
                               </Fragment>
@@ -894,13 +883,13 @@ export const Backlog = () => {
               </Box>
             )}
           </Box>
-    </>
-  ) : (
-    <Box sx={{ width: '100%', textAlign: 'center', alignContent: 'center', overflowY: 'auto', height: '100vh' }}>
-      <Typography variant='h4' sx={{ fontWeight: 'bold', margin: '16px' }}>You Don't Have Access To This Page</Typography>
-    </Box>
-  )
-}
+        </>
+      ) : (
+        <Box sx={{ width: '100%', textAlign: 'center', alignContent: 'center', overflowY: 'auto', height: '100vh' }}>
+          <Typography variant='h4' sx={{ fontWeight: 'bold', margin: '16px' }}>You Don't Have Access To This Page</Typography>
+        </Box>
+      )
+      }
     </PageContainer >
   );
 }
