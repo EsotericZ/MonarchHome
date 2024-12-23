@@ -1,4 +1,7 @@
-import { Box, Button, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, TextField } from '@mui/material';
+import { Box, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, TextField } from '@mui/material';
+
+import CancelButton from '../shared/CancelButton';
+import SaveButton from '../shared/SaveButton';
 
 const EditModal = ({
   open,
@@ -78,12 +81,12 @@ const EditModal = ({
         </Box>
       </DialogContent>
       <DialogActions sx={{ justifyContent: 'center' }}>
-        <Button variant='outlined' color='secondary' onClick={handleCancel}>
+        <CancelButton onClick={handleCancel}>
           Cancel
-        </Button>
-        <Button variant='contained' color='primary' onClick={handleUpdate}>
+        </CancelButton>
+        <SaveButton onClick={handleUpdate}>
           Save
-        </Button>
+        </SaveButton>
       </DialogActions>
     </Dialog>
   );

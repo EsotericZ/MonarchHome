@@ -128,15 +128,15 @@
   width: 125px !important;
   font-size: 16px;
   font-weight: 600;
-  color: #fff !important;
+  color: black !important;
   cursor: pointer;
   height: 40px;
   text-align: center;
-  border: none;
   background-size: 300% 100%;
   border-radius: 5px !important;
+  border: 1px solid green !important;
   transition: all 0.4s ease-in-out, transform 0.1s;
-  background-color: green !important;
+  background-color: lightgreen !important;
   box-shadow: 0 4px 10px 0 rgba(45, 54, 65, 0.75);
   outline: none;
 }
@@ -158,15 +158,15 @@
   width: 125px !important;
   font-size: 16px;
   font-weight: 600;
-  color: #fff !important;
+  color: black !important;
   cursor: pointer;
   height: 40px;
   text-align: center;
-  border: none;
   background-size: 300% 100%;
   border-radius: 5px !important;
   transition: all 0.4s ease-in-out, transform 0.1s;
-  background-color: red !important;
+  background-color: lightpink !important;
+  border: 1px solid red !important;
   box-shadow: 0 4px 10px 0 rgba(45, 54, 65, 0.75);
   outline: none;
 }
