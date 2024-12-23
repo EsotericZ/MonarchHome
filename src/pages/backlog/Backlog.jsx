@@ -844,27 +844,257 @@ export const Backlog = () => {
             )}
           </Box>
 
-          {/* FUTURE JOBS */}
+          {/* NEXT MONTH */}
 
           <Box>
             {selectedTab === 1 && (
               <Box sx={{ padding: '12px' }}>
-                1
+                <TableContainer component={Paper}>
+                  <Table>
+                    <TableHead>
+                      <CustomHeader columns={monthsColumnConfig} />
+                    </TableHead>
+                    <TableBody>
+                      {nextMonthJobs
+                        .filter((row) =>
+                          !searchedValueOrderNo || row.OrderNo.toString().toLowerCase().includes(searchedValueOrderNo.toString().toLowerCase())
+                        )
+                        .filter((row) =>
+                          !searchedValueJobNo || row.JobNo.toString().toLowerCase().includes(searchedValueJobNo.toString().toLowerCase())
+                        )
+                        .filter((row) =>
+                          !searchedValueCustomer || row.CustCode.toString().toLowerCase().includes(searchedValueCustomer.toString().toLowerCase())
+                        )
+                        .filter((row) => {
+                          const searchTarget = row.WorkCntr && row.User_Text2 !== '4. DONE' ? row.WorkCntr : row.User_Text2;
+                          return !searchedValueArea ||
+                            searchTarget.toString().toLowerCase().includes(searchedValueArea.toString().toLowerCase());
+                        })
+                        .filter((row) => {
+                          if (!searchedValueOSV) { return true; }
+                          if (!row || !row.VendCode) { return false; }
+
+                          return row.VendCode.toString().toLowerCase().includes(searchedValueOSV.toString().toLowerCase())
+                        })
+                        .map((job, index) => {
+                          const profitClass = job.OrderTotal > 5000 ? 'profit-row' : '';
+                          const expediteClass = job.dataValues?.email ? 'bl-expedite-row' : '';
+                          const holdClass = job.dataValues?.hold ? 'hold-row' : '';
+                          const shipClass = job.User_Text2 == '4. DONE' ? 'ship-row' : '';
+                          if (!job.MasterJobNo) {
+                            rowIndex++;
+                            return (
+                              <Fragment key={index}>
+                                <TableRow sx={{ backgroundColor: rowIndex % 2 === 0 ? '#f0f0f0' : '#fff' }} className={`${expediteClass} ${holdClass} ${profitClass} ${shipClass}`}>
+                                  {job.HasSubs ?
+                                    <DataTableCell padding={0}>
+                                      <IconButton
+                                        onClick={() => toggleSub(job.JobNo)}
+                                        sx={{
+                                          '&:focus': {
+                                            outline: 'none',
+                                          },
+                                          '&:active': {
+                                            backgroundColor: 'transparent',
+                                          },
+                                        }}
+                                      >
+                                        {job.JobNo && <AddIcon sx={{ fontSize: '20px', fontWeight: 'bold' }} />}
+                                      </IconButton>
+                                    </DataTableCell>
+                                    :
+                                    <DataTableCell></DataTableCell>
+                                  }
+                                  <DataTableCell onClick={() => handleOpenJob(job)}>{job.OrderNo}</DataTableCell>
+                                  <DataTableCell onClick={() => handleOpenJob(job)}>{job.JobNo}</DataTableCell>
+                                  <DataTableCell>{job.DueDate.split('-')[1] + '/' + job.DueDate.split('-')[2].split('T')[0]}</DataTableCell>
+                                  <DataTableCell>{job.CustCode}</DataTableCell>
+                                  <DataTableCell>{job.QtyOrdered - job.QtyShipped2Cust}</DataTableCell>
+                                  <DataTableCell>{((job.QtyOrdered - job.QtyShipped2Cust) * job.UnitPrice).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</DataTableCell>
+                                  {job.WorkCntr && job.User_Text2 !== '4. DONE' ?
+                                    <DataTableCell onClick={() => toggleRoute(job)}>{(job.WorkCntr).split(' ')[1]}</DataTableCell>
+                                    :
+                                    <DataTableCell onClick={() => toggleRoute(job)}>{(job.User_Text2).split(' ')[1]}</DataTableCell>
+                                  }
+                                  {job.User_Text2 == '6. OUTSOURCE' ?
+                                    <DataTableCell>{job.VendCode}</DataTableCell>
+                                    :
+                                    <DataTableCell></DataTableCell>
+                                  }
+                                  <DataTableCell onClick={() => handleOpenJob(job)}>{job.dataValues?.osvnotes}</DataTableCell>
+                                  {job.dataValues?.cdate ?
+                                    <DataTableCell onClick={() => handleOpenJob(job)}>{(job.dataValues.cdate).split('-')[1] + '/' + (job.dataValues.cdate).split('-')[2] + '/' + (job.dataValues.cdate).split('-')[0]}</DataTableCell>
+                                    :
+                                    <DataTableCell onClick={() => handleOpenJob(job)}></DataTableCell>
+                                  }
+                                  <DataTableCell onClick={() => handleOpenJob(job)}>{job.dataValues?.blnotes}</DataTableCell>
+                                </TableRow>
+                                {expandedRows.includes(job.JobNo) && subJobs[job.JobNo] && subJobs[job.JobNo].map((subJob, subIndex) => (
+                                  <TableRow key={subIndex} sx={{ backgroundColor: index % 2 === 0 ? '#f0f0f0' : '#fff' }} className='subjob-row'>
+                                    <DataTableCell></DataTableCell>
+                                    <DataTableCell>{subJob.OrderNo}</DataTableCell>
+                                    <DataTableCell>{subJob.JobNo}</DataTableCell>
+                                    <DataTableCell>{(subJob.DueDate).split('-')[1] + '/' + ((subJob.DueDate).split('-')[2]).split('T')[0]}</DataTableCell>
+                                    <DataTableCell>{subJob.CustCode}</DataTableCell>
+                                    <DataTableCell>{subJob.QtyOrdered - subJob.QtyShipped2Cust}</DataTableCell>
+                                    <DataTableCell>{((subJob.QtyOrdered - subJob.QtyShipped2Cust) * subJob.UnitPrice).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</DataTableCell>
+                                    {subJob.WorkCntr && subJob.User_Text2 !== '4. DONE' ?
+                                      <DataTableCell onClick={() => toggleRoute(subJob)}>{(subJob.WorkCntr).split(' ')[1]}</DataTableCell>
+                                      :
+                                      <DataTableCell onClick={() => toggleRoute(subJob)}>{(subJob.User_Text2).split(' ')[1]}</DataTableCell>
+                                    }
+                                    {subJob.User_Text2 == '6. OUTSOURCE' ?
+                                      <DataTableCell>{subJob.VendCode}</DataTableCell>
+                                      :
+                                      <DataTableCell></DataTableCell>
+                                    }
+                                    <DataTableCell onClick={() => handleOpenJob(subJob)}>{subJob.dataValues?.osvnotes}</DataTableCell>
+                                    {subJob.dataValues?.cdate ?
+                                      <DataTableCell onClick={() => handleOpenJob(subJob)}>{(subJob.dataValues.cdate).split('-')[1] + '/' + (subJob.dataValues.cdate).split('-')[2] + '/' + (subJob.dataValues.cdate).split('-')[0]}</DataTableCell>
+                                      :
+                                      <DataTableCell onClick={() => handleOpenJob(subJob)}></DataTableCell>
+                                    }
+                                    <DataTableCell onClick={() => handleOpenJob(subJob)}>{subJob.dataValues?.blnotes}</DataTableCell>
+                                  </TableRow>
+                                ))}
+                              </Fragment>
+                            )
+                          }
+                        })
+                      }
+                    </TableBody>
+                  </Table>
+                </TableContainer>
               </Box>
             )}
           </Box>
 
-          {/* REPEAT JOBS */}
+          {/* FUTURE MONTHS */}
 
           <Box>
             {selectedTab === 2 && (
               <Box sx={{ padding: '12px' }}>
-                2
+                <TableContainer component={Paper}>
+                  <Table>
+                    <TableHead>
+                      <CustomHeader columns={monthsColumnConfig} />
+                    </TableHead>
+                    <TableBody>
+                      {allFutureJobs
+                        .filter((row) =>
+                          !searchedValueOrderNo || row.OrderNo.toString().toLowerCase().includes(searchedValueOrderNo.toString().toLowerCase())
+                        )
+                        .filter((row) =>
+                          !searchedValueJobNo || row.JobNo.toString().toLowerCase().includes(searchedValueJobNo.toString().toLowerCase())
+                        )
+                        .filter((row) =>
+                          !searchedValueCustomer || row.CustCode.toString().toLowerCase().includes(searchedValueCustomer.toString().toLowerCase())
+                        )
+                        .filter((row) => {
+                          const searchTarget = row.WorkCntr && row.User_Text2 !== '4. DONE' ? row.WorkCntr : row.User_Text2;
+                          return !searchedValueArea ||
+                            searchTarget.toString().toLowerCase().includes(searchedValueArea.toString().toLowerCase());
+                        })
+                        .filter((row) => {
+                          if (!searchedValueOSV) { return true; }
+                          if (!row || !row.VendCode) { return false; }
+
+                          return row.VendCode.toString().toLowerCase().includes(searchedValueOSV.toString().toLowerCase())
+                        })
+                        .map((job, index) => {
+                          const profitClass = job.OrderTotal > 5000 ? 'profit-row' : '';
+                          const expediteClass = job.dataValues?.email ? 'bl-expedite-row' : '';
+                          const holdClass = job.dataValues?.hold ? 'hold-row' : '';
+                          const shipClass = job.User_Text2 == '4. DONE' ? 'ship-row' : '';
+                          if (!job.MasterJobNo) {
+                            rowIndex++;
+                            return (
+                              <Fragment key={index}>
+                                <TableRow sx={{ backgroundColor: rowIndex % 2 === 0 ? '#f0f0f0' : '#fff' }} className={`${expediteClass} ${holdClass} ${profitClass} ${shipClass}`}>
+                                  {job.HasSubs ?
+                                    <DataTableCell padding={0}>
+                                      <IconButton
+                                        onClick={() => toggleSub(job.JobNo)}
+                                        sx={{
+                                          '&:focus': {
+                                            outline: 'none',
+                                          },
+                                          '&:active': {
+                                            backgroundColor: 'transparent',
+                                          },
+                                        }}
+                                      >
+                                        {job.JobNo && <AddIcon sx={{ fontSize: '20px', fontWeight: 'bold' }} />}
+                                      </IconButton>
+                                    </DataTableCell>
+                                    :
+                                    <DataTableCell></DataTableCell>
+                                  }
+                                  <DataTableCell onClick={() => handleOpenJob(job)}>{job.OrderNo}</DataTableCell>
+                                  <DataTableCell onClick={() => handleOpenJob(job)}>{job.JobNo}</DataTableCell>
+                                  <DataTableCell>{job.DueDate.split('-')[1] + '/' + job.DueDate.split('-')[2].split('T')[0]}</DataTableCell>
+                                  <DataTableCell>{job.CustCode}</DataTableCell>
+                                  <DataTableCell>{job.QtyOrdered - job.QtyShipped2Cust}</DataTableCell>
+                                  <DataTableCell>{((job.QtyOrdered - job.QtyShipped2Cust) * job.UnitPrice).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</DataTableCell>
+                                  {job.WorkCntr && job.User_Text2 !== '4. DONE' ?
+                                    <DataTableCell onClick={() => toggleRoute(job)}>{(job.WorkCntr).split(' ')[1]}</DataTableCell>
+                                    :
+                                    <DataTableCell onClick={() => toggleRoute(job)}>{(job.User_Text2).split(' ')[1]}</DataTableCell>
+                                  }
+                                  {job.User_Text2 == '6. OUTSOURCE' ?
+                                    <DataTableCell>{job.VendCode}</DataTableCell>
+                                    :
+                                    <DataTableCell></DataTableCell>
+                                  }
+                                  <DataTableCell onClick={() => handleOpenJob(job)}>{job.dataValues?.osvnotes}</DataTableCell>
+                                  {job.dataValues?.cdate ?
+                                    <DataTableCell onClick={() => handleOpenJob(job)}>{(job.dataValues.cdate).split('-')[1] + '/' + (job.dataValues.cdate).split('-')[2] + '/' + (job.dataValues.cdate).split('-')[0]}</DataTableCell>
+                                    :
+                                    <DataTableCell onClick={() => handleOpenJob(job)}></DataTableCell>
+                                  }
+                                  <DataTableCell onClick={() => handleOpenJob(job)}>{job.dataValues?.blnotes}</DataTableCell>
+                                </TableRow>
+                                {expandedRows.includes(job.JobNo) && subJobs[job.JobNo] && subJobs[job.JobNo].map((subJob, subIndex) => (
+                                  <TableRow key={subIndex} sx={{ backgroundColor: index % 2 === 0 ? '#f0f0f0' : '#fff' }} className='subjob-row'>
+                                    <DataTableCell></DataTableCell>
+                                    <DataTableCell>{subJob.OrderNo}</DataTableCell>
+                                    <DataTableCell>{subJob.JobNo}</DataTableCell>
+                                    <DataTableCell>{(subJob.DueDate).split('-')[1] + '/' + ((subJob.DueDate).split('-')[2]).split('T')[0]}</DataTableCell>
+                                    <DataTableCell>{subJob.CustCode}</DataTableCell>
+                                    <DataTableCell>{subJob.QtyOrdered - subJob.QtyShipped2Cust}</DataTableCell>
+                                    <DataTableCell>{((subJob.QtyOrdered - subJob.QtyShipped2Cust) * subJob.UnitPrice).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</DataTableCell>
+                                    {subJob.WorkCntr && subJob.User_Text2 !== '4. DONE' ?
+                                      <DataTableCell onClick={() => toggleRoute(subJob)}>{(subJob.WorkCntr).split(' ')[1]}</DataTableCell>
+                                      :
+                                      <DataTableCell onClick={() => toggleRoute(subJob)}>{(subJob.User_Text2).split(' ')[1]}</DataTableCell>
+                                    }
+                                    {subJob.User_Text2 == '6. OUTSOURCE' ?
+                                      <DataTableCell>{subJob.VendCode}</DataTableCell>
+                                      :
+                                      <DataTableCell></DataTableCell>
+                                    }
+                                    <DataTableCell onClick={() => handleOpenJob(subJob)}>{subJob.dataValues?.osvnotes}</DataTableCell>
+                                    {subJob.dataValues?.cdate ?
+                                      <DataTableCell onClick={() => handleOpenJob(subJob)}>{(subJob.dataValues.cdate).split('-')[1] + '/' + (subJob.dataValues.cdate).split('-')[2] + '/' + (subJob.dataValues.cdate).split('-')[0]}</DataTableCell>
+                                      :
+                                      <DataTableCell onClick={() => handleOpenJob(subJob)}></DataTableCell>
+                                    }
+                                    <DataTableCell onClick={() => handleOpenJob(subJob)}>{subJob.dataValues?.blnotes}</DataTableCell>
+                                  </TableRow>
+                                ))}
+                              </Fragment>
+                            )
+                          }
+                        })
+                      }
+                    </TableBody>
+                  </Table>
+                </TableContainer>
               </Box>
             )}
           </Box>
 
-          {/* OUTSOURCE JOBS */}
+          {/* OVERVIEW */}
 
           <Box>
             {selectedTab === 3 && (
