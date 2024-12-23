@@ -7,6 +7,8 @@ import PageContainer from '../../components/shared/PageContainer';
 import CustomTabs from '../../components/shared/CustomTabs';
 import CustomHeader from '../../components/programming/CustomHeader';
 import DataTableCell from '../../components/shared/DataTableCell';
+import RoutesModal from '../../components/backlog/RoutesModal';
+import EditModal from '../../components/backlog/EditModal';
 
 import AddIcon from '@mui/icons-material/Add';
 import { Bar, Doughnut } from 'react-chartjs-2';
@@ -612,6 +614,38 @@ export const Backlog = () => {
             tabLabels={[current, nextMonth, futureMonths, overview]}
           />
 
+          {/* MODALS */}
+          <RoutesModal
+            open={showRoute}
+            onClose={handleCloseRoute}
+            jobNo={jobNo}
+            jobType={jobType}
+            partNo={partNo}
+            partRev={partRev}
+            custCode={custCode}
+            routing={routing}
+          />
+
+          <EditModal
+            open={showEdit}
+            onClose={handleCancel}
+            blNotes={blNotes}
+            setBlNotes={setBlNotes}
+            osvNotes={osvNotes}
+            setOsvNotes={setOsvNotes}
+            cdate={cdate}
+            setCdate={setCdate}
+            email={email}
+            setEmail={setEmail}
+            toggleEmail={toggleEmail}
+            hold={hold}
+            setHold={setHold}
+            toggleHold={toggleHold}
+            id={id}
+            handleCancel={handleCancel}
+            handleUpdate={handleUpdate}
+          />
+
           {/* CURRENT MONTH */}
 
           <Box>
@@ -1126,31 +1160,31 @@ export const Backlog = () => {
                         px: 2,
                       }}
                     >
-                      <Typography variant="h6" align="center" gutterBottom>
+                      <Typography variant='h6' align='center' gutterBottom>
                         {current}
                       </Typography>
                       <TableContainer>
                         <Table>
                           <TableBody>
                             <TableRow>
-                              <TableCell align="right" sx={{ fontWeight: 'bold', width: '50%', p:1 }}>
+                              <TableCell align='right' sx={{ fontWeight: 'bold', width: '50%', p:1 }}>
                                 Total Jobs
                               </TableCell>
-                              <TableCell align="left" sx={{ width: '50%', p:1 }}>
+                              <TableCell align='left' sx={{ width: '50%', p:1 }}>
                                 {monthJobs}
                               </TableCell>
                             </TableRow>
                             <TableRow>
-                              <TableCell align="right" sx={{ fontWeight: 'bold', p:1 }}>
+                              <TableCell align='right' sx={{ fontWeight: 'bold', p:1 }}>
                                 Late Jobs
                               </TableCell>
-                              <TableCell align="left" sx={{ p:1 }}>{lateJobs}</TableCell>
+                              <TableCell align='left' sx={{ p:1 }}>{lateJobs}</TableCell>
                             </TableRow>
                             <TableRow>
-                              <TableCell align="right" sx={{ fontWeight: 'bold', p:1 }}>
+                              <TableCell align='right' sx={{ fontWeight: 'bold', p:1 }}>
                                 Future Jobs
                               </TableCell>
-                              <TableCell align="left" sx={{ p:1 }}>{upcomingJobs}</TableCell>
+                              <TableCell align='left' sx={{ p:1 }}>{upcomingJobs}</TableCell>
                             </TableRow>
                           </TableBody>
                         </Table>
@@ -1168,42 +1202,42 @@ export const Backlog = () => {
                         <Table>
                           <TableBody>
                             <TableRow>
-                              <TableCell align="right" sx={{ fontWeight: 'bold', width: '60%', p:1 }}>
+                              <TableCell align='right' sx={{ fontWeight: 'bold', width: '60%', p:1 }}>
                                 Late Revenue
                               </TableCell>
-                              <TableCell align="left" sx={{ p:1 }}>
+                              <TableCell align='left' sx={{ p:1 }}>
                                 {lateSum.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
                               </TableCell>
                             </TableRow>
                             <TableRow>
-                              <TableCell align="right" sx={{ fontWeight: 'bold', p:1 }}>
+                              <TableCell align='right' sx={{ fontWeight: 'bold', p:1 }}>
                                 Upcoming Revenue
                               </TableCell>
-                              <TableCell align="left" sx={{ p:1 }}>
+                              <TableCell align='left' sx={{ p:1 }}>
                                 {futureSum.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
                               </TableCell>
                             </TableRow>
                             <TableRow>
-                              <TableCell align="right" sx={{ fontWeight: 'bold', p:1 }}>
+                              <TableCell align='right' sx={{ fontWeight: 'bold', p:1 }}>
                                 Projected Current Week
                               </TableCell>
-                              <TableCell align="left" sx={{ p:1 }}>
+                              <TableCell align='left' sx={{ p:1 }}>
                                 {thisWeekSum.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
                               </TableCell>
                             </TableRow>
                             <TableRow>
-                              <TableCell align="right" sx={{ fontWeight: 'bold', p:1 }}>
+                              <TableCell align='right' sx={{ fontWeight: 'bold', p:1 }}>
                                 Projected Next Week
                               </TableCell>
-                              <TableCell align="left" sx={{ p:1 }}>
+                              <TableCell align='left' sx={{ p:1 }}>
                                 {secondWeekSum.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
                               </TableCell>
                             </TableRow>
                             <TableRow>
-                              <TableCell align="right" sx={{ fontWeight: 'bold', p:1 }}>
+                              <TableCell align='right' sx={{ fontWeight: 'bold', p:1 }}>
                                 Projected Third Week
                               </TableCell>
-                              <TableCell align="left" sx={{ p:1 }}>
+                              <TableCell align='left' sx={{ p:1 }}>
                                 {thirdWeekSum.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
                               </TableCell>
                             </TableRow>
