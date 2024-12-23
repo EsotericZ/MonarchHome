@@ -1,5 +1,5 @@
 import { useEffect, useState, Fragment } from 'react';
-import { Alert, Box, Divider, FormControl, IconButton, MenuItem, Paper, Select, Snackbar, Tab, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tabs, Typography } from '@mui/material';
+import { Box, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
 
 import { useUserContext } from '../../context/UserContext';
 
@@ -8,7 +8,6 @@ import CustomTabs from '../../components/shared/CustomTabs';
 import CustomHeader from '../../components/programming/CustomHeader';
 import DataTableCell from '../../components/shared/DataTableCell';
 
-import PuffLoader from 'react-spinners/PuffLoader';
 import AddIcon from '@mui/icons-material/Add';
 import { Bar, Doughnut } from 'react-chartjs-2';
 import { ArcElement, BarElement, CategoryScale, Chart, Legend, LinearScale, Title, Tooltip } from 'chart.js';
@@ -79,6 +78,7 @@ export const Backlog = () => {
   const [totalJobs, setTotalJobs] = useState(0);
 
   const [lateEng, setLateEng] = useState(0);
+  const [lateMach, setLateMach] = useState(0);
   const [lateShear, setLateShear] = useState(0);
   const [latePunch, setLatePunch] = useState(0);
   const [lateLaser, setLateLaser] = useState(0);
@@ -92,6 +92,7 @@ export const Backlog = () => {
   const [lateOSV, setLateOSV] = useState(0);
   const [lateSum, setLateSum] = useState(0);
   const [futureEng, setFutureEng] = useState(0);
+  const [futureMach, setFutureMach] = useState(0);
   const [futureShear, setFutureShear] = useState(0);
   const [futurePunch, setFuturePunch] = useState(0);
   const [futureLaser, setFutureLaser] = useState(0);
@@ -229,6 +230,7 @@ export const Backlog = () => {
       setMonthJobs(sortedJobsNo.length);
 
       setLateEng((pastJobsNo.filter(row => row.WorkCntr == '101 ENGIN' && row.User_Text2 != '4. DONE')).length)
+      setLateMach((pastJobsNo.filter(row => row.WorkCntr == '302 MILL')).length)
       setLateShear((pastJobsNo.filter(row => row.WorkCntr == '201 SHEAR')).length)
       setLatePunch((pastJobsNo.filter(row => row.WorkCntr == '202 PUNCH')).length)
       setLateLaser((pastJobsNo.filter(row => row.WorkCntr == '203 LASER')).length)
@@ -248,6 +250,7 @@ export const Backlog = () => {
       setLateSum(totalLateSum);
 
       setFutureEng((sortedJobsNo.filter(row => row.WorkCntr == '101 ENGIN' && row.User_Text2 != '4. DONE')).length - (pastJobsNo.filter(row => row.WorkCntr == '101 ENGIN' && row.User_Text2 != '4. DONE')).length)
+      setFutureMach((sortedJobsNo.filter(row => row.WorkCntr == '302 MILL')).length - (pastJobsNo.filter(row => row.WorkCntr == '302 MILL')).length)
       setFutureShear((sortedJobsNo.filter(row => row.WorkCntr == '201 SHEAR')).length - (pastJobsNo.filter(row => row.WorkCntr == '201 SHEAR')).length)
       setFuturePunch((sortedJobsNo.filter(row => row.WorkCntr == '202 PUNCH')).length - (pastJobsNo.filter(row => row.WorkCntr == '202 PUNCH')).length)
       setFutureLaser((sortedJobsNo.filter(row => row.WorkCntr == '203 LASER')).length - (pastJobsNo.filter(row => row.WorkCntr == '203 LASER')).length)
@@ -387,6 +390,7 @@ export const Backlog = () => {
       setMonthJobs(sortedJobsNo.length);
 
       setLateEng((pastJobsNo.filter(row => row.WorkCntr == '101 ENGIN')).length)
+      setLateMach((pastJobsNo.filter(row => row.WorkCntr == '302 MILL')).length)
       setLateShear((pastJobsNo.filter(row => row.WorkCntr == '201 SHEAR')).length)
       setLatePunch((pastJobsNo.filter(row => row.WorkCntr == '202 PUNCH')).length)
       setLateLaser((pastJobsNo.filter(row => row.WorkCntr == '203 LASER')).length)
@@ -406,6 +410,7 @@ export const Backlog = () => {
       setLateSum(totalLateSum);
 
       setFutureEng((sortedJobsNo.filter(row => row.WorkCntr == '101 ENGIN')).length - (pastJobsNo.filter(row => row.WorkCntr == '101 ENGIN')).length)
+      setFutureMach((sortedJobsNo.filter(row => row.WorkCntr == '302 MILL')).length - (pastJobsNo.filter(row => row.WorkCntr == '302 MILL')).length)
       setFutureShear((sortedJobsNo.filter(row => row.WorkCntr == '201 SHEAR')).length - (pastJobsNo.filter(row => row.WorkCntr == '201 SHEAR')).length)
       setFuturePunch((sortedJobsNo.filter(row => row.WorkCntr == '202 PUNCH')).length - (pastJobsNo.filter(row => row.WorkCntr == '202 PUNCH')).length)
       setFutureLaser((sortedJobsNo.filter(row => row.WorkCntr == '203 LASER')).length - (pastJobsNo.filter(row => row.WorkCntr == '203 LASER')).length)
@@ -564,19 +569,19 @@ export const Backlog = () => {
     },
   };
 
-  const labels = ['Eng', 'Shear', 'Punch', 'Laser', 'Brake', 'Hard', 'TLaser', 'Saw', 'Weld', 'Assy', 'Powder', 'OSV'];
+  const labels = ['Eng', 'Mach', 'Shear', 'Punch', 'Laser', 'Brake', 'Hard', 'TLaser', 'Saw', 'Weld', 'Assy', 'Powder', 'OSV'];
 
   const data = {
     labels,
     datasets: [
       {
         label: 'Late',
-        data: [lateEng, lateShear, latePunch, lateLaser, lateBrake, lateHard, lateTLaser, lateSaw, lateWeld, lateAssy, latePowder, lateOSV],
+        data: [lateEng, lateMach, lateShear, latePunch, lateLaser, lateBrake, lateHard, lateTLaser, lateSaw, lateWeld, lateAssy, latePowder, lateOSV],
         backgroundColor: 'rgba(255, 99, 132, 0.5)',
       },
       {
         label: 'Future',
-        data: [futureEng, futureShear, futurePunch, futureLaser, futureBrake, futureHard, futureTLaser, futureSaw, futureWeld, futureAssy, futurePowder, futureOSV],
+        data: [futureEng, futureMach, futureShear, futurePunch, futureLaser, futureBrake, futureHard, futureTLaser, futureSaw, futureWeld, futureAssy, futurePowder, futureOSV],
         backgroundColor: 'rgba(53, 162, 235, 0.5)',
       },
     ],
@@ -1098,19 +1103,140 @@ export const Backlog = () => {
 
           <Box>
             {selectedTab === 3 && (
-              <Box sx={{ padding: '12px' }}>
-                3
-              </Box>
-            )}
-          </Box>
+              <Box sx={{ padding: 1 }}>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'space-around',
+                  }}
+                >
+                  <Box
+                    sx={{
+                      width: '28%',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: 1,
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        border: '1px solid grey',
+                        borderRadius: 2,
+                        px: 2,
+                      }}
+                    >
+                      <Typography variant="h6" align="center" gutterBottom>
+                        {current}
+                      </Typography>
+                      <TableContainer>
+                        <Table>
+                          <TableBody>
+                            <TableRow>
+                              <TableCell align="right" sx={{ fontWeight: 'bold', width: '50%', p:1 }}>
+                                Total Jobs
+                              </TableCell>
+                              <TableCell align="left" sx={{ width: '50%', p:1 }}>
+                                {monthJobs}
+                              </TableCell>
+                            </TableRow>
+                            <TableRow>
+                              <TableCell align="right" sx={{ fontWeight: 'bold', p:1 }}>
+                                Late Jobs
+                              </TableCell>
+                              <TableCell align="left" sx={{ p:1 }}>{lateJobs}</TableCell>
+                            </TableRow>
+                            <TableRow>
+                              <TableCell align="right" sx={{ fontWeight: 'bold', p:1 }}>
+                                Future Jobs
+                              </TableCell>
+                              <TableCell align="left" sx={{ p:1 }}>{upcomingJobs}</TableCell>
+                            </TableRow>
+                          </TableBody>
+                        </Table>
+                      </TableContainer>
+                    </Box>
 
-          {/* ACTIVE JOBS */}
+                    <Box
+                      sx={{
+                        border: '1px solid grey',
+                        borderRadius: 2,
+                        px: 2
+                      }}
+                    >
+                      <TableContainer>
+                        <Table>
+                          <TableBody>
+                            <TableRow>
+                              <TableCell align="right" sx={{ fontWeight: 'bold', width: '60%', p:1 }}>
+                                Late Revenue
+                              </TableCell>
+                              <TableCell align="left" sx={{ p:1 }}>
+                                {lateSum.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
+                              </TableCell>
+                            </TableRow>
+                            <TableRow>
+                              <TableCell align="right" sx={{ fontWeight: 'bold', p:1 }}>
+                                Upcoming Revenue
+                              </TableCell>
+                              <TableCell align="left" sx={{ p:1 }}>
+                                {futureSum.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
+                              </TableCell>
+                            </TableRow>
+                            <TableRow>
+                              <TableCell align="right" sx={{ fontWeight: 'bold', p:1 }}>
+                                Projected Current Week
+                              </TableCell>
+                              <TableCell align="left" sx={{ p:1 }}>
+                                {thisWeekSum.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
+                              </TableCell>
+                            </TableRow>
+                            <TableRow>
+                              <TableCell align="right" sx={{ fontWeight: 'bold', p:1 }}>
+                                Projected Next Week
+                              </TableCell>
+                              <TableCell align="left" sx={{ p:1 }}>
+                                {secondWeekSum.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
+                              </TableCell>
+                            </TableRow>
+                            <TableRow>
+                              <TableCell align="right" sx={{ fontWeight: 'bold', p:1 }}>
+                                Projected Third Week
+                              </TableCell>
+                              <TableCell align="left" sx={{ p:1 }}>
+                                {thirdWeekSum.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
+                              </TableCell>
+                            </TableRow>
+                          </TableBody>
+                        </Table>
+                      </TableContainer>
+                    </Box>
 
-          <Box>
-            {selectedTab === 4 && (
-              <Box sx={{ padding: '12px' }}>
-                4
+                    <Box
+                      sx={{
+                        border: '1px solid grey',
+                        borderRadius: 2,
+                        px: 6,
+                        py: 2
+                      }}
+                    >
+                      <Doughnut data={donutDataJobs} />
+                    </Box>
+                  </Box>
+
+                  <Box
+                    sx={{
+                      width: '68%',
+                      border: '1px solid grey',
+                      borderRadius: 2,
+                      padding: 2,
+                    }}
+                  >
+                    <Bar options={options} data={data} />
+                  </Box>
+                </Box>
               </Box>
+
             )}
           </Box>
         </>
@@ -1118,8 +1244,7 @@ export const Backlog = () => {
         <Box sx={{ width: '100%', textAlign: 'center', alignContent: 'center', overflowY: 'auto', height: '100vh' }}>
           <Typography variant='h4' sx={{ fontWeight: 'bold', margin: '16px' }}>You Don't Have Access To This Page</Typography>
         </Box>
-      )
-      }
+      )}
     </PageContainer >
   );
 }
