@@ -58,7 +58,6 @@ export const Backlog = () => {
   const [hold, setHold] = useState(0);
   const [update, setUpdate] = useState('');
 
-  const [jobs, setJobs] = useState([]);
   const [nextMonthJobs, setNextMonthJobs] = useState([]);
   const [allFutureJobs, setAllFutueJobs] = useState([]);
   const [subJobs, setSubJobs] = useState([]);
@@ -77,7 +76,6 @@ export const Backlog = () => {
   const [lateJobs, setLateJobs] = useState(0);
   const [upcomingJobs, setUpcomingJobs] = useState(0);
   const [monthJobs, setMonthJobs] = useState(0);
-  const [totalJobs, setTotalJobs] = useState(0);
 
   const [lateEng, setLateEng] = useState(0);
   const [lateMach, setLateMach] = useState(0);
@@ -371,15 +369,17 @@ export const Backlog = () => {
       let thirdWeekProjected = 0;
 
       allJobs.forEach(job => {
-        const jobDate = new Date(job.dataValues.cdate);
+        const jobDate = job.dataValues?.cdate ? new Date(job.dataValues.cdate) : null;
         const value = (job.QtyOrdered - job.QtyShipped2Cust) * job.UnitPrice;
-
-        if (jobDate >= sunday && jobDate <= saturday) {
-          thisWeekProjected += value;
-        } else if (jobDate >= secondSunday && jobDate <= secondSaturday) {
-          secondWeekProjected += value;
-        } else if (jobDate >= thirdSunday && jobDate <= thirdSaturday) {
-          thirdWeekProjected += value;
+      
+        if (jobDate) {
+          if (jobDate >= sunday && jobDate <= saturday) {
+            thisWeekProjected += value;
+          } else if (jobDate >= secondSunday && jobDate <= secondSaturday) {
+            secondWeekProjected += value;
+          } else if (jobDate >= thirdSunday && jobDate <= thirdSaturday) {
+            thirdWeekProjected += value;
+          }
         }
       });
 

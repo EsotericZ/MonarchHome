@@ -3,16 +3,16 @@ import { Box, Button, Checkbox, Dialog, DialogActions, DialogContent, DialogTitl
 const EditModal = ({
   open,
   onClose,
-  blNotes,
+  blNotes = '',
   setBlNotes,
-  osvNotes,
+  osvNotes = '',
   setOsvNotes,
-  cdate,
+  cdate = '',
   setCdate,
-  email,
+  email = false,
   setEmail,
   toggleEmail,
-  hold,
+  hold = false,
   setHold,
   toggleHold,
   id,
@@ -27,7 +27,7 @@ const EditModal = ({
           label='Backlog Notes'
           multiline
           rows={4}
-          value={blNotes}
+          value={blNotes || ''}
           onChange={(e) => setBlNotes(e.target.value)}
           fullWidth
           margin='normal'
@@ -35,7 +35,7 @@ const EditModal = ({
         />
         <TextField
           label='OSV Status'
-          value={osvNotes}
+          value={osvNotes || ''}
           onChange={(e) => setOsvNotes(e.target.value)}
           fullWidth
           margin='normal'
@@ -44,7 +44,7 @@ const EditModal = ({
         <TextField
           label='Commitment Date'
           type='date'
-          value={cdate}
+          value={cdate || ''}
           onChange={(e) => setCdate(e.target.value)}
           fullWidth
           margin='normal'
@@ -54,7 +54,7 @@ const EditModal = ({
           <FormControlLabel
             control={
               <Checkbox
-                checked={email}
+                checked={Boolean(email)}
                 onChange={(e) => {
                   setEmail(e.target.checked);
                   toggleEmail(id);
@@ -66,7 +66,7 @@ const EditModal = ({
           <FormControlLabel
             control={
               <Checkbox
-                checked={hold}
+                checked={Boolean(hold)}
                 onChange={(e) => {
                   setHold(e.target.checked);
                   toggleHold(id);
