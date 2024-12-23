@@ -563,7 +563,7 @@ export const Backlog = () => {
       },
       title: {
         display: true,
-        text: 'Chart.js Bar Chart',
+        // text: 'Chart.js Bar Chart',
       },
     },
     onClick: function (event, element) {
