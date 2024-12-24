@@ -21,6 +21,7 @@ import { InventoryHome } from './pages/inventory/InventoryHome';
 import { Laser } from './pages/departments/Laser';
 import { Login } from './pages/login/Login';
 import { Machining } from './pages/programming/Machining';
+import { Maintenance } from './pages/maintenance/Maintenance';
 import { Profile } from './pages/profile/Profile';
 import { Programming } from './pages/programming/Programming';
 import { Purchasing } from './pages/inventory/Purchasing';
@@ -29,6 +30,7 @@ import { Quality } from './pages/programming/Quality';
 import { QualityInfo } from './pages/programming/QualityInfo';
 import { Saw } from './pages/departments/Saw';
 import { Scales } from './pages/inventory/Scales';
+import { Shipping } from './pages/shipping/Shipping';
 import { Shear } from './pages/departments/Shear';
 import { SheetInventory } from './pages/specialty/SheetInventory';
 import { Specialty } from './pages/specialty/Specialty';
@@ -91,6 +93,7 @@ export const App = () => {
           <Route path='/Laser' element={<Laser />} />
           <Route path='/login' element={<Login />} />
           <Route path='/machining' element={<Machining />} />
+          <Route path='/maintenance' element={<Maintenance />} />
           <Route path='/profile' element={<Profile loggedIn={loggedIn} handleLogout={handleLogout} />} />
           <Route path='/programming' element={<Programming />} />
           <Route path='/punch' element={<Punch />} />
@@ -101,6 +104,7 @@ export const App = () => {
           <Route path='/scales' element={<Scales />} />
           <Route path='/shear' element={<Shear />} />
           <Route path='/sheetInventory' element={<SheetInventory />} />
+          <Route path='/shipping' element={<Shipping />} />
           <Route path='/specialty' element={<Specialty />} />
           <Route path='/staticLaser' element={<StaticLaser />} />
           <Route path='/supplies' element={<Supplies />} />

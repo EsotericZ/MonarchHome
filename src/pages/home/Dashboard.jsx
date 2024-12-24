@@ -302,14 +302,14 @@ export const Dashboard = () => {
                       <Chip
                         sx={{ fontSize: '12px', width: '100px', height: '25px', backgroundColor: defaultColor, color: 'white', fontWeight: 'bold' }}
                         label='Maintenance'
-                      // onClick={() => navigate('/engineering')} 
+                        onClick={() => navigate('/maintenance')} 
                       />
                     )}
                     {cookieData.shipping && (
                       <Chip
                         sx={{ fontSize: '12px', width: '100px', height: '25px', backgroundColor: defaultColor, color: 'white', fontWeight: 'bold' }}
                         label='Shipping'
-                      // onClick={() => navigate('/engineering')}
+                        onClick={() => navigate('/shipping')}
                       />
                     )}
                     {cookieData.purchasing && (

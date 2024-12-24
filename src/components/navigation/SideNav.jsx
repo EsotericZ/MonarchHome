@@ -6,6 +6,7 @@ import {
   Assessment as AssessmentIcon,
   ChevronLeft as ChevronLeftIcon,
   ChevronRight as ChevronRightIcon,
+  Construction as ConstructionIcon,
   ContentPaste as ContentPasteIcon,
   Dashboard as DashboardIcon,
   ExpandLess,
@@ -13,6 +14,7 @@ import {
   FormatListBulleted as FormatListBulletedIcon,
   Home as HomeIcon,
   Key as KeyIcon,
+  LocalShipping as LocalShippingIcon,
   Login as LoginIcon,
   Person as PersonIcon,
   Stream as StreamIcon,
@@ -467,6 +469,32 @@ export const SideNav = ({ children }) => {
                   </ListItem>
                 </List>
               </Collapse>
+
+            {/* MAINTENANCE */}
+
+              <ListItem disablePadding>
+                <Tooltip title='Maintenance' placement='right' arrow>
+                  <ListItemButton onClick={() => { navigate('/maintenance'); handleCloseAll(); }}>
+                    <ListItemIcon sx={{ cursor: 'pointer', py: 1 }}>
+                      <ConstructionIcon />
+                    </ListItemIcon>
+                    <ListItemText primary='Maintenance' />
+                  </ListItemButton>
+                </Tooltip>
+              </ListItem>
+            
+            {/* SHIPPING */}
+
+              <ListItem disablePadding>
+                <Tooltip title='Shipping' placement='right' arrow>
+                  <ListItemButton onClick={() => { navigate('/shipping'); handleCloseAll(); }}>
+                    <ListItemIcon sx={{ cursor: 'pointer', py: 1 }}>
+                      <LocalShippingIcon />
+                    </ListItemIcon>
+                    <ListItemText primary='Shipping' />
+                  </ListItemButton>
+                </Tooltip>
+              </ListItem>
 
             {/* SPECIALTY */}
 

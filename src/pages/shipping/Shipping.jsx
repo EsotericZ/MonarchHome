@@ -14,14 +14,7 @@ import RefreshButton from '../../components/shared/RefreshButton';
 import TaskCard from '../../components/tasks/TaskCard';
 import TaskTable from '../../components/tasks/TaskTable';
 
-import completeTask from '../../services/tasks/completeTask';
-import createTask from '../../services/tasks/createTask';
-import createTaskNote from '../../services/tasks/createTaskNote';
-import getAllUsers from '../../services/users/getAllUsers';
-import getUserTasks from '../../services/tasks/getUserTasks';
-import updateTask from '../../services/tasks/updateTask';
-
-export const Tasks = () => {
+export const Shipping = () => {
   const { cookieData } = useUserContext();
   const [selectedTab, setSelectedTab] = useState(0);
   const [show, setShow] = useState(false);
@@ -151,61 +144,7 @@ export const Tasks = () => {
   }, []);
 
   return (
-    <PageContainer loading={loading} title='Tasks'>
-      <AddTaskModal
-        show={show}
-        handleClose={handleClose}
-        handleSave={handleSave}
-        assignedBy={assignedBy}
-        assignedTo={assignedTo}
-        setAssignedTo={setAssignedTo}
-        taskName={taskName}
-        setTaskName={setTaskName}
-        description={description}
-        setDescription={setDescription}
-        priority={priority}
-        setPriority={setPriority}
-        status={status}
-        setStatus={setStatus}
-        allUsers={allUsers}
-      />
-
-      <EditTaskModal
-        showEdit={showEdit}
-        handleClose={handleClose}
-        handleUpdate={handleUpdate}
-        assignedBy={assignedBy}
-        assignedTo={assignedTo}
-        setAssignedTo={setAssignedTo}
-        taskName={taskName}
-        setTaskName={setTaskName}
-        description={description}
-        setDescription={setDescription}
-        priority={priority}
-        setPriority={setPriority}
-        status={status}
-        setStatus={setStatus}
-        allUsers={allUsers}
-      />
-
-      <NotesModal
-        show={showNotesModal}
-        handleClose={() => setShowNotesModal(false)}
-        task={selectedTask}
-        notes={notes}
-        allUsers={allUsers}
-        handleAddNote={handleAddNote}
-        handleCompleteTask={handleCompleteTask}
-      />
-
-      <CompleteModal
-        show={showCompleteModal}
-        handleClose={() => setShowCompleteModal(false)}
-        task={selectedCompletedTask}
-        notes={selectedCompletedTask?.notes || []}
-        allUsers={allUsers}
-      />
-
+    <PageContainer loading={loading} title='Shipping'>
       <CustomTabs
         selectedTab={selectedTab}
         handleTabChange={handleTabChange}
@@ -214,90 +153,26 @@ export const Tasks = () => {
 
       {selectedTab == 0 && (
         <Box sx={{ padding: '12px' }}>
-          <Box sx={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: 1 }}>
-            {Array.isArray(userTasks) ? (
-              userTasks
-                .filter((task) => task.status === 'Active' || task.status === 'Process')
-                .map((task, index) => (
-                  <TaskCard key={index} task={task} handleUpdateTask={handleUpdateTask} />
-                )).length > 0 ? (
-                userTasks
-                  .filter((task) => task.status === 'Active' || task.status === 'Process')
-                  .map((task, index) => (
-                    <TaskCard key={index} task={task} handleUpdateTask={handleUpdateTask} handleOpenNotesModal={handleOpenNotesModal} />
-                  ))
-              ) : (
-                <Box
-                  sx={{
-                    width: '100%',
-                    textAlign: 'center',
-                    alignContent: 'center',
-                    overflowY: 'auto',
-                    height: '15vh',
-                  }}
-                >
-                  <Typography variant="h4" sx={{ fontWeight: 'bold', margin: '16px' }}>
-                    No Active Tasks
-                  </Typography>
-                </Box>
-              )
-            ) : null}
-          </Box>
-
-          {cookieData.name && <AddButton onClick={handleShow} />}
+          1
+          <AddButton onClick={handleShow} />
           <RefreshButton onClick={fetchData} />
         </Box>
       )}
-
 
       {selectedTab == 1 && (
         <Box sx={{ padding: '12px' }}>
-          <Box sx={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: 1 }}>
-            {Array.isArray(userTasks) ? (
-              userTasks
-                .filter((task) => task.status === 'Hold')
-                .map((task, index) => (
-                  <TaskCard key={index} task={task} handleUpdateTask={handleUpdateTask} />
-                )).length > 0 ? (
-                userTasks
-                  .filter((task) => task.status === 'Hold')
-                  .map((task, index) => (
-                    <TaskCard key={index} task={task} handleUpdateTask={handleUpdateTask} />
-                  ))
-              ) : (
-                <Box
-                  sx={{
-                    width: '100%',
-                    textAlign: 'center',
-                    alignContent: 'center',
-                    overflowY: 'auto',
-                    height: '15vh',
-                  }}
-                >
-                  <Typography variant="h4" sx={{ fontWeight: 'bold', margin: '16px' }}>
-                    No Tasks on Hold
-                  </Typography>
-                </Box>
-              )
-            ) : null}
-          </Box>
-
-          {cookieData.name && <AddButton onClick={handleShow} />}
+          2
+          <AddButton onClick={handleShow} />
           <RefreshButton onClick={fetchData} />
         </Box>
       )}
 
-
-      {selectedTab == 2 &&
+      {selectedTab == 2 && (
         <Box sx={{ padding: '12px' }}>
-          <TaskTable
-            tasks={userTasks}
-            filterStatus="Complete"
-            fallbackMessage="No Completed Tasks"
-            onRowClick={handleRowClick}
-          />
+          3
         </Box>
-      }
+      )}
+
     </PageContainer>
   );
-};
+}
