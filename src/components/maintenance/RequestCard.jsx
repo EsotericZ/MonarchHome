@@ -1,12 +1,13 @@
 import { Box, Card, CardContent, IconButton, Typography } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
-import SpeakerNotesIcon from '@mui/icons-material/SpeakerNotes';
+import CheckIcon from '@mui/icons-material/Check';
+import CloseIcon from '@mui/icons-material/Close';
 
 import getFolder from '../../services/maintenance/getFolder';
 
-const MaintenanceCard = ({ maintenance, handleEdit, handleViewNotes }) => {
+const RequestCard = ({ request, handleEdit, handleApprove, handleDeny }) => {
   let backgroundColor;
-  switch (maintenance.priority.toLowerCase()) {
+  switch (request.priority?.toLowerCase()) {
     case 'low':
       backgroundColor = 'lightblue';
       break;
@@ -26,9 +27,9 @@ const MaintenanceCard = ({ maintenance, handleEdit, handleViewNotes }) => {
 
   const handleOpenFolder = async () => {
     try {
-      await getFolder(maintenance.record);
+      await getFolder(request.record);
     } catch (error) {
-      'There was an errror'
+      console.error('There was an error opening the folder:', error);
     }
   };
 
@@ -45,26 +46,26 @@ const MaintenanceCard = ({ maintenance, handleEdit, handleViewNotes }) => {
       <CardContent>
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', width: '100%' }}>
           <Typography sx={{ fontWeight: 'bold', fontSize: '24px' }}>
-            {maintenance.area}
+            {request.area}
           </Typography>
         </Box>
 
         <Box sx={{ display: 'flex', flexDirection: 'column', mt: 2 }}>
-          <Typography sx={{ fontSize: '17px' }}>{maintenance.description}</Typography>
+          <Typography sx={{ fontSize: '17px' }}>{request.description}</Typography>
           <Typography sx={{ fontSize: '17px', mt: 1 }}>
-            <strong>Request Type:</strong> {maintenance.requestType}
+            <strong>Request Type:</strong> {request.requestType}
           </Typography>
           <Typography sx={{ fontSize: '17px', mt: 1 }}>
-            <strong>Requested By:</strong> {maintenance.requestedBy}
+            <strong>Requested By:</strong> {request.requestedBy}
           </Typography>
           <Typography 
             sx={{ fontSize: '17px', mt: 1, cursor: 'pointer' }}
             onClick={handleOpenFolder}
           >
-            <strong>Record:</strong> {maintenance.record}
+            <strong>Record:</strong> {request.record}
           </Typography>
           <Typography sx={{ fontSize: '17px', mt: 1, mb: 1 }}>
-            <strong>Equipment:</strong> {maintenance.equipment}
+            <strong>Equipment:</strong> {request.equipment}
           </Typography>
         </Box>
 
@@ -77,33 +78,45 @@ const MaintenanceCard = ({ maintenance, handleEdit, handleViewNotes }) => {
           }}
         >
           <IconButton
-            size='small'
-            color='black'
+            size="small"
+            color="black"
             onClick={(e) => {
               e.stopPropagation();
-              handleEdit(maintenance);
+              handleEdit(request);
             }}
           >
             <EditIcon />
           </IconButton>
-          </Box>
-          <Box
+        </Box>
+
+        <Box
           sx={{
             position: 'absolute',
             bottom: 10,
             right: 10,
             display: 'flex',
+            gap: 1,
           }}
         >
           <IconButton
-            size='small'
-            color='black'
+            size="small"
+            color="error"
             onClick={(e) => {
               e.stopPropagation();
-              handleViewNotes(maintenance);
+              handleDeny(request);
             }}
           >
-            <SpeakerNotesIcon />
+            <CloseIcon />
+          </IconButton>
+          <IconButton
+            size="small"
+            color="success"
+            onClick={(e) => {
+              e.stopPropagation();
+              handleApprove(request);
+            }}
+          >
+            <CheckIcon />
           </IconButton>
         </Box>
       </CardContent>
@@ -111,4 +124,4 @@ const MaintenanceCard = ({ maintenance, handleEdit, handleViewNotes }) => {
   );
 };
 
-export default MaintenanceCard;
+export default RequestCard;

@@ -15,6 +15,8 @@ import TaskCard from '../../components/tasks/TaskCard';
 import TaskTable from '../../components/tasks/TaskTable';
 
 import MaintenanceCard from '../../components/maintenance/MaintenanceCard';
+import AddRequestModal from '../../components/maintenance/AddRequestModal';
+import RequestCard from '../../components/maintenance/RequestCard';
 
 import approveRequest from '../../services/maintenance/approveRequest';
 import createRequest from '../../services/maintenance/createRequest';
@@ -49,6 +51,9 @@ export const Maintenance = () => {
   const [selectedCompletedTask, setSelectedCompletedTask] = useState(null);
   const [notes, setNotes] = useState([]);
 
+
+  const [showAddRequest, setShowAddRequest] = useState(false);
+  const [formData, setFormData] = useState({});
   const [equipment, setEquipment] = useState([]);
   const [allRequests, setAllRequests] = useState([]);
 
@@ -57,87 +62,42 @@ export const Maintenance = () => {
   const [hold, setHold] = useState('H');
 
   const handleClose = () => {
-    setShow(false);
+    setShowAddRequest(false);
     setShowEdit(false);
   }
 
-  // const handleSave = async () => {
-  //   try {
-  //     const assignedById = allUsers.find((user) => user.name === assignedBy)?.id;
-  //     const assignedToIds = assignedTo.map(
-  //       (name) => allUsers.find((user) => user.name === name)?.id
-  //     );
-
-  //     if (!assignedById || assignedToIds.includes(undefined)) {
-  //       console.error('Invalid user mapping');
-  //       return;
-  //     }
-
-  //     await createTask(assignedById, assignedToIds, taskName, description, priority, status);
-
-  //     handleClose();
-  //     fetchData();
-  //   } catch (err) {
-  //     console.error(err);
-  //   }
-  // };
-
-  const handleShow = () => {
-    setAssignedBy(cookieData.name);
-    setAssignedTo([]);
-    setTaskName('');
-    setDescription('');
-    setPriority('');
-    setStatus('');
-    setShow(true);
+  const handleChangeAddRequest = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  // const handleUpdateTask = (task) => {
-  //   setId(task.id);
-  //   setAssignedBy(task.assigner?.name || '');
-  //   setAssignedTo(task.assignments?.map((assignment) => assignment.user.name) || []);
-  //   setTaskName(task.taskName || '');
-  //   setDescription(task.description || '');
-  //   setPriority(task.priority || '');
-  //   setStatus(task.status || '');
-  //   setShowEdit(true);
-  // };
+  const handleSaveAddRequest = async () => {
+    try {
+      await createRequest(formData);
+    } catch (error) {
+      console.error('Error saving request:', error);
+    } finally {
+      setShowAddRequest(false);
+      setFormData({});
+      fetchData();
+    }
+  };
 
-  // const handleUpdate = async () => {
-  //   try {
-  //     await updateTask(id, assignedTo, taskName, description, priority, status);
-  //     handleClose();
-  //     fetchData();
-  //   } catch (err) {
-  //     console.error(err);
-  //   }
-  // };
+  const handleCloseAddRequest = () => {
+    setShowAddRequest(false);
+    setFormData({});
+  };
 
-  // const handleOpenNotesModal = (task) => {
-  //   if (task) {
-  //     setSelectedTask(task);
-  //     setNotes(task.notes || []);
-  //     setShowNotesModal(true);
-  //   }
-  // };
-
-  // const handleAddNote = async (taskId, note) => {
-  //   await createTaskNote(taskId, note, cookieData.id, new Date().toISOString());
-  //   const newNote = { note, name: cookieData.name, date: new Date().toISOString() };
-  //   setNotes((prevNotes) => [...prevNotes, newNote]);
-  //   fetchData();
-  // };
-
-  // const handleCompleteTask = async (taskId) => {
-  //   await completeTask(taskId);
-  //   setShowNotesModal(false);
-  //   fetchData();
-  // };
-
-  // const handleRowClick = (task) => {
-  //   setSelectedCompletedTask(task);
-  //   setShowCompleteModal(true);
-  // };
+  const handleShowAddRequest = () => {
+    setFormData({
+      requestedBy: cookieData.name,
+      area: '',
+      equipment: '',
+      requestType: '',
+      description: '',
+    });
+    setShowAddRequest(true);
+  };
 
   const fetchData = async () => {
     try {
@@ -178,6 +138,16 @@ export const Maintenance = () => {
         tabLabels={[active, request, hold, 'Completed']}
       />
 
+      <AddRequestModal
+        open={showAddRequest}
+        onClose={handleCloseAddRequest}
+        onSave={handleSaveAddRequest}
+        handleChange={handleChangeAddRequest}
+        equipment={equipment}
+        formData={formData}
+        cookieData={cookieData}
+      />
+
       {selectedTab == 0 && (
         <Box
           sx={{
@@ -209,7 +179,7 @@ export const Maintenance = () => {
             }
             return null;
           })}
-          <AddButton onClick={handleShow} />
+          <AddButton onClick={handleShowAddRequest} />
           <RefreshButton onClick={fetchData} />
         </Box>
       )}
@@ -224,14 +194,29 @@ export const Maintenance = () => {
             gap: 1,
           }}
         >
-          Requests
           {allRequests.map((request, index) => {
-            if (!request.done && !request.hold && !request.approvedBy)
+            if (!request.done && !request.hold && !request.approvedBy) {
               return (
-                <p key={index}>{request.record}</p>
+                <RequestCard
+                  key={index}
+                  request={{
+                    area: request.area || 'N/A',
+                    description: request.description || 'No description available',
+                    requestType: request.requestType || 'N/A',
+                    requestedBy: request.requestedBy || 'Unknown',
+                    record: request.record || 'N/A',
+                    equipment: request.equipment || 'Unknown',
+                    priority: request.priority
+                  }}
+                  handleEdit={(maintenance) => console.log('Edit:', maintenance)}
+                  handleApprove={(maintenance) => console.log('Approve:', maintenance)}
+                  handleDeny={(maintenance) => console.log('Deny:', maintenance)}
+                />
               )
+            }
+            return null;
           })}
-          <AddButton onClick={handleShow} />
+          <AddButton onClick={handleShowAddRequest} />
           <RefreshButton onClick={fetchData} />
         </Box>
       )}
