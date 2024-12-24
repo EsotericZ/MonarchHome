@@ -14,6 +14,19 @@ import RefreshButton from '../../components/shared/RefreshButton';
 import TaskCard from '../../components/tasks/TaskCard';
 import TaskTable from '../../components/tasks/TaskTable';
 
+import MaintenanceCard from '../../components/maintenance/MaintenanceCard';
+
+import approveRequest from '../../services/maintenance/approveRequest';
+import createRequest from '../../services/maintenance/createRequest';
+import deleteRequest from '../../services/maintenance/deleteRequest';
+import denyRequest from '../../services/maintenance/denyRequest';
+import doneRequest from '../../services/maintenance/doneRequest';
+import getAllEquipment from '../../services/maintenance/getAllEquipment';
+import getAllRequests from '../../services/maintenance/getAllRequests';
+import holdRequest from '../../services/maintenance/holdRequest';
+import updateRequest from '../../services/maintenance/updateRequest';
+
+
 export const Maintenance = () => {
   const { cookieData } = useUserContext();
   const [selectedTab, setSelectedTab] = useState(0);
@@ -21,7 +34,7 @@ export const Maintenance = () => {
   const [showCompleteModal, setShowCompleteModal] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
   const [showNotesModal, setShowNotesModal] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const [allUsers, setAllUsers] = useState([]);
   const [userTasks, setUserTasks] = useState([]);
@@ -36,31 +49,38 @@ export const Maintenance = () => {
   const [selectedCompletedTask, setSelectedCompletedTask] = useState(null);
   const [notes, setNotes] = useState([]);
 
+  const [equipment, setEquipment] = useState([]);
+  const [allRequests, setAllRequests] = useState([]);
+
+  const [active, setActive] = useState('A');
+  const [request, setRequest] = useState('R');
+  const [hold, setHold] = useState('H');
+
   const handleClose = () => {
     setShow(false);
     setShowEdit(false);
   }
 
-  const handleSave = async () => {
-    try {
-      const assignedById = allUsers.find((user) => user.name === assignedBy)?.id;
-      const assignedToIds = assignedTo.map(
-        (name) => allUsers.find((user) => user.name === name)?.id
-      );
+  // const handleSave = async () => {
+  //   try {
+  //     const assignedById = allUsers.find((user) => user.name === assignedBy)?.id;
+  //     const assignedToIds = assignedTo.map(
+  //       (name) => allUsers.find((user) => user.name === name)?.id
+  //     );
 
-      if (!assignedById || assignedToIds.includes(undefined)) {
-        console.error('Invalid user mapping');
-        return;
-      }
+  //     if (!assignedById || assignedToIds.includes(undefined)) {
+  //       console.error('Invalid user mapping');
+  //       return;
+  //     }
 
-      await createTask(assignedById, assignedToIds, taskName, description, priority, status);
+  //     await createTask(assignedById, assignedToIds, taskName, description, priority, status);
 
-      handleClose();
-      fetchData();
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  //     handleClose();
+  //     fetchData();
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // };
 
   const handleShow = () => {
     setAssignedBy(cookieData.name);
@@ -72,62 +92,69 @@ export const Maintenance = () => {
     setShow(true);
   };
 
-  const handleUpdateTask = (task) => {
-    setId(task.id);
-    setAssignedBy(task.assigner?.name || '');
-    setAssignedTo(task.assignments?.map((assignment) => assignment.user.name) || []);
-    setTaskName(task.taskName || '');
-    setDescription(task.description || '');
-    setPriority(task.priority || '');
-    setStatus(task.status || '');
-    setShowEdit(true);
-  };
+  // const handleUpdateTask = (task) => {
+  //   setId(task.id);
+  //   setAssignedBy(task.assigner?.name || '');
+  //   setAssignedTo(task.assignments?.map((assignment) => assignment.user.name) || []);
+  //   setTaskName(task.taskName || '');
+  //   setDescription(task.description || '');
+  //   setPriority(task.priority || '');
+  //   setStatus(task.status || '');
+  //   setShowEdit(true);
+  // };
 
-  const handleUpdate = async () => {
-    try {
-      await updateTask(id, assignedTo, taskName, description, priority, status);
-      handleClose();
-      fetchData();
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  // const handleUpdate = async () => {
+  //   try {
+  //     await updateTask(id, assignedTo, taskName, description, priority, status);
+  //     handleClose();
+  //     fetchData();
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // };
 
-  const handleOpenNotesModal = (task) => {
-    if (task) {
-      setSelectedTask(task);
-      setNotes(task.notes || []);
-      setShowNotesModal(true);
-    }
-  };
+  // const handleOpenNotesModal = (task) => {
+  //   if (task) {
+  //     setSelectedTask(task);
+  //     setNotes(task.notes || []);
+  //     setShowNotesModal(true);
+  //   }
+  // };
 
-  const handleAddNote = async (taskId, note) => {
-    await createTaskNote(taskId, note, cookieData.id, new Date().toISOString());
-    const newNote = { note, name: cookieData.name, date: new Date().toISOString() };
-    setNotes((prevNotes) => [...prevNotes, newNote]);
-    fetchData();
-  };
+  // const handleAddNote = async (taskId, note) => {
+  //   await createTaskNote(taskId, note, cookieData.id, new Date().toISOString());
+  //   const newNote = { note, name: cookieData.name, date: new Date().toISOString() };
+  //   setNotes((prevNotes) => [...prevNotes, newNote]);
+  //   fetchData();
+  // };
 
-  const handleCompleteTask = async (taskId) => {
-    await completeTask(taskId);
-    setShowNotesModal(false);
-    fetchData();
-  };
+  // const handleCompleteTask = async (taskId) => {
+  //   await completeTask(taskId);
+  //   setShowNotesModal(false);
+  //   fetchData();
+  // };
 
-  const handleRowClick = (task) => {
-    setSelectedCompletedTask(task);
-    setShowCompleteModal(true);
-  };
+  // const handleRowClick = (task) => {
+  //   setSelectedCompletedTask(task);
+  //   setShowCompleteModal(true);
+  // };
 
   const fetchData = async () => {
     try {
-      const [allUsersData, userTaskData] = await Promise.all([
-        getAllUsers(),
-        getUserTasks(cookieData.id),
+      const [equipmentData, requestData] = await Promise.all([
+        getAllEquipment(),
+        getAllRequests(),
       ]);
 
-      setAllUsers(allUsersData.data || []);
-      setUserTasks(userTaskData.data);
+      setEquipment(equipmentData || []);
+      setAllRequests(requestData.data || []);
+
+      let activeCount = requestData.data.filter(row => !row.done && !row.hold && row.approvedBy).length;
+      setActive(activeCount > 0 ? `Active (${activeCount})` : 'Active');
+      let requestCount = requestData.data.filter(row => !row.done && !row.hold && !row.approvedBy).length;
+      setRequest(requestCount > 0 ? `Request (${requestCount})` : 'Request');
+      let holdCount = requestData.data.filter(row => !row.done && row.hold).length;
+      setHold(holdCount > 0 ? `Hold (${holdCount})` : 'Hold');
     } catch (err) {
       console.error(err);
     } finally {
@@ -148,28 +175,96 @@ export const Maintenance = () => {
       <CustomTabs
         selectedTab={selectedTab}
         handleTabChange={handleTabChange}
-        tabLabels={['Active', 'On Hold', 'Completed']}
+        tabLabels={[active, request, hold, 'Completed']}
       />
 
       {selectedTab == 0 && (
-        <Box sx={{ padding: '12px' }}>
-          1
+        <Box
+          sx={{
+            padding: '12px',
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+            gap: 1,
+          }}
+        >
+          {allRequests.map((request, index) => {
+            if (!request.done && !request.hold && request.approvedBy) {
+              return (
+                <MaintenanceCard
+                  key={index}
+                  maintenance={{
+                    area: request.area || 'N/A',
+                    description: request.description || 'No description available',
+                    requestType: request.requestType || 'N/A',
+                    requestedBy: request.requestedBy || 'Unknown',
+                    record: request.record || 'N/A',
+                    equipment: request.equipment || 'Unknown',
+                    priority: request.priority
+                  }}
+                  handleEdit={(maintenance) => console.log('Edit:', maintenance)}
+                  handleViewNotes={(maintenance) => console.log('View Notes:', maintenance)}
+                />
+              )
+            }
+            return null;
+          })}
           <AddButton onClick={handleShow} />
           <RefreshButton onClick={fetchData} />
         </Box>
       )}
 
       {selectedTab == 1 && (
-        <Box sx={{ padding: '12px' }}>
-          2
+        <Box
+          sx={{
+            padding: '12px',
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+            gap: 1,
+          }}
+        >
+          Requests
+          {allRequests.map((request, index) => {
+            if (!request.done && !request.hold && !request.approvedBy)
+              return (
+                <p key={index}>{request.record}</p>
+              )
+          })}
           <AddButton onClick={handleShow} />
           <RefreshButton onClick={fetchData} />
         </Box>
       )}
 
       {selectedTab == 2 && (
+        <Box
+          sx={{
+            padding: '12px',
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+            gap: 1,
+          }}
+        >
+          On Hold
+          {allRequests.map((request, index) => {
+            if (!request.done && request.hold)
+              return (
+                <p key={index}>{request.record}</p>
+              )
+          })}
+        </Box>
+      )}
+
+      {selectedTab == 3 && (
         <Box sx={{ padding: '12px' }}>
-          3
+          Completed
+          {allRequests.map((request, index) => {
+            if (request.done)
+              return (
+                <p key={index}>{request.record}</p>
+              )
+          })}
         </Box>
       )}
 
