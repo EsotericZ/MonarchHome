@@ -12,6 +12,7 @@ import { ArcElement, BarElement, CategoryScale, Chart, Legend, LinearScale, Titl
 
 import MonarchButton from '../../components/shared/MonarchButton';
 import PageContainer from '../../components/shared/PageContainer';
+import SiteStatusChecker from '../../components/home/SiteStatusChecker';
 
 import getAllJobs from '../../services/engineering/getAllJobs';
 import getTBRJobs from '../../services/engineering/getTBRJobs';
@@ -412,11 +413,12 @@ export const Dashboard = () => {
 
               {/* TASKS */}
               {(userTasksActive > 0 || userTasksHold > 0) && (
-                <Box 
-                  sx={{ border: '1px solid grey', borderRadius: '15px', p: 2,  cursor: 'pointer', backgroundColor: 'rgba(0, 0, 0, 0.05)',
+                <Box
+                  sx={{
+                    border: '1px solid grey', borderRadius: '15px', p: 2, cursor: 'pointer', backgroundColor: 'rgba(0, 0, 0, 0.05)',
                     '&:hover': {
                       backgroundColor: 'rgba(0, 0, 0, 0.15)',
-                    }, 
+                    },
                   }}
                   onClick={() => navigate('/tasks')}
                 >
@@ -438,9 +440,17 @@ export const Dashboard = () => {
               </Box>
             </Box>
 
-            {/* BAR CHART */}
-            <Box sx={{ flexGrow: 1, flexShrink: 1, minWidth: '400px', border: '1px solid grey', borderRadius: '15px', display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', pb: 3, backgroundColor: 'rgba(0, 0, 0, 0.05)' }}>
-              <Bar data={data} options={options} style={{ width: '100%', height: '100%' }} />
+            <Box sx={{ flexGrow: 1, flexShrink: 1, minWidth: '400px', display: 'flex', flexDirection: 'column', gap: 2 }}>
+
+              {/* BAR CHART */}
+              <Box sx={{ border: '1px solid grey', borderRadius: '15px', display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', pb: 3, backgroundColor: 'rgba(0, 0, 0, 0.05)' }}>
+                <Bar data={data} options={options} style={{ width: '100%', height: '100%' }} />
+              </Box>
+
+              {/* SITE STATUS CHECKER */}
+              <Box sx={{ border: '1px solid grey', borderRadius: '15px', p: 2, backgroundColor: 'rgba(0, 0, 0, 0.05)' }}>
+                <SiteStatusChecker />
+              </Box>
             </Box>
           </Box>
 
