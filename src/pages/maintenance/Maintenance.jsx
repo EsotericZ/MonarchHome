@@ -23,28 +23,29 @@ import getAllEquipment from '../../services/maintenance/getAllEquipment';
 import getAllRequests from '../../services/maintenance/getAllRequests';
 import holdRequest from '../../services/maintenance/holdRequest';
 import updateRequest from '../../services/maintenance/updateRequest';
+// import { ConstructionOutlined } from '@mui/icons-material';
 
 export const Maintenance = () => {
   const { cookieData } = useUserContext();
   const [selectedTab, setSelectedTab] = useState(0);
-  const [show, setShow] = useState(false);
-  const [showCompleteModal, setShowCompleteModal] = useState(false);
+  // const [show, setShow] = useState(false);
+  // const [showCompleteModal, setShowCompleteModal] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
-  const [showNotesModal, setShowNotesModal] = useState(false);
+  // const [showNotesModal, setShowNotesModal] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const [allUsers, setAllUsers] = useState([]);
-  const [userTasks, setUserTasks] = useState([]);
-  const [assignedBy, setAssignedBy] = useState('');
-  const [assignedTo, setAssignedTo] = useState([]);
-  const [taskName, setTaskName] = useState('');
-  const [description, setDescription] = useState('');
-  const [priority, setPriority] = useState('');
-  const [status, setStatus] = useState('');
-  const [id, setId] = useState(0);
-  const [selectedTask, setSelectedTask] = useState(null);
-  const [selectedCompletedTask, setSelectedCompletedTask] = useState(null);
-  const [notes, setNotes] = useState([]);
+  // const [allUsers, setAllUsers] = useState([]);
+  // const [userTasks, setUserTasks] = useState([]);
+  // const [assignedBy, setAssignedBy] = useState('');
+  // const [assignedTo, setAssignedTo] = useState([]);
+  // const [taskName, setTaskName] = useState('');
+  // const [description, setDescription] = useState('');
+  // const [priority, setPriority] = useState('');
+  // const [status, setStatus] = useState('');
+  // const [id, setId] = useState(0);
+  // const [selectedTask, setSelectedTask] = useState(null);
+  // const [selectedCompletedTask, setSelectedCompletedTask] = useState(null);
+  // const [notes, setNotes] = useState([]);
 
   const [showAddRequest, setShowAddRequest] = useState(false);
   const [formData, setFormData] = useState({});
@@ -312,7 +313,8 @@ export const Maintenance = () => {
                     requestedBy: request.requestedBy || 'Unknown',
                     record: request.record || 'N/A',
                     equipment: request.equipment || 'Unknown',
-                    priority: request.priority
+                    priority: request.priority,
+                    maintenanceAccess: cookieData.maintenance || false,
                   }}
                   handleEdit={() => handleEdit(request)}
                   handleApprove={(maintenance) => handleApprove(maintenance)}
@@ -350,7 +352,8 @@ export const Maintenance = () => {
                     requestedBy: request.requestedBy || 'Unknown',
                     record: request.record || 'N/A',
                     equipment: request.equipment || 'Unknown',
-                    priority: request.priority
+                    priority: request.priority,
+                    maintenanceAccess: cookieData.maintenance || false,
                   }}
                   handleEdit={() => handleEdit(request)}
                   handleApprove={(maintenance) => handleUnholdApprove(maintenance)}

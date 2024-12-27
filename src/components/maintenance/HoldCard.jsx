@@ -6,8 +6,6 @@ import CloseIcon from '@mui/icons-material/Close';
 import getFolder from '../../services/maintenance/getFolder';
 
 const HoldCard = ({ request, handleEdit, handleApprove, handleDelete }) => {
-  let backgroundColor = 'lightgrey';
-
   const handleOpenFolder = async () => {
     try {
       await getFolder(request.record);
@@ -22,7 +20,7 @@ const HoldCard = ({ request, handleEdit, handleApprove, handleDelete }) => {
         width: '400px',
         margin: '10px',
         padding: '5px',
-        backgroundColor,
+        backgroundColor: 'lightgrey',
         position: 'relative',
       }}
     >
@@ -73,41 +71,43 @@ const HoldCard = ({ request, handleEdit, handleApprove, handleDelete }) => {
             </IconButton>
           </Tooltip>
         </Box>
-
-        <Box
-          sx={{
-            position: 'absolute',
-            bottom: 10,
-            right: 10,
-            display: 'flex',
-            gap: 1,
-          }}
-        >
-          <Tooltip title='Delete'>
-            <IconButton
-              size='small'
-              color='error'
-              onClick={(e) => {
-                e.stopPropagation();
-                handleDelete(request);
-              }}
-            >
-              <CloseIcon />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title='Unhold + Approve'>
-            <IconButton
-              size='small'
-              color='success'
-              onClick={(e) => {
-                e.stopPropagation();
-                handleApprove(request);
-              }}
-            >
-              <CheckIcon />
-            </IconButton>
-          </Tooltip>
-        </Box>
+              
+        {request.maintenanceAccess && (
+          <Box
+            sx={{
+              position: 'absolute',
+              bottom: 10,
+              right: 10,
+              display: 'flex',
+              gap: 1,
+            }}
+          >
+            <Tooltip title='Delete'>
+              <IconButton
+                size='small'
+                color='error'
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleDelete(request);
+                }}
+              >
+                <CloseIcon />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title='Unhold + Approve'>
+              <IconButton
+                size='small'
+                color='success'
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleApprove(request);
+                }}
+              >
+                <CheckIcon />
+              </IconButton>
+            </Tooltip>
+          </Box>
+        )}
       </CardContent>
     </Card>
   );

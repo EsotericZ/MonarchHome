@@ -7,25 +7,6 @@ import PauseIcon from '@mui/icons-material/Pause';
 import getFolder from '../../services/maintenance/getFolder';
 
 const RequestCard = ({ request, handleEdit, handleApprove, handleDeny, handleHold }) => {
-  let backgroundColor;
-  switch (request.priority?.toLowerCase()) {
-    case 'low':
-      backgroundColor = 'lightgrey';
-      break;
-    case 'medium':
-      backgroundColor = 'lightgrey';
-      break;
-    case 'high':
-      backgroundColor = 'lightgrey';
-      break;
-    case 'urgent':
-      backgroundColor = 'lightgrey';
-      break;
-    default:
-      backgroundColor = 'lightgrey';
-      break;
-  }
-
   const handleOpenFolder = async () => {
     try {
       await getFolder(request.record);
@@ -40,7 +21,7 @@ const RequestCard = ({ request, handleEdit, handleApprove, handleDeny, handleHol
         width: '400px',
         margin: '10px',
         padding: '5px',
-        backgroundColor,
+        backgroundColor: 'lightgrey',
         position: 'relative',
       }}
     >
@@ -91,53 +72,55 @@ const RequestCard = ({ request, handleEdit, handleApprove, handleDeny, handleHol
             </IconButton>
           </Tooltip>
         </Box>
-
-        <Box
-          sx={{
-            position: 'absolute',
-            bottom: 10,
-            right: 10,
-            display: 'flex',
-            gap: 1,
-          }}
-        >
-          <Tooltip title='Hold'>
-            <IconButton
-              size='small'
-              color='warning'
-              onClick={(e) => {
-                e.stopPropagation();
-                handleHold(request);
-              }}
-            >
-              <PauseIcon />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title='Deny'>
-            <IconButton
-              size='small'
-              color='error'
-              onClick={(e) => {
-                e.stopPropagation();
-                handleDeny(request);
-              }}
-            >
-              <CloseIcon />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title='Approve'>
-            <IconButton
-              size='small'
-              color='success'
-              onClick={(e) => {
-                e.stopPropagation();
-                handleApprove(request);
-              }}
-            >
-              <CheckIcon />
-            </IconButton>
-          </Tooltip>
-        </Box>
+      
+        {request.maintenanceAccess && (
+          <Box
+            sx={{
+              position: 'absolute',
+              bottom: 10,
+              right: 10,
+              display: 'flex',
+              gap: 1,
+            }}
+          >
+            <Tooltip title='Hold'>
+              <IconButton
+                size='small'
+                color='warning'
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleHold(request);
+                }}
+              >
+                <PauseIcon />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title='Deny'>
+              <IconButton
+                size='small'
+                color='error'
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleDeny(request);
+                }}
+              >
+                <CloseIcon />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title='Approve'>
+              <IconButton
+                size='small'
+                color='success'
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleApprove(request);
+                }}
+              >
+                <CheckIcon />
+              </IconButton>
+            </Tooltip>
+          </Box>
+        )}
       </CardContent>
     </Card>
   );

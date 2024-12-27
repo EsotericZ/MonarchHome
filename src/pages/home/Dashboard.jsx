@@ -15,10 +15,11 @@ import PageContainer from '../../components/shared/PageContainer';
 import SiteStatusChecker from '../../components/home/SiteStatusChecker';
 
 import getAllJobs from '../../services/engineering/getAllJobs';
-import getTBRJobs from '../../services/engineering/getTBRJobs';
+import getAllRequests from '../../services/maintenance/getAllRequests';
 import getFutureJobs from '../../services/engineering/getFutureJobs';
-import getRepeatJobs from '../../services/engineering/getRepeatJobs';
 import getOutsourceJobs from '../../services/engineering/getOutsourceJobs';
+import getRepeatJobs from '../../services/engineering/getRepeatJobs';
+import getTBRJobs from '../../services/engineering/getTBRJobs';
 import getUnconfirmedJobs from '../../services/engineering/getUnconfirmedJobs';
 import getUserTasks from '../../services/tasks/getUserTasks';
 
@@ -54,11 +55,14 @@ export const Dashboard = () => {
   const [unconfirmedTotal, setUnconfirmedTotal] = useState(0);
   const [userTasksActive, setUserTasksActive] = useState(0);
   const [userTasksHold, setUserTasksHold] = useState(0);
+  const [maintActive, setMaintActive] = useState(0);
+  const [maintHold, setMaintHold] = useState(0);
+  const [maintRequest, setMaintRequest] = useState(0);
   const [loading, setLoading] = useState(true);
 
   const fetchData = async () => {
     try {
-      const [engRes, tbrRes, futureRes, repeatRes, outsourceRes, unconfirmedRes, userTaskRes] = await Promise.all([
+      const [engRes, tbrRes, futureRes, repeatRes, outsourceRes, unconfirmedRes, userTaskRes, maintenanceRes] = await Promise.all([
         getAllJobs(),
         getTBRJobs(),
         getFutureJobs(),
@@ -66,6 +70,7 @@ export const Dashboard = () => {
         getOutsourceJobs(),
         getUnconfirmedJobs(),
         getUserTasks(cookieData.id),
+        getAllRequests(),
       ]);
 
       setEngTotal(engRes.filter(row => typeof row.JobNo !== 'undefined').length);
@@ -90,6 +95,10 @@ export const Dashboard = () => {
 
       setUnconfirmedJobs(unconfirmedRes);
       setUnconfirmedTotal(unconfirmedRes.length);
+
+      setMaintActive(maintenanceRes.data.filter(row => !row.done && !row.hold && row.approvedBy).length);
+      setMaintRequest(maintenanceRes.data.filter(row => !row.done && !row.hold && !row.approvedBy).length);
+      setMaintHold(maintenanceRes.data.filter(row => !row.done && row.hold).length);
 
     } catch (err) {
       console.error(err);
@@ -425,9 +434,33 @@ export const Dashboard = () => {
                   <Table sx={{ borderCollapse: 'collapse' }}>
                     <TableBody>
                       <TableRow>
-                        <TableCell sx={{ fontWeight: 'bold', fontSize: '22px', py: 0, border: 'none' }}>Tasks</TableCell>
-                        <TableCell sx={{ fontWeight: 'bold', fontSize: '18px', py: 0, border: 'none' }}>Active: {userTasksActive}</TableCell>
-                        <TableCell sx={{ fontWeight: 'bold', fontSize: '18px', py: 0, border: 'none' }}>On Hold: {userTasksHold}</TableCell>
+                        <TableCell sx={{ fontWeight: 'bold', fontSize: '20px', py: 0, border: 'none' }}>Tasks</TableCell>
+                        <TableCell sx={{ fontWeight: 'bold', fontSize: '16px', py: 0, border: 'none' }}>Active: {userTasksActive}</TableCell>
+                        <TableCell sx={{ fontWeight: 'bold', fontSize: '16px', py: 0, border: 'none' }}>On Hold: {userTasksHold}</TableCell>
+                      </TableRow>
+                    </TableBody>
+                  </Table>
+                </Box>
+              )}
+
+              {/* MAINTENANCE */}
+              {cookieData.maintenance && (
+                <Box
+                  sx={{
+                    border: '1px solid grey', borderRadius: '15px', p: 2, cursor: 'pointer', backgroundColor: 'rgba(0, 0, 0, 0.05)',
+                    '&:hover': {
+                      backgroundColor: 'rgba(0, 0, 0, 0.15)',
+                    },
+                  }}
+                  onClick={() => navigate('/maintenance')}
+                >
+                  <Table sx={{ borderCollapse: 'collapse' }}>
+                    <TableBody>
+                      <TableRow>
+                        <TableCell sx={{ fontWeight: 'bold', fontSize: '20px', py: 0, border: 'none' }}>Maint</TableCell>
+                        <TableCell sx={{ fontWeight: 'bold', fontSize: '16px', py: 0, border: 'none' }}>Active: {maintActive}</TableCell>
+                        <TableCell sx={{ fontWeight: 'bold', fontSize: '16px', py: 0, border: 'none' }}>Hold: {maintHold}</TableCell>
+                        <TableCell sx={{ fontWeight: 'bold', fontSize: '16px', py: 0, border: 'none' }}>Request: {maintRequest}</TableCell>
                       </TableRow>
                     </TableBody>
                   </Table>
