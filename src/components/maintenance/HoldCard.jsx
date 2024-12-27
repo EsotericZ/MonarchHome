@@ -2,29 +2,11 @@ import { Box, Card, CardContent, IconButton, Tooltip, Typography } from '@mui/ma
 import EditIcon from '@mui/icons-material/Edit';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
-import PauseIcon from '@mui/icons-material/Pause';
 
 import getFolder from '../../services/maintenance/getFolder';
 
-const RequestCard = ({ request, handleEdit, handleApprove, handleDeny, handleHold }) => {
-  let backgroundColor;
-  switch (request.priority?.toLowerCase()) {
-    case 'low':
-      backgroundColor = 'lightgrey';
-      break;
-    case 'medium':
-      backgroundColor = 'lightgrey';
-      break;
-    case 'high':
-      backgroundColor = 'lightgrey';
-      break;
-    case 'urgent':
-      backgroundColor = 'lightgrey';
-      break;
-    default:
-      backgroundColor = 'lightgrey';
-      break;
-  }
+const HoldCard = ({ request, handleEdit, handleApprove, handleDelete }) => {
+  let backgroundColor = 'lightgrey';
 
   const handleOpenFolder = async () => {
     try {
@@ -101,31 +83,19 @@ const RequestCard = ({ request, handleEdit, handleApprove, handleDeny, handleHol
             gap: 1,
           }}
         >
-          <Tooltip title='Hold'>
-            <IconButton
-              size='small'
-              color='warning'
-              onClick={(e) => {
-                e.stopPropagation();
-                handleHold(request);
-              }}
-            >
-              <PauseIcon />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title='Deny'>
+          <Tooltip title='Delete'>
             <IconButton
               size='small'
               color='error'
               onClick={(e) => {
                 e.stopPropagation();
-                handleDeny(request);
+                handleDelete(request);
               }}
             >
               <CloseIcon />
             </IconButton>
           </Tooltip>
-          <Tooltip title='Approve'>
+          <Tooltip title='Unhold + Approve'>
             <IconButton
               size='small'
               color='success'
@@ -143,4 +113,4 @@ const RequestCard = ({ request, handleEdit, handleApprove, handleDeny, handleHol
   );
 };
 
-export default RequestCard;
+export default HoldCard;

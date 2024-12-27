@@ -11,6 +11,7 @@ import RefreshButton from '../../components/shared/RefreshButton';
 import MaintenanceCard from '../../components/maintenance/MaintenanceCard';
 import AddRequestModal from '../../components/maintenance/AddRequestModal';
 import RequestCard from '../../components/maintenance/RequestCard';
+import HoldCard from '../../components/maintenance/HoldCard';
 
 import approveRequest from '../../services/maintenance/approveRequest';
 import createRequest from '../../services/maintenance/createRequest';
@@ -66,6 +67,36 @@ export const Maintenance = () => {
   const handleDeny = async (maintenance) => {
     try {
       await denyRequest(maintenance.record, true, 'Request Denied');
+    } catch (error) {
+      console.error('Error saving request:', error);
+    } finally {
+      fetchData();
+    }
+  }
+
+  const handleDelete = async (maintenance) => {
+    try {
+      await deleteRequest(maintenance.record);
+    } catch (error) {
+      console.error('Error saving request:', error);
+    } finally {
+      fetchData();
+    }
+  }
+
+  const handleHold = async (maintenance) => {
+    try {
+      await holdRequest(maintenance.record, true, '');
+    } catch (error) {
+      console.error('Error saving request:', error);
+    } finally {
+      fetchData();
+    }
+  }
+
+  const handleUnholdApprove = async (maintenance) => {
+    try {
+      await approveRequest(maintenance.record, cookieData.name);
     } catch (error) {
       console.error('Error saving request:', error);
     } finally {
@@ -263,6 +294,7 @@ export const Maintenance = () => {
                   handleEdit={() => handleEdit(request)}
                   handleApprove={(maintenance) => handleApprove(maintenance)}
                   handleDeny={(maintenance) => handleDeny(maintenance)}
+                  handleHold={(maintenance) => handleHold(maintenance)}
                 />
               )
             }
@@ -283,11 +315,24 @@ export const Maintenance = () => {
             gap: 1,
           }}
         >
-          On Hold
           {allRequests.map((request, index) => {
             if (!request.done && request.hold)
               return (
-                <p key={index}>{request.record}</p>
+                <HoldCard
+                  key={index}
+                  request={{
+                    area: request.area || 'N/A',
+                    description: request.description || 'No description available',
+                    requestType: request.requestType || 'N/A',
+                    requestedBy: request.requestedBy || 'Unknown',
+                    record: request.record || 'N/A',
+                    equipment: request.equipment || 'Unknown',
+                    priority: request.priority
+                  }}
+                  handleEdit={() => handleEdit(request)}
+                  handleApprove={(maintenance) => handleUnholdApprove(maintenance)}
+                  handleDelete={(maintenance) => handleDelete(maintenance)}
+                />
               )
           })}
         </Box>

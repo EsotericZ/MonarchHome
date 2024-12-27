@@ -17,7 +17,7 @@ const MaintenanceCard = ({ maintenance, handleEdit, handleViewNotes }) => {
       backgroundColor = 'orange';
       break;
     case 'urgent':
-      backgroundColor = 'red';
+      backgroundColor = '#E57373';
       break;
     default:
       backgroundColor = 'white';
@@ -49,7 +49,7 @@ const MaintenanceCard = ({ maintenance, handleEdit, handleViewNotes }) => {
           </Typography>
         </Box>
 
-        <Box sx={{ display: 'flex', flexDirection: 'column', mt: 2 }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', mt: 2, mb: 1 }}>
           <Typography sx={{ fontSize: '17px' }}>{maintenance.description}</Typography>
           <Typography sx={{ fontSize: '17px', mt: 1 }}>
             <strong>Request Type:</strong> {maintenance.requestType}

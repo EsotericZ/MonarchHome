@@ -76,7 +76,7 @@ const EditRequestModal = ({
               <MenuItem value="urgent">Urgent</MenuItem>
             </Select>
           </FormControl>
-          <TextField
+          {/* <TextField
             label='Comments'
             name='comments'
             fullWidth
@@ -84,7 +84,7 @@ const EditRequestModal = ({
             rows={3}
             value={formData.comments || ''}
             onChange={handleChange}
-          />
+          /> */}
         </Box>
       </DialogContent>
       <DialogActions>
