@@ -15,7 +15,7 @@ const TaskCard = ({ task, handleUpdateTask, handleOpenNotesModal }) => {
       backgroundColor = 'orange';
       break;
     case 'Urgent':
-      backgroundColor = 'red';
+      backgroundColor = '#E57373';
       break;
     default:
       backgroundColor = 'white';

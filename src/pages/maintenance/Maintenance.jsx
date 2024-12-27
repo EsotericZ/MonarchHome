@@ -3,16 +3,17 @@ import { Box } from '@mui/material';
 
 import { useUserContext } from '../../context/UserContext';
 
-import MaintenanceTable from '../../components/maintenance/MaintenanceTable';
-import EditRequestModal from '../../components/maintenance/EditRequestModal';
 import AddButton from '../../components/shared/AddButton';
+import AddRequestModal from '../../components/maintenance/AddRequestModal';
 import CustomTabs from '../../components/shared/CustomTabs';
+import EditRequestModal from '../../components/maintenance/EditRequestModal';
+import HoldCard from '../../components/maintenance/HoldCard';
+import MaintenanceCard from '../../components/maintenance/MaintenanceCard';
+import MaintenanceTable from '../../components/maintenance/MaintenanceTable';
+import NotesModal from '../../components/maintenance/NotesModal';
 import PageContainer from '../../components/shared/PageContainer';
 import RefreshButton from '../../components/shared/RefreshButton';
-import MaintenanceCard from '../../components/maintenance/MaintenanceCard';
-import AddRequestModal from '../../components/maintenance/AddRequestModal';
 import RequestCard from '../../components/maintenance/RequestCard';
-import HoldCard from '../../components/maintenance/HoldCard';
 
 import approveRequest from '../../services/maintenance/approveRequest';
 import createRequest from '../../services/maintenance/createRequest';
@@ -23,38 +24,46 @@ import getAllEquipment from '../../services/maintenance/getAllEquipment';
 import getAllRequests from '../../services/maintenance/getAllRequests';
 import holdRequest from '../../services/maintenance/holdRequest';
 import updateRequest from '../../services/maintenance/updateRequest';
-// import { ConstructionOutlined } from '@mui/icons-material';
 
 export const Maintenance = () => {
   const { cookieData } = useUserContext();
   const [selectedTab, setSelectedTab] = useState(0);
-  // const [show, setShow] = useState(false);
-  // const [showCompleteModal, setShowCompleteModal] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
-  // const [showNotesModal, setShowNotesModal] = useState(false);
   const [loading, setLoading] = useState(false);
-
-  // const [allUsers, setAllUsers] = useState([]);
-  // const [userTasks, setUserTasks] = useState([]);
-  // const [assignedBy, setAssignedBy] = useState('');
-  // const [assignedTo, setAssignedTo] = useState([]);
-  // const [taskName, setTaskName] = useState('');
-  // const [description, setDescription] = useState('');
-  // const [priority, setPriority] = useState('');
-  // const [status, setStatus] = useState('');
-  // const [id, setId] = useState(0);
-  // const [selectedTask, setSelectedTask] = useState(null);
-  // const [selectedCompletedTask, setSelectedCompletedTask] = useState(null);
-  // const [notes, setNotes] = useState([]);
 
   const [showAddRequest, setShowAddRequest] = useState(false);
   const [formData, setFormData] = useState({});
   const [equipment, setEquipment] = useState([]);
   const [allRequests, setAllRequests] = useState([]);
+  const [showNotesModal, setShowNotesModal] = useState(false);
+  const [selectedRecord, setSelectedRecord] = useState(null);
+  const [maintenanceNotes, setMaintenanceNotes] = useState([]);
 
-  const [active, setActive] = useState('A');
-  const [request, setRequest] = useState('R');
-  const [hold, setHold] = useState('H');
+  const [active, setActive] = useState('Active');
+  const [request, setRequest] = useState('Request');
+  const [hold, setHold] = useState('Hold');
+
+  const handleComplete = async (recordId) => {
+    try {
+      await doneRequest(recordId, true);
+    } catch (error) {
+      console.error('Error saving request:', error);
+    } finally {
+      setShowNotesModal(false);
+      fetchData();
+    }
+  }
+
+  const handleHoldModal = async (recordId) => {
+    try {
+      await holdRequest(recordId, true, '');
+    } catch (error) {
+      console.error('Error saving request:', error);
+    } finally {
+      setShowNotesModal(false);
+      fetchData();
+    }
+  }
 
   const handleApprove = async (maintenance) => {
     try {
@@ -175,6 +184,44 @@ export const Maintenance = () => {
     }
   };
 
+
+
+
+
+  const handleAddNote = async (recordId, note) => {
+    try {
+      const newNote = {
+        maintenanceId: recordId,
+        note,
+        name: cookieData.name,
+        date: new Date().toISOString(),
+      };
+      // API call to save the note
+      // await saveNoteAPI(newNote);
+  
+      setMaintenanceNotes((prevNotes) => [...prevNotes, newNote]);
+    } catch (error) {
+      console.error('Error adding note:', error);
+    }
+  };
+  
+  const handleOpenNotesModal = (record) => {
+    setSelectedRecord(record);
+    setShowNotesModal(true);
+  };
+  
+  const handleCloseNotesModal = () => {
+    setShowNotesModal(false);
+    setSelectedRecord(null);
+  };
+
+
+
+
+
+
+
+
   const [searchTerms, setSearchTerms] = useState({
     record: '',
     area: '',
@@ -255,6 +302,16 @@ export const Maintenance = () => {
         record={formData.record}
       />
 
+      <NotesModal
+        show={showNotesModal}
+        handleClose={handleCloseNotesModal}
+        record={selectedRecord}
+        notes={maintenanceNotes}
+        handleAddNote={handleAddNote}
+        handleComplete={(recordId) => handleComplete(recordId)}
+        handleHold={(recordId) => handleHoldModal(recordId)}
+      />
+
       {selectedTab == 0 && (
         <Box
           sx={{
@@ -280,7 +337,7 @@ export const Maintenance = () => {
                     priority: request.priority
                   }}
                   handleEdit={() => handleEdit(request)}
-                  handleViewNotes={(maintenance) => console.log('View Notes:', maintenance)}
+                  handleViewNotes={(maintenance) => handleOpenNotesModal(maintenance)}
                 />
               )
             }
