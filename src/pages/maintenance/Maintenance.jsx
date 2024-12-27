@@ -3,17 +3,17 @@ import { Box, Typography } from '@mui/material';
 
 import { useUserContext } from '../../context/UserContext';
 
-import AddButton from '../../components/shared/AddButton';
 import AddTaskModal from '../../components/tasks/AddTaskModal';
 import CompleteModal from '../../components/tasks/CompleteModal';
-import CustomTabs from '../../components/shared/CustomTabs';
 import EditTaskModal from '../../components/tasks/EditTaskModal'
 import NotesModal from '../../components/tasks/NotesModal';
-import PageContainer from '../../components/shared/PageContainer';
-import RefreshButton from '../../components/shared/RefreshButton';
 import TaskCard from '../../components/tasks/TaskCard';
 import TaskTable from '../../components/tasks/TaskTable';
 
+import AddButton from '../../components/shared/AddButton';
+import CustomTabs from '../../components/shared/CustomTabs';
+import PageContainer from '../../components/shared/PageContainer';
+import RefreshButton from '../../components/shared/RefreshButton';
 import MaintenanceCard from '../../components/maintenance/MaintenanceCard';
 import AddRequestModal from '../../components/maintenance/AddRequestModal';
 import RequestCard from '../../components/maintenance/RequestCard';
@@ -60,6 +60,16 @@ export const Maintenance = () => {
   const [active, setActive] = useState('A');
   const [request, setRequest] = useState('R');
   const [hold, setHold] = useState('H');
+
+  const handleApprove = async (maintenance) => {
+    try {
+      await approveRequest(maintenance.record, cookieData.name);
+    } catch (error) {
+      console.error('Error saving request:', error);
+    } finally {
+      fetchData();
+    }
+  }
 
   const handleClose = () => {
     setShowAddRequest(false);
@@ -209,7 +219,7 @@ export const Maintenance = () => {
                     priority: request.priority
                   }}
                   handleEdit={(maintenance) => console.log('Edit:', maintenance)}
-                  handleApprove={(maintenance) => console.log('Approve:', maintenance)}
+                  handleApprove={(maintenance) => handleApprove(maintenance)}
                   handleDeny={(maintenance) => console.log('Deny:', maintenance)}
                 />
               )

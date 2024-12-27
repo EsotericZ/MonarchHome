@@ -1,4 +1,4 @@
-import { Box, Card, CardContent, IconButton, Typography } from '@mui/material';
+import { Box, Card, CardContent, IconButton, Tooltip, Typography } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
@@ -76,17 +76,19 @@ const RequestCard = ({ request, handleEdit, handleApprove, handleDeny }) => {
             left: 10,
             display: 'flex',
           }}
-        >
-          <IconButton
-            size="small"
-            color="black"
-            onClick={(e) => {
-              e.stopPropagation();
-              handleEdit(request);
-            }}
-          >
-            <EditIcon />
-          </IconButton>
+        > 
+          <Tooltip title='Edit'>
+            <IconButton
+              size='small'
+              color='black'
+              onClick={(e) => {
+                e.stopPropagation();
+                handleEdit(request);
+              }}
+            >
+              <EditIcon />
+            </IconButton>
+          </Tooltip>
         </Box>
 
         <Box
@@ -98,26 +100,30 @@ const RequestCard = ({ request, handleEdit, handleApprove, handleDeny }) => {
             gap: 1,
           }}
         >
-          <IconButton
-            size="small"
-            color="error"
-            onClick={(e) => {
-              e.stopPropagation();
-              handleDeny(request);
-            }}
-          >
-            <CloseIcon />
-          </IconButton>
-          <IconButton
-            size="small"
-            color="success"
-            onClick={(e) => {
-              e.stopPropagation();
-              handleApprove(request);
-            }}
-          >
-            <CheckIcon />
-          </IconButton>
+          <Tooltip title='Deny'>
+            <IconButton
+              size='small'
+              color='error'
+              onClick={(e) => {
+                e.stopPropagation();
+                handleDeny(request);
+              }}
+            >
+              <CloseIcon />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title='Approve'>
+            <IconButton
+              size='small'
+              color='success'
+              onClick={(e) => {
+                e.stopPropagation();
+                handleApprove(request);
+              }}
+            >
+              <CheckIcon />
+            </IconButton>
+          </Tooltip>
         </Box>
       </CardContent>
     </Card>
