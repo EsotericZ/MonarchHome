@@ -3,6 +3,7 @@ import { Box } from '@mui/material';
 
 import { useUserContext } from '../../context/UserContext';
 
+import MaintenanceTable from '../../components/maintenance/MaintenanceTable';
 import EditRequestModal from '../../components/maintenance/EditRequestModal';
 import AddButton from '../../components/shared/AddButton';
 import CustomTabs from '../../components/shared/CustomTabs';
@@ -155,7 +156,7 @@ export const Maintenance = () => {
     });
     setShowEdit(true);
   };
-  
+
   const handleChangeEditRequest = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
@@ -172,6 +173,28 @@ export const Maintenance = () => {
       fetchData();
     }
   };
+
+  const [searchTerms, setSearchTerms] = useState({
+    record: '',
+    area: '',
+    equipment: '',
+    type: '',
+  });
+
+  const handleSearchChange = (field, value) => {
+    setSearchTerms((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const filteredRequests = allRequests
+    .filter((request) => request.done)
+    .filter((request) => {
+      return (
+        request.record.toString().includes(searchTerms.record) &&
+        (request.area || '').toLowerCase().includes(searchTerms.area.toLowerCase()) &&
+        (request.equipment || '').toLowerCase().includes(searchTerms.equipment.toLowerCase()) &&
+        (request.requestType || '').toLowerCase().includes(searchTerms.type.toLowerCase())
+      );
+    });
 
   const fetchData = async () => {
     try {
@@ -340,13 +363,13 @@ export const Maintenance = () => {
 
       {selectedTab == 3 && (
         <Box sx={{ padding: '12px' }}>
-          Completed
-          {allRequests.map((request, index) => {
-            if (request.done)
-              return (
-                <p key={index}>{request.record}</p>
-              )
-          })}
+          <MaintenanceTable
+            records={filteredRequests}
+            fallbackMessage='No Completed Maintenance Records'
+            onRowClick={(record) => console.log('Clicked record:', record)}
+            searchTerms={searchTerms}
+            onSearchChange={handleSearchChange}
+          />
         </Box>
       )}
 

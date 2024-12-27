@@ -236,7 +236,7 @@ export const Tasks = () => {
                     height: '15vh',
                   }}
                 >
-                  <Typography variant="h4" sx={{ fontWeight: 'bold', margin: '16px' }}>
+                  <Typography variant='h4' sx={{ fontWeight: 'bold', margin: '16px' }}>
                     No Active Tasks
                   </Typography>
                 </Box>
@@ -274,7 +274,7 @@ export const Tasks = () => {
                     height: '15vh',
                   }}
                 >
-                  <Typography variant="h4" sx={{ fontWeight: 'bold', margin: '16px' }}>
+                  <Typography variant='h4' sx={{ fontWeight: 'bold', margin: '16px' }}>
                     No Tasks on Hold
                   </Typography>
                 </Box>
@@ -292,8 +292,8 @@ export const Tasks = () => {
         <Box sx={{ padding: '12px' }}>
           <TaskTable
             tasks={userTasks}
-            filterStatus="Complete"
-            fallbackMessage="No Completed Tasks"
+            filterStatus='Complete'
+            fallbackMessage='No Completed Tasks'
             onRowClick={handleRowClick}
           />
         </Box>
