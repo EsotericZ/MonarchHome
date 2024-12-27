@@ -1,15 +1,9 @@
 import { useEffect, useState } from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 
 import { useUserContext } from '../../context/UserContext';
 
-import AddTaskModal from '../../components/tasks/AddTaskModal';
-import CompleteModal from '../../components/tasks/CompleteModal';
-import EditTaskModal from '../../components/tasks/EditTaskModal'
-import NotesModal from '../../components/tasks/NotesModal';
-import TaskCard from '../../components/tasks/TaskCard';
-import TaskTable from '../../components/tasks/TaskTable';
-
+import EditRequestModal from '../../components/maintenance/EditRequestModal';
 import AddButton from '../../components/shared/AddButton';
 import CustomTabs from '../../components/shared/CustomTabs';
 import PageContainer from '../../components/shared/PageContainer';
@@ -27,7 +21,6 @@ import getAllEquipment from '../../services/maintenance/getAllEquipment';
 import getAllRequests from '../../services/maintenance/getAllRequests';
 import holdRequest from '../../services/maintenance/holdRequest';
 import updateRequest from '../../services/maintenance/updateRequest';
-
 
 export const Maintenance = () => {
   const { cookieData } = useUserContext();
@@ -51,7 +44,6 @@ export const Maintenance = () => {
   const [selectedCompletedTask, setSelectedCompletedTask] = useState(null);
   const [notes, setNotes] = useState([]);
 
-
   const [showAddRequest, setShowAddRequest] = useState(false);
   const [formData, setFormData] = useState({});
   const [equipment, setEquipment] = useState([]);
@@ -64,6 +56,16 @@ export const Maintenance = () => {
   const handleApprove = async (maintenance) => {
     try {
       await approveRequest(maintenance.record, cookieData.name);
+    } catch (error) {
+      console.error('Error saving request:', error);
+    } finally {
+      fetchData();
+    }
+  }
+
+  const handleDeny = async (maintenance) => {
+    try {
+      await denyRequest(maintenance.record, true, 'Request Denied');
     } catch (error) {
       console.error('Error saving request:', error);
     } finally {
@@ -107,6 +109,37 @@ export const Maintenance = () => {
       description: '',
     });
     setShowAddRequest(true);
+  };
+
+  const handleEdit = (request) => {
+    setFormData({
+      requestedBy: request.requestedBy || '',
+      area: request.area || '',
+      equipment: request.equipment || '',
+      requestType: request.requestType || '',
+      description: request.description || '',
+      comments: request.comments || '',
+      record: request.record || '',
+      priority: request.priority || '',
+    });
+    setShowEdit(true);
+  };
+  
+  const handleChangeEditRequest = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
+  };
+
+  const handleSaveEditRequest = async () => {
+    try {
+      await updateRequest(formData, formData.record);
+    } catch (error) {
+      console.error('Error updating request:', error);
+    } finally {
+      setShowEdit(false);
+      setFormData({});
+      fetchData();
+    }
   };
 
   const fetchData = async () => {
@@ -158,6 +191,15 @@ export const Maintenance = () => {
         cookieData={cookieData}
       />
 
+      <EditRequestModal
+        open={showEdit}
+        onClose={handleClose}
+        onSave={handleSaveEditRequest}
+        handleChange={handleChangeEditRequest}
+        formData={formData}
+        record={formData.record}
+      />
+
       {selectedTab == 0 && (
         <Box
           sx={{
@@ -182,7 +224,7 @@ export const Maintenance = () => {
                     equipment: request.equipment || 'Unknown',
                     priority: request.priority
                   }}
-                  handleEdit={(maintenance) => console.log('Edit:', maintenance)}
+                  handleEdit={() => handleEdit(request)}
                   handleViewNotes={(maintenance) => console.log('View Notes:', maintenance)}
                 />
               )
@@ -218,9 +260,9 @@ export const Maintenance = () => {
                     equipment: request.equipment || 'Unknown',
                     priority: request.priority
                   }}
-                  handleEdit={(maintenance) => console.log('Edit:', maintenance)}
+                  handleEdit={() => handleEdit(request)}
                   handleApprove={(maintenance) => handleApprove(maintenance)}
-                  handleDeny={(maintenance) => console.log('Deny:', maintenance)}
+                  handleDeny={(maintenance) => handleDeny(maintenance)}
                 />
               )
             }

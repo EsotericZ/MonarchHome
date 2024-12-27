@@ -2,9 +2,9 @@ import api from '../../api/api';
 
 const denyRequest = async (record, done, comments) => {
   const res = await api.post('/maintenance/denyRequest', {
-    record: record,
-    done: done,
-    comments: comments,
+    record,
+    done,
+    comments,
   });
   return res.data;
 }

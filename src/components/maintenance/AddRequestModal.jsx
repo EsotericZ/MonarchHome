@@ -20,33 +20,33 @@ const AddRequestModal = ({
         </Typography>
       </DialogTitle>
       <DialogContent>
-        <Box component="form" sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+        <Box component='form' sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
           <TextField
-            label="Requested By"
+            label='Requested By'
             fullWidth
             value={formData.requestedBy || cookieData.name}
             onChange={handleChange}
             sx={{ mt: 1 }}
           />
           <TextField
-            label="Area"
-            name="area"
+            label='Area'
+            name='area'
             fullWidth
             value={formData.area || ''}
             onChange={handleChange}
             sx={{ mt: 1 }}
           />
           <FormControl fullWidth>
-            <InputLabel id="equipment-label">Equipment</InputLabel>
+            <InputLabel id='equipment-label'>Equipment</InputLabel>
             <Select
-              labelId="equipment-label"
-              name="equipment"
+              labelId='equipment-label'
+              name='equipment'
               fullWidth
               value={formData.equipment || ''}
               onChange={handleChange}
               sx={{ mt: 1 }}
             >
-              <MenuItem value="">
+              <MenuItem value=''>
                 <em>None</em>
               </MenuItem>
               {equipment.map((item, index) => (
@@ -57,24 +57,24 @@ const AddRequestModal = ({
             </Select>
           </FormControl>
           <FormControl fullWidth>
-            <InputLabel id="requestType-label">Request Type</InputLabel>
+            <InputLabel id='requestType-label'>Request Type</InputLabel>
             <Select
-              labelId="requestType-label"
-              name="requestType"
+              labelId='requestType-label'
+              name='requestType'
               fullWidth
               value={formData.requestType || ''}
               onChange={handleChange}
               sx={{ mt: 1 }}
             >
-              <MenuItem value="Routine">Routine</MenuItem>
-              <MenuItem value="Emergency">Emergency</MenuItem>
-              <MenuItem value="Safety">Safety</MenuItem>
-              <MenuItem value="Planned">Planned</MenuItem>
+              <MenuItem value='Routine'>Routine</MenuItem>
+              <MenuItem value='Emergency'>Emergency</MenuItem>
+              <MenuItem value='Safety'>Safety</MenuItem>
+              <MenuItem value='Planned'>Planned</MenuItem>
             </Select>
           </FormControl>
           <TextField
-            label="Description"
-            name="description"
+            label='Description'
+            name='description'
             fullWidth
             value={formData.description || ''}
             onChange={handleChange}
