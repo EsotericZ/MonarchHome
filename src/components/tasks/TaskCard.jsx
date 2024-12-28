@@ -64,11 +64,11 @@ const TaskCard = ({ task, handleUpdateTask, handleOpenNotesModal }) => {
               <Typography sx={{ fontSize: '17px' }}>{task.description}</Typography>
             </Box>
             <Box sx={{ display: 'flex', alignItems: 'center', pt: 1 }}>
-              <Typography sx={{ fontSize: '17px', pr: 1 }}>Assigned By:</Typography>
+              <Typography sx={{ fontWeight: 'bold', fontSize: '17px', pr: 1 }}>Assigned By:</Typography>
               <Typography sx={{ fontSize: '17px' }}>{task.assigner.name}</Typography>
             </Box>
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <Typography sx={{ fontSize: '17px', pr: 1 }}>Status:</Typography>
+              <Typography sx={{ fontWeight: 'bold', fontSize: '17px', pr: 1 }}>Status:</Typography>
               <Typography sx={{ fontSize: '17px' }}>{taskStatus}</Typography>
             </Box>
           </Box>
