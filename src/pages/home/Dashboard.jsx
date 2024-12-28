@@ -481,13 +481,13 @@ export const Dashboard = () => {
               </Box>
 
               {/* SITE STATUS CHECKER */}
-              <Box sx={{ border: '1px solid grey', borderRadius: '15px', p: 2, backgroundColor: 'rgba(0, 0, 0, 0.05)' }}>
+              <Box sx={{ border: '1px solid grey', borderRadius: '15px', backgroundColor: 'rgba(0, 0, 0, 0.05)' }}>
                 <SiteStatusChecker />
               </Box>
             </Box>
           </Box>
 
-          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 5 }}>
+          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 3 }}>
             <Typography sx={{ fontSize: '16px' }}>This Page Auto-Refreshes Every 30 Seconds</Typography>
           </Box>
 

@@ -48,10 +48,8 @@ const TaskCard = ({ task, handleUpdateTask, handleOpenNotesModal }) => {
         margin: '10px',
         padding: '5px',
         backgroundColor,
-        cursor: 'pointer',
         position: 'relative',
       }}
-      onClick={() => handleUpdateTask(task)}
     >
       <CardContent>
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', width: '100%' }}>
@@ -67,7 +65,7 @@ const TaskCard = ({ task, handleUpdateTask, handleOpenNotesModal }) => {
               <Typography sx={{ fontWeight: 'bold', fontSize: '17px', pr: 1 }}>Assigned By:</Typography>
               <Typography sx={{ fontSize: '17px' }}>{task.assigner.name}</Typography>
             </Box>
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', pb: 2 }}>
               <Typography sx={{ fontWeight: 'bold', fontSize: '17px', pr: 1 }}>Status:</Typography>
               <Typography sx={{ fontSize: '17px' }}>{taskStatus}</Typography>
             </Box>
@@ -78,13 +76,22 @@ const TaskCard = ({ task, handleUpdateTask, handleOpenNotesModal }) => {
           sx={{
             position: 'absolute',
             bottom: 10,
-            right: 10,
+            left: 10,
             display: 'flex',
           }}
         >
           <IconButton size='small' color='black' onClick={(e) => { e.stopPropagation(); handleUpdateTask(task); }}>
             <EditIcon />
           </IconButton>
+        </Box>
+        <Box
+          sx={{
+            position: 'absolute',
+            bottom: 10,
+            right: 10,
+            display: 'flex',
+          }}
+        >
           <IconButton size='small' color='black' onClick={(e) => { e.stopPropagation(); handleOpenNotesModal(task); }}>
             <SpeakerNotesIcon />
           </IconButton>
