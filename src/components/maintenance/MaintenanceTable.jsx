@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Box, Paper, Table, TableBody, TableContainer, TableHead, TableRow, Typography, TablePagination, Button, IconButton } from '@mui/material';
+import { Box, Paper, Table, TableBody, TableContainer, TableHead, TableRow, Typography, Button, IconButton } from '@mui/material';
 import { format, parseISO } from 'date-fns';
 
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
@@ -26,9 +26,10 @@ const MaintenanceTable = ({
   };
 
   const getPaginatedRecords = () => {
+    const sortedRecords = [...records].sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)); // Sort by updatedAt, newest first
     const startIndex = currentPage * rowsPerPage;
     const endIndex = startIndex + rowsPerPage;
-    return records.slice(startIndex, endIndex);
+    return sortedRecords.slice(startIndex, endIndex);
   };
 
   const generatePageNumbers = () => {
@@ -70,30 +71,30 @@ const MaintenanceTable = ({
               <TableHead>
                 <TableRow>
                   <SearchTableCell
-                    width="10%"
-                    placeholder="Search Record"
+                    width='10%'
+                    placeholder='Record'
                     value={searchTerms.record}
                     onChange={(e) => onSearchChange('record', e.target.value)}
                   />
                   <SearchTableCell
-                    width="25%"
-                    placeholder="Search Area"
+                    width='25%'
+                    placeholder='Area'
                     value={searchTerms.area}
                     onChange={(e) => onSearchChange('area', e.target.value)}
                   />
                   <SearchTableCell
-                    width="25%"
-                    placeholder="Search Equipment"
+                    width='25%'
+                    placeholder='Equipment'
                     value={searchTerms.equipment}
                     onChange={(e) => onSearchChange('equipment', e.target.value)}
                   />
                   <SearchTableCell
-                    width="20%"
-                    placeholder="Search Type"
+                    width='20%'
+                    placeholder='Type'
                     value={searchTerms.type}
                     onChange={(e) => onSearchChange('type', e.target.value)}
                   />
-                  <StandardTableCell width="20%">Completed</StandardTableCell>
+                  <StandardTableCell width='20%'>Completed</StandardTableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -169,7 +170,7 @@ const MaintenanceTable = ({
             height: '15vh',
           }}
         >
-          <Typography variant="h4" sx={{ fontWeight: 'bold', margin: '16px' }}>
+          <Typography variant='h4' sx={{ fontWeight: 'bold', margin: '16px' }}>
             {fallbackMessage}
           </Typography>
         </Box>
@@ -177,6 +178,5 @@ const MaintenanceTable = ({
     </Box>
   );
 };
-
 
 export default MaintenanceTable;

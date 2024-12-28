@@ -5,6 +5,7 @@ import { useUserContext } from '../../context/UserContext';
 
 import AddButton from '../../components/shared/AddButton';
 import AddRequestModal from '../../components/maintenance/AddRequestModal';
+import CompletedModal from '../../components/maintenance/CompletedModal';
 import CustomTabs from '../../components/shared/CustomTabs';
 import EditRequestModal from '../../components/maintenance/EditRequestModal';
 import HoldCard from '../../components/maintenance/HoldCard';
@@ -39,6 +40,7 @@ export const Maintenance = () => {
   const [showNotesModal, setShowNotesModal] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState(null);
   const [maintenanceNotes, setMaintenanceNotes] = useState([]);
+  const [showCompletedModal, setShowCompletedModal] = useState(false);
 
   const [active, setActive] = useState('Active');
   const [request, setRequest] = useState('Request');
@@ -214,6 +216,16 @@ export const Maintenance = () => {
     setSelectedRecord(null);
   };
 
+  const handleRowClick = (record) => {
+    setSelectedRecord(record);
+    setShowCompletedModal(true);
+  };
+
+  const handleCloseCompletedModal = () => {
+    setShowCompletedModal(false);
+    setSelectedRecord(null);
+  };
+
   const [searchTerms, setSearchTerms] = useState({
     record: '',
     area: '',
@@ -302,6 +314,13 @@ export const Maintenance = () => {
         handleAddNote={handleAddNote}
         handleComplete={(recordId) => handleComplete(recordId)}
         handleHold={(recordId) => handleHoldModal(recordId)}
+      />
+
+      <CompletedModal
+        show={showCompletedModal}
+        handleClose={handleCloseCompletedModal}
+        record={selectedRecord}
+        notes={selectedRecord?.notes || []}
       />
 
       {selectedTab == 0 && (
@@ -419,7 +438,7 @@ export const Maintenance = () => {
           <MaintenanceTable
             records={filteredRequests}
             fallbackMessage='No Completed Maintenance Records'
-            onRowClick={(record) => console.log('Clicked record:', record)}
+            onRowClick={handleRowClick}
             searchTerms={searchTerms}
             onSearchChange={handleSearchChange}
           />
