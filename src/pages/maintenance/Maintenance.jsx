@@ -23,6 +23,7 @@ import doneRequest from '../../services/maintenance/doneRequest';
 import getAllEquipment from '../../services/maintenance/getAllEquipment';
 import getAllRequests from '../../services/maintenance/getAllRequests';
 import holdRequest from '../../services/maintenance/holdRequest';
+import addMaintenanceNote from '../../services/maintenance/addMaintenanceNote';
 import updateRequest from '../../services/maintenance/updateRequest';
 
 export const Maintenance = () => {
@@ -184,29 +185,27 @@ export const Maintenance = () => {
     }
   };
 
-
-
-
-
   const handleAddNote = async (recordId, note) => {
+    let newNote;
     try {
-      const newNote = {
-        maintenanceId: recordId,
+      newNote = {
+        maintenanceRecord: recordId,
         note,
         name: cookieData.name,
         date: new Date().toISOString(),
       };
-      // API call to save the note
-      // await saveNoteAPI(newNote);
-  
+      await addMaintenanceNote(newNote);
       setMaintenanceNotes((prevNotes) => [...prevNotes, newNote]);
     } catch (error) {
       console.error('Error adding note:', error);
+    } finally {
+      fetchData();
     }
   };
   
   const handleOpenNotesModal = (record) => {
     setSelectedRecord(record);
+    setMaintenanceNotes(record.notes || []);
     setShowNotesModal(true);
   };
   
@@ -214,13 +213,6 @@ export const Maintenance = () => {
     setShowNotesModal(false);
     setSelectedRecord(null);
   };
-
-
-
-
-
-
-
 
   const [searchTerms, setSearchTerms] = useState({
     record: '',
@@ -334,7 +326,8 @@ export const Maintenance = () => {
                     requestedBy: request.requestedBy || 'Unknown',
                     record: request.record || 'N/A',
                     equipment: request.equipment || 'Unknown',
-                    priority: request.priority
+                    priority: request.priority,
+                    notes: request.notes || []
                   }}
                   handleEdit={() => handleEdit(request)}
                   handleViewNotes={(maintenance) => handleOpenNotesModal(maintenance)}

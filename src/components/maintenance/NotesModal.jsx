@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Table, TableBody, TableCell, TableHead, TableRow, TextField, Tooltip } from '@mui/material';
+import { Box, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Table, TableBody, TableCell, TableHead, TableRow, TextField, Tooltip } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 
 import CancelButton from '../shared/CancelButton';
@@ -14,8 +14,7 @@ const NotesModal = ({ show, handleClose, record, notes, handleAddNote, handleCom
   }
 
   const sortedNotes = notes
-    .filter((note) => note.maintenanceId === record.record)
-    .sort((a, b) => new Date(b.date) - new Date(a.date));
+    .sort((a, b) => new Date(a.date) - new Date(b.date));
 
   const onAddNote = () => {
     if (newNote.trim()) {
@@ -44,17 +43,17 @@ const NotesModal = ({ show, handleClose, record, notes, handleAddNote, handleCom
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Note</TableCell>
-              <TableCell>Added By</TableCell>
-              <TableCell>Date</TableCell>
+              <TableCell sx={{ textAlign: 'center', fontWeight: 'bold', pb: 0 }}>Note</TableCell>
+              <TableCell sx={{ textAlign: 'center', fontWeight: 'bold', pb: 0 }}>Added By</TableCell>
+              <TableCell sx={{ textAlign: 'center', fontWeight: 'bold', pb: 0 }}>Date</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {sortedNotes.map((note, index) => (
               <TableRow key={index}>
                 <TableCell>{note.note}</TableCell>
-                <TableCell>{note.name || 'Unknown'}</TableCell>
-                <TableCell>{new Date(note.date).toLocaleString()}</TableCell>
+                <TableCell sx={{ textAlign: 'center' }}>{note.name || 'Unknown'}</TableCell>
+                <TableCell sx={{ textAlign: 'center' }}>{new Date(note.date).toLocaleString()}</TableCell>
               </TableRow>
             ))}
           </TableBody>
