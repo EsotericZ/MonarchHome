@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Box, Divider, FormControl, IconButton, MenuItem, Paper, Table, TableBody, TableContainer, TableHead, TableRow } from '@mui/material';
+import CheckIcon from '@mui/icons-material/Check';
 
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { useUserContext } from '../../context/UserContext';
@@ -64,13 +65,13 @@ export const Quality = () => {
       setSearchedTBR(tbrRes);
       setSearchedFuture(futureRes);
 
-      let protoCount = ((allRes.filter(row => (typeof row.JobNo !== 'undefined' && row.dataValues.jobStatus == 'PROTO'))).length);
+      let protoCount = ((allRes.filter(row => (typeof row.JobNo !== 'undefined' && row?.dataValues?.jobStatus == 'PROTO'))).length);
       (protoCount > 0) ? setProto(`Prototype (${protoCount})`) : setProto('Prototype');
 
-      let tbrCount = ((tbrRes.filter(row => (typeof row.JobNo !== 'undefined' && (row.dataValues.jobStatus == 'QC' || row.dataValues.jobStatus == 'CHECKING')))).length);
+      let tbrCount = ((tbrRes.filter(row => (typeof row.JobNo !== 'undefined' && (row?.dataValues?.jobStatus == 'QC' || row?.dataValues?.jobStatus == 'CHECKING')))).length);
       (tbrCount > 0) ? setTbr(`TBR (${tbrCount})`) : setTbr('TBR');
 
-      let futureCount = ((futureRes.filter(row => (typeof row.JobNo !== 'undefined' && (row.dataValues.jobStatus == 'QC' || row.dataValues.jobStatus == 'CHECKING')))).length);
+      let futureCount = ((futureRes.filter(row => (typeof row.JobNo !== 'undefined' && (row?.dataValues?.jobStatus == 'QC' || row?.dataValues?.jobStatus == 'CHECKING')))).length);
       (futureCount > 0) ? setFuture(`Future (${futureCount})`) : setFuture('Future');
 
       setQualityUsers(userRes.data.filter(user => user.quality).map(user => user.name.split(' ')[0]));
