@@ -57,26 +57,63 @@ export const FormingProg = () => {
         getAllUsers(),
       ]);
 
-      setSearchedEng(allRes);
-      setSearchedTBR(tbrRes);
-      setSearchedFuture(futureRes);
+      const normalizedAllRes = allRes.map(row => ({
+        ...row,
+        dataValues: row.dataValues || row
+      }));
 
-      let bdCount = ((allRes.filter(row => (typeof row.JobNo !== 'undefined' && row.dataValues.formStatus == 'BD TEST'))).length);
-      (bdCount > 0) ? setBDTest(`BD Test (${bdCount})`) : setBDTest('BD Test');
+      const normalizedTbrRes = tbrRes.map(row => ({
+        ...row,
+        dataValues: row.dataValues || row
+      }));
 
-      let tbrCount = ((tbrRes.filter(row => (typeof row.JobNo !== 'undefined' && row.dataValues.jobStatus == 'FORMING'))).length);
-      (tbrCount > 0) ? setTbr(`TBR (${tbrCount})`) : setTbr('TBR');
+      const normalizedFutureRes = futureRes.map(row => ({
+        ...row,
+        dataValues: row.dataValues || row
+      }));
 
-      let futureCount = ((futureRes.filter(row => (typeof row.JobNo !== 'undefined' && row.dataValues.jobStatus == 'FORMING'))).length);
-      (futureCount > 0) ? setFuture(`Future (${futureCount})`) : setFuture('Future');
+      setSearchedEng(normalizedAllRes);
+      setSearchedTBR(normalizedTbrRes);
+      setSearchedFuture(normalizedFutureRes);
 
-      setFormingUsers(userRes.data.filter(user => user.forming).map(user => user.name.split(' ')[0]));
+      let bdCount = normalizedAllRes.filter(
+        row => (
+          typeof row.JobNo !== 'undefined' &&
+          row.dataValues.formStatus === 'BD TEST'
+        )
+      ).length;
+
+      setBDTest(bdCount > 0 ? `BD Test (${bdCount})` : 'BD Test');
+
+      let tbrCount = normalizedTbrRes.filter(
+        row => (
+          typeof row.JobNo !== 'undefined' &&
+          row.dataValues.jobStatus === 'FORMING'
+        )
+      ).length;
+
+      setTbr(tbrCount > 0 ? `TBR (${tbrCount})` : 'TBR');
+
+      let futureCount = normalizedFutureRes.filter(
+        row => (
+          typeof row.JobNo !== 'undefined' &&
+          row.dataValues.jobStatus === 'FORMING'
+        )
+      ).length;
+
+      setFuture(futureCount > 0 ? `Future (${futureCount})` : 'Future');
+
+      setFormingUsers(
+        userRes.data
+          .filter(user => user.forming)
+          .map(user => user.name.split(' ')[0])
+      );
     } catch (err) {
       console.error(err);
     } finally {
       setLoading(false);
     }
-  }
+  };
 
   const handleTBRFormProgrammer = async (job, formProgrammer) => {
     setDropdownTBRTitles(prevState => ({
@@ -99,8 +136,12 @@ export const FormingProg = () => {
     }));
     try {
       await updateFormStatus(job.dataValues.jobNo, formStatus);
-      const res = await getTBRJobs();
-      setSearchedTBR(res);
+      const [tbrRes, allRes] = await Promise.all([
+        getTBRJobs(),
+        getAllJobs()
+      ]);
+      setSearchedTBR(tbrRes);
+      setSearchedEng(allRes);
     } catch (err) {
       console.log(err);
     }
@@ -127,8 +168,12 @@ export const FormingProg = () => {
     }));
     try {
       await updateFormStatus(job.dataValues.jobNo, formStatus);
-      const res = await getFutureJobs();
-      setSearchedFuture(res);
+      const [futureRes, allRes] = await Promise.all([
+        getFutureJobs(),
+        getAllJobs()
+      ]);
+      setSearchedFuture(futureRes);
+      setSearchedEng(allRes);
     } catch (err) {
       console.log(err);
     }
@@ -431,6 +476,7 @@ export const FormingProg = () => {
                 </TableHead>
                 <TableBody>
                   {searchedEng
+                    .filter(row => row && row.dataValues)
                     .filter(row => typeof row.JobNo !== 'undefined')
                     .filter((row) =>
                       !searchedValueJobNo || row.JobNo.toString().toLowerCase().includes(searchedValueJobNo.toString().toLowerCase())
