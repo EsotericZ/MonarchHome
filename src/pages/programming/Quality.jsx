@@ -61,20 +61,57 @@ export const Quality = () => {
         getAllQCNotes(),
       ]);
 
-      setSearchedEng(allRes);
-      setSearchedTBR(tbrRes);
-      setSearchedFuture(futureRes);
+      const normalizedAllRes = allRes.map(row => ({
+        ...row,
+        dataValues: row.dataValues || row
+      }));
 
-      let protoCount = ((allRes.filter(row => (typeof row.JobNo !== 'undefined' && row?.dataValues?.jobStatus == 'PROTO'))).length);
-      (protoCount > 0) ? setProto(`Prototype (${protoCount})`) : setProto('Prototype');
+      const normalizedTbrRes = tbrRes.map(row => ({
+        ...row,
+        dataValues: row.dataValues || row
+      }));
 
-      let tbrCount = ((tbrRes.filter(row => (typeof row.JobNo !== 'undefined' && (row?.dataValues?.jobStatus == 'QC' || row?.dataValues?.jobStatus == 'CHECKING')))).length);
-      (tbrCount > 0) ? setTbr(`TBR (${tbrCount})`) : setTbr('TBR');
+      const normalizedFutureRes = futureRes.map(row => ({
+        ...row,
+        dataValues: row.dataValues || row
+      }));
 
-      let futureCount = ((futureRes.filter(row => (typeof row.JobNo !== 'undefined' && (row?.dataValues?.jobStatus == 'QC' || row?.dataValues?.jobStatus == 'CHECKING')))).length);
-      (futureCount > 0) ? setFuture(`Future (${futureCount})`) : setFuture('Future');
+      setSearchedEng(normalizedAllRes);
+      setSearchedTBR(normalizedTbrRes);
+      setSearchedFuture(normalizedFutureRes);
 
-      setQualityUsers(userRes.data.filter(user => user.quality).map(user => user.name.split(' ')[0]));
+      let protoCount = normalizedAllRes.filter(
+        row => (
+          typeof row.JobNo !== 'undefined' &&
+          row.dataValues.jobStatus === 'PROTO'
+        )
+      ).length;
+
+      setProto(protoCount > 0 ? `Prototype (${protoCount})` : 'Prototype');
+
+      let tbrCount = normalizedTbrRes.filter(
+        row => (
+          typeof row.JobNo !== 'undefined' &&
+          (row.dataValues.jobStatus === 'QC' || row.dataValues.jobStatus === 'CHECKING')
+        )
+      ).length;
+
+      setTbr(tbrCount > 0 ? `TBR (${tbrCount})` : 'TBR');
+
+      let futureCount = normalizedFutureRes.filter(
+        row => (
+          typeof row.JobNo !== 'undefined' &&
+          (row.dataValues.jobStatus === 'QC' || row.dataValues.jobStatus === 'CHECKING')
+        )
+      ).length;
+
+      setFuture(futureCount > 0 ? `Future (${futureCount})` : 'Future');
+
+      setQualityUsers(
+        userRes.data
+          .filter(user => user.quality)
+          .map(user => user.name.split(' ')[0])
+      );
 
       const custCodes = qcRes.data.map(item => item.custCode);
       setQCData(custCodes);
@@ -84,7 +121,7 @@ export const Quality = () => {
     } finally {
       setLoading(false);
     }
-  }
+  };
 
   const handleTBRInspector = async (job, inspector) => {
     setDropdownTBRTitles(prevState => ({
