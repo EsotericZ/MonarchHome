@@ -55,6 +55,9 @@ export const Purchasing = () => {
         getAllSupplies()
       ]);
 
+      console.log(allMaterials)
+      console.log(allSupplies)
+
       setSearchedPrograms(allMaterials.data);
       setSearchedSupplies(allSupplies.data);
 
@@ -89,11 +92,29 @@ export const Purchasing = () => {
     }
   };
 
+  // const handleDateChange = async (id, date) => {
+  //   setSelectedDates(prevState => ({
+  //     ...prevState,
+  //     [id]: date,
+  //   }));
+  //   try {
+  //     await updateSuppliesDate(id, date);
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // };
+
   const handleDateChange = async (id, date) => {
-    setSelectedDates(prevState => ({
-      ...prevState,
+    if (!date || isNaN(new Date(date).getTime())) {
+      console.warn(`⚠️ Tried to set invalid date for ID ${id}:`, date);
+      return;
+    }
+
+    setSelectedDates((prev) => ({
+      ...prev,
       [id]: date,
     }));
+
     try {
       await updateSuppliesDate(id, date);
     } catch (err) {
@@ -146,6 +167,31 @@ export const Purchasing = () => {
     }
   };
 
+  const getValidDate = (input) => {
+    if (!input) return null;
+
+    // If already a Date
+    if (Object.prototype.toString.call(input) === '[object Date]') {
+      return isNaN(input.getTime()) ? null : input;
+    }
+
+    // If a string
+    if (typeof input === 'string') {
+      const trimmed = input.trim().toLowerCase();
+      if (!trimmed || ['null', 'undefined', 'invalid date', 'nan'].includes(trimmed)) {
+        return null;
+      }
+      const parsed = new Date(input);
+      return isNaN(parsed.getTime()) ? null : parsed;
+    }
+
+    return null;
+  };
+
+
+
+
+
   const handleTabChange = (event, newValue) => {
     setSelectedTab(newValue);
   };
@@ -170,7 +216,7 @@ export const Purchasing = () => {
       />
 
       {selectedTab == 0 && (
-        <PurchasingTable 
+        <PurchasingTable
           data={searchedPrograms}
           areaFilters={['laser', 'slaser', 'flaser']}
           areaName={['Laser', 'Static Laser', 'Fixture Laser']}
@@ -190,7 +236,7 @@ export const Purchasing = () => {
       )}
 
       {selectedTab == 1 && (
-        <PurchasingTable 
+        <PurchasingTable
           data={searchedPrograms}
           areaFilters={['tlaser', 'saw']}
           areaName={['Tube Laser', 'Saw']}
@@ -210,7 +256,7 @@ export const Purchasing = () => {
       )}
 
       {selectedTab == 2 && (
-        <PurchasingTable 
+        <PurchasingTable
           data={searchedPrograms}
           areaFilters={['shear', 'punch']}
           areaName={['Shear', 'Punch']}
@@ -229,26 +275,26 @@ export const Purchasing = () => {
         />
       )}
 
-      <Box>
+      {/* <Box>
         {selectedTab == 3 && (
           <Box sx={{ padding: '12px' }}>
             <TableContainer component={Paper}>
               <Table>
                 <TableHead>
                   <TableRow>
-                    <SearchTableCell 
+                    <SearchTableCell
                       width='15%'
                       placeholder='Supplies'
                       value={searchedValueSupplies}
                       onChange={(e) => setSearchedValueSupplies(e.target.value)}
                     />
-                    <SearchTableCell 
+                    <SearchTableCell
                       width='8%'
                       placeholder='Area'
                       value={searchedValueArea}
                       onChange={(e) => setSearchedValueArea(e.target.value)}
                     />
-                    <SearchTableCell 
+                    <SearchTableCell
                       width='8%'
                       placeholder='Requested By'
                       value={searchedValueEmployee}
@@ -257,7 +303,7 @@ export const Purchasing = () => {
                     <StandardTableCell width='8%'>Created</StandardTableCell>
                     <StandardTableCell width='15%'>Description</StandardTableCell>
                     <StandardTableCell width='14%'>Link</StandardTableCell>
-                    <SearchTableCell 
+                    <SearchTableCell
                       width='8%'
                       placeholder='Job No'
                       value={searchedValueJobNo}
@@ -274,23 +320,49 @@ export const Purchasing = () => {
                 </TableHead>
                 <TableBody>
                   {searchedSupplies
-                    .filter((row) => 
-                      !searchedValueSupplies || 
+                    .filter((row) =>
+                      !searchedValueSupplies ||
                       row.supplies.toString().toLowerCase().includes(searchedValueSupplies.toString().toLowerCase())
                     )
-                    .filter((row) => 
-                      !searchedValueArea || 
+                    .filter((row) =>
+                      !searchedValueArea ||
                       row.department.toString().toLowerCase().includes(searchedValueArea.toString().toLowerCase())
                     )
-                    .filter((row) => 
-                      !searchedValueEmployee || 
+                    .filter((row) =>
+                      !searchedValueEmployee ||
                       row.requestedBy.toString().toLowerCase().includes(searchedValueEmployee.toString().toLowerCase())
                     )
-                    .filter((row) => 
-                      !searchedValueJobNo || 
+                    .filter((row) =>
+                      !searchedValueJobNo ||
                       row.jobNo.toString().toLowerCase().includes(searchedValueJobNo.toString().toLowerCase())
                     )
                     .map((item, index) => {
+                      if (!item || !item.id) return null;
+
+                      const selectedRaw = selectedDates[item.id];
+                      const expectedRaw = item.expected;
+
+                      const selectedDate = getValidDate(selectedRaw);
+                      const fallbackDate = getValidDate(expectedRaw);
+                      let dateToUse = selectedDate || fallbackDate;
+
+                      console.log(selectedRaw)
+                      console.log(expectedRaw)
+                      console.log(selectedDate)
+                      console.log(fallbackDate)
+                      console.log(dateToUse)
+
+                      // 💥 FINAL GUARANTEE: Ensure it's a real, valid Date or null
+                      if (!(dateToUse instanceof Date) || isNaN(dateToUse.getTime())) {
+                        dateToUse = null;
+                      }
+
+
+                      console.log('Expected Date Raw:', item.expected, 'Parsed:', getValidDate(item.expected));
+                      if (!getValidDate(item.expected)) {
+                        console.warn(`⚠️ Skipped invalid date for item ID ${item.id}:`, item.expected);
+                      }
+
                       return (
                         <TableRow key={index} sx={{ backgroundColor: index % 2 === 0 ? '#f0f0f0' : '#fff' }}>
                           <DataTableCell>{item.supplies}</DataTableCell>
@@ -307,16 +379,41 @@ export const Purchasing = () => {
                                   {item.onOrder && <CheckIcon sx={{ fontSize: '20px', fontWeight: 'bold' }} />}
                                 </IconButton>
                               </DataTableCell>
+
                               <DataTableCell>
-                                <DatePicker
-                                  selected={selectedDates[item.id] || (item.expected ? new Date(item.expected + 'T00:00:00') : null)}
-                                  onChange={(date) => {
-                                    handleDateChange(item.id, date)
-                                  }}
-                                  dateFormat='MM/dd'
-                                  className='custom-date-picker'
-                                />
+                                {(() => {
+                                  try {
+                                    if (!dateToUse || isNaN(dateToUse.getTime())) throw new Error('Invalid Date');
+
+                                    return (
+                                      <DatePicker
+                                        selected={dateToUse}
+                                        onChange={(date) => handleDateChange(item.id, date)}
+                                        dateFormat="MM/dd"
+                                        className="custom-date-picker"
+                                      />
+                                    );
+                                  } catch (err) {
+                                    console.warn(`❌ DatePicker crash prevented for ID ${item.id}`, {
+                                      rawExpected: item.expected,
+                                      rawSelected: selectedDates[item.id],
+                                      final: dateToUse,
+                                      error: err,
+                                    });
+                                    return (
+                                      <span style={{ color: 'red', fontSize: '12px' }}>
+                                        Invalid Date
+                                      </span>
+                                    );
+                                  }
+                                })()}
                               </DataTableCell>
+
+
+
+
+
+
                               <DataTableCell padding={0}>
                                 <IconButton onClick={() => toggleCompleteSupplies(item)}>
                                   <UpdateIcon sx={{ fontSize: '20px', fontWeight: 'bold' }} />
@@ -334,7 +431,7 @@ export const Purchasing = () => {
             <RefreshButton onClick={fetchData} />
           </Box>
         )}
-      </Box>
+      </Box> */}
     </PageContainer >
   );
 };

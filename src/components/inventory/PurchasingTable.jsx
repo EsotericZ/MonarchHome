@@ -103,7 +103,13 @@ const PurchasingTable = ({
                         </DataTableCell>
                         <DataTableCell>
                           <DatePicker
-                            selected={selectedDatesMaterial[job.id] || (job.expected ? new Date(job.expected + 'T00:00:00') : null)}
+                            selected={
+                              (() => {
+                                const raw = selectedDatesMaterial[job.id] || job.expected;
+                                const parsed = new Date(raw);
+                                return !raw || isNaN(parsed.getTime()) ? null : parsed;
+                              })()
+                            }
                             onChange={(date) => handleDateChange(job.id, date)}
                             dateFormat='MM/dd'
                             className='custom-date-picker'
