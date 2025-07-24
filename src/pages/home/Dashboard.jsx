@@ -73,6 +73,12 @@ export const Dashboard = () => {
         getAllRequests(),
       ]);
 
+      console.log(futureRes)
+
+      const getField = (row, key) => {
+        return row?.dataValues?.[key] ?? row?.[key];
+      };
+
       setEngTotal(engRes.filter(row => typeof row.JobNo !== 'undefined').length);
       setExpedite(engRes.filter(row => typeof row.JobNo !== 'undefined' && row.WorkCode == 'HOT').length);
       setEngTbr(tbrRes.filter(row => typeof row.JobNo !== 'undefined').length);
@@ -82,16 +88,55 @@ export const Dashboard = () => {
       setUserTasksActive(userTaskRes.data.filter((task) => task.status === 'Active' || task.status === 'Process').length);
       setUserTasksHold(userTaskRes.data.filter((task) => task.status === 'Hold').length);
 
-      setFormTbr(((tbrRes.filter(row => (typeof row.JobNo !== 'undefined' && row.dataValues.jobStatus == 'FORMING'))).length));
-      setFormFuture(((futureRes.filter(row => (typeof row.JobNo !== 'undefined' && row.dataValues.jobStatus == 'FORMING'))).length));
-      setTestBD(((engRes.filter(row => (typeof row.JobNo !== 'undefined' && row.dataValues.formStatus == 'BD TEST'))).length));
+      setFormTbr(
+        tbrRes.filter(row =>
+          typeof row.JobNo !== 'undefined' && getField(row, 'jobStatus') === 'FORMING'
+        ).length
+      );
 
-      setTLTbr(((tbrRes.filter(row => (typeof row.JobNo !== 'undefined' && row.dataValues.jobStatus == 'TLASER'))).length));
-      setTLFuture(((futureRes.filter(row => (typeof row.JobNo !== 'undefined' && row.dataValues.jobStatus == 'TLASER'))).length));
+      setFormFuture(
+        futureRes.filter(row =>
+          typeof row.JobNo !== 'undefined' && getField(row, 'jobStatus') === 'FORMING'
+        ).length
+      );
 
-      setQCTbr(((tbrRes.filter(row => (typeof row.JobNo !== 'undefined' && (row.dataValues.jobStatus == 'QC' || row.dataValues.jobStatus == 'CHECKING')))).length));
-      setQCFuture(((futureRes.filter(row => (typeof row.JobNo !== 'undefined' && (row.dataValues.jobStatus == 'QC' || row.dataValues.jobStatus == 'CHECKING')))).length));
-      setProto(((engRes.filter(row => (typeof row.JobNo !== 'undefined' && row.dataValues.jobStatus == 'PROTO'))).length));
+      setTestBD(
+        engRes.filter(row =>
+          typeof row.JobNo !== 'undefined' && getField(row, 'formStatus') === 'BD TEST'
+        ).length
+      );
+
+      setTLTbr(
+        tbrRes.filter(row =>
+          typeof row.JobNo !== 'undefined' && getField(row, 'jobStatus') === 'TLASER'
+        ).length
+      );
+
+      setTLFuture(
+        futureRes.filter(row =>
+          typeof row.JobNo !== 'undefined' && getField(row, 'jobStatus') === 'TLASER'
+        ).length
+      );
+
+      setQCTbr(
+        tbrRes.filter(row => {
+          const status = getField(row, 'jobStatus');
+          return typeof row.JobNo !== 'undefined' && (status === 'QC' || status === 'CHECKING');
+        }).length
+      );
+
+      setQCFuture(
+        futureRes.filter(row => {
+          const status = getField(row, 'jobStatus');
+          return typeof row.JobNo !== 'undefined' && (status === 'QC' || status === 'CHECKING');
+        }).length
+      );
+
+      setProto(
+        engRes.filter(row =>
+          typeof row.JobNo !== 'undefined' && getField(row, 'jobStatus') === 'PROTO'
+        ).length
+      );
 
       setUnconfirmedJobs(unconfirmedRes);
       setUnconfirmedTotal(unconfirmedRes.length);
@@ -311,7 +356,7 @@ export const Dashboard = () => {
                       <Chip
                         sx={{ fontSize: '12px', width: '100px', height: '25px', backgroundColor: defaultColor, color: 'white', fontWeight: 'bold' }}
                         label='Maintenance'
-                        onClick={() => navigate('/maintenance')} 
+                        onClick={() => navigate('/maintenance')}
                       />
                     )}
                     {cookieData.shipping && (
