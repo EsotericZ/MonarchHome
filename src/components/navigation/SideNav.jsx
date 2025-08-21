@@ -88,7 +88,6 @@ const darkTheme = createTheme({
 
 export const SideNav = ({ children }) => {
   const { loggedIn, cookieData } = useUserContext();
-  const cookies = new Cookies();
   const theme = useTheme();
   const navigate = useNavigate();
 
@@ -145,15 +144,9 @@ export const SideNav = ({ children }) => {
   }
 
   useEffect(() => {
-    if (loggedIn) {
-      try {
-        const cookieData = jwtDecode(cookies.get('jwt'));
-        setName(cookieData.name.split(' ')[0]);
-        cookieData.role === 'admin' && setAdmin(true);
-      } catch {
-        setName('');
-        setAdmin(false);
-      }
+    if (loggedIn && cookieData.name) {
+      setName(cookieData.name.split(' ')[0]);
+      setAdmin(cookieData.role === 'admin');
     } else {
       setName('');
       setAdmin(false);
@@ -470,7 +463,7 @@ export const SideNav = ({ children }) => {
                 </List>
               </Collapse>
 
-            {/* MAINTENANCE */}
+              {/* MAINTENANCE */}
 
               <ListItem disablePadding>
                 <Tooltip title='Maintenance' placement='right' arrow>
@@ -482,8 +475,8 @@ export const SideNav = ({ children }) => {
                   </ListItemButton>
                 </Tooltip>
               </ListItem>
-            
-            {/* SHIPPING */}
+
+              {/* SHIPPING */}
 
               <ListItem disablePadding>
                 <Tooltip title='Shipping' placement='right' arrow>
@@ -496,7 +489,7 @@ export const SideNav = ({ children }) => {
                 </Tooltip>
               </ListItem>
 
-            {/* SPECIALTY */}
+              {/* SPECIALTY */}
 
               {cookieData.specialty &&
                 <>
