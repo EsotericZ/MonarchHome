@@ -34,7 +34,7 @@ const SiteStatusChecker = () => {
 
   return (
     <Box sx={{ padding: '16px', textAlign: 'center' }}>
-      <Typography variant='h5' sx={{ fontWeight: 'bold', mb: 2 }}>Site Status</Typography>
+      {/* <Typography variant='h5' sx={{ fontWeight: 'bold', mb: 2 }}>Site Status</Typography> */}
       {siteStatuses.length === 0 ? (
         <CircularProgress />
       ) : (

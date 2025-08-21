@@ -275,7 +275,7 @@ export const Purchasing = () => {
         />
       )}
 
-      {/* <Box>
+      <Box>
         {selectedTab == 3 && (
           <Box sx={{ padding: '12px' }}>
             <TableContainer component={Paper}>
@@ -409,11 +409,6 @@ export const Purchasing = () => {
                                 })()}
                               </DataTableCell>
 
-
-
-
-
-
                               <DataTableCell padding={0}>
                                 <IconButton onClick={() => toggleCompleteSupplies(item)}>
                                   <UpdateIcon sx={{ fontSize: '20px', fontWeight: 'bold' }} />
@@ -431,7 +426,7 @@ export const Purchasing = () => {
             <RefreshButton onClick={fetchData} />
           </Box>
         )}
-      </Box> */}
+      </Box>
     </PageContainer >
   );
 };
