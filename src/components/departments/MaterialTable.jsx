@@ -30,8 +30,8 @@ const MaterialTable = ({
   };
 
   return (
-    <Box>
-      {selectedTab === 1 && (
+    // <Box>
+    //   {selectedTab === 1 && (
         <Box sx={{ padding: '12px' }}>
           <TableContainer component={Paper}>
             <Table>
@@ -121,8 +121,8 @@ const MaterialTable = ({
           {cookieData[cookieDataKey] && <AddButton onClick={onAddClick} />}
           <RefreshButton onClick={onRefresh} />
         </Box>
-      )}
-    </Box>
+    //   )}
+    // </Box>
   );
 };
 

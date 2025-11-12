@@ -16,6 +16,7 @@ import getTBRJobs from '../../services/laser/getTBRJobs';
 import getFRJobs from '../../services/laser/getFRJobs';
 import createMaterial from '../../services/material/createMaterial';
 import getAllLaserMaterials from '../../services/material/getAllLaserMaterials';
+import getCompletedLaserMaterials from '../../services/material/getCompletedLaserMaterials';
 import updateMaterial from '../../services/material/updateMaterial';
 import updateCheck from '../../services/material/updateCheck';
 import updateComplete from '../../services/material/updateComplete';
@@ -33,8 +34,12 @@ export const Laser = () => {
   const [searchedTBR, setSearchedTBR] = useState([]);
   const [searchedFR, setSearchedFR] = useState([]);
   const [searchedLaserPrograms, setSearchedLaserPrograms] = useState([]);
+  const [searchedCompletedLaserPrograms, setSearchedCompletedLaserPrograms] = useState([]);
   const [needsNestingTBR, setNeedsNestingTBR] = useState([]);
   const [needsNestingFuture, setNeedsNestingFuture] = useState([]);
+  const [tbrLaserOnly, setTbrLaserOnly] = useState([]);
+  const [tbrLaserCompleted, setTbrLaserCompleted] = useState([]);
+  const [futureLaserCompleted, setFutureLaserCompleted] = useState([]);
   const [jobProgramNo, setJobProgramNo] = useState('None');
   const [loading, setLoading] = useState(true);
   const [show, setShow] = useState(false);
@@ -58,38 +63,102 @@ export const Laser = () => {
     programNo: '',
   });
 
-  const fetchData = async () => {
-    try {
-      const [tbrJobs, frJobs, laserMaterials] = await Promise.all([
-        getTBRJobs(),
-        getFRJobs(),
-        getAllLaserMaterials()
-      ]);
+  // const fetchData = async () => {
+  //   try {
+  //     const [tbrJobs, frJobs, laserMaterials, completedLaser] = await Promise.all([
+  //       getTBRJobs(),
+  //       getFRJobs(),
+  //       getAllLaserMaterials(),
+  //       getCompletedLaserMaterials()
+  //     ]);
 
-      setSearchedTBR(tbrJobs);
-      setSearchedFR(frJobs);
-      setSearchedLaserPrograms(laserMaterials.data);
+  //     setSearchedTBR(tbrJobs);
+  //     setSearchedFR(frJobs);
+  //     setSearchedLaserPrograms(laserMaterials.data);
+  //     console.log(laserMaterials.data)
+  //     console.log(completedLaser.data)
 
-      const uniq = [...new Set(laserMaterials.data.flatMap(job => job.jobNo.length > 6 ? job.jobNo.split(' ') : job.jobNo))];
+  //     const uniq = [...new Set(laserMaterials.data.flatMap(job => job.jobNo.length > 6 ? job.jobNo.split(' ') : job.jobNo))];
 
-      if (uniq.length > 0) {
-        let tbrJobsNeeded = tbrJobs.filter(job => !uniq.includes(job.JobNo))
-        setNeedsNestingTBR(tbrJobsNeeded);
+  //     if (uniq.length > 0) {
+  //       let tbrJobsNeeded = tbrJobs.filter(job => !uniq.includes(job.JobNo))
+  //       setNeedsNestingTBR(tbrJobsNeeded);
 
-        let futureJobsNeeded = frJobs.filter(job => !uniq.includes(job.JobNo))
-        setNeedsNestingFuture(futureJobsNeeded);
-      } else {
-        setNeedsNestingTBR(tbrJobs);
-        setNeedsNestingFuture(frJobs);
-      }
+  //       let futureJobsNeeded = frJobs.filter(job => !uniq.includes(job.JobNo))
+  //       setNeedsNestingFuture(futureJobsNeeded);
+  //     } else {
+  //       setNeedsNestingTBR(tbrJobs);
+  //       setNeedsNestingFuture(frJobs);
+  //     }
 
-      setLoading(false);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
+  //     setLoading(false);
+  //   } catch (err) {
+  //     console.error(err);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // }
+const fetchData = async () => {
+  try {
+    const [tbrJobs, frJobs, laserMaterials, completedLaser] = await Promise.all([
+      getTBRJobs(),
+      getFRJobs(),
+      getAllLaserMaterials(),
+      getCompletedLaserMaterials()
+    ]);
+
+    setSearchedTBR(tbrJobs);
+    setSearchedFR(frJobs);
+    setSearchedLaserPrograms(laserMaterials.data);
+
+    // --- Normalize helpers ---
+    const splitNos = (s) => {
+      if (!s) return [];
+      const str = String(s);
+      const parts = str.length > 6 ? str.split(' ') : [str];
+      return parts.map(v => String(v).trim()).filter(Boolean);
+    };
+
+    const toJobNoSet = (arr) =>
+      new Set(arr.flatMap(job => splitNos(job.jobNo)));
+
+    const laserSet = toJobNoSet(laserMaterials.data);
+    const completedSet = toJobNoSet(completedLaser.data);
+
+    const hasLaser = (job) => laserSet.has(String(job.JobNo).trim());
+    const hasCompleted = (job) => completedSet.has(String(job.JobNo).trim());
+
+    // ✅ KEEP THESE EXACTLY AS THEY ARE
+    const needsNestingTBR = tbrJobs.filter(job => !hasLaser(job) && !hasCompleted(job));
+    const needsNestingFuture = frJobs.filter(job => !hasLaser(job) && !hasCompleted(job));
+    const tbrLaserOnly = tbrJobs.filter(job => hasLaser(job) && !hasCompleted(job));
+
+    // ✅ CLOCK JOBS UPDATED: all completed or flagged complete
+    const isJobComplete = (job) => hasCompleted(job) || !!job.User_Date1;
+
+    const tbrLaserCompleted = tbrJobs.filter(isJobComplete);
+    const futureLaserCompleted = frJobs.filter(isJobComplete);
+
+    // set states
+    setNeedsNestingTBR(needsNestingTBR);
+    setNeedsNestingFuture(needsNestingFuture);
+    setTbrLaserOnly(tbrLaserOnly);
+    setTbrLaserCompleted(tbrLaserCompleted);
+    setFutureLaserCompleted(futureLaserCompleted);
+
+    setLoading(false);
+  } catch (err) {
+    console.error(err);
+  } finally {
+    setLoading(false);
   }
+};
+
+
+
+
+
+
 
   const handleClose = () => {
     setShow(false);
@@ -261,9 +330,30 @@ export const Laser = () => {
       <CustomTabs
         selectedTab={selectedTab}
         handleTabChange={handleTabChange}
-        tabLabels={['Ready to Nest', 'Material', 'Programs', 'All Jobs']}
+        tabLabels={['Run TBR', 'Ready to Nest', 'Material', 'Programs', 'Clock Jobs', 'All Jobs']}
       />
 
+      {selectedTab === 0 && (
+      <NestTable
+        cookieData={cookieData}
+        cookieDataKey='laser'
+        handleMaterialsOpen={handleMaterialsOpen}
+        needsNestingTBR={tbrLaserOnly}
+        needsNestingFuture={[]}
+        onAddClick={handleShow}
+        onCloseSnackbar={() => setShowToast(false)}
+        onRefresh={fetchData}
+        partCopy={partCopy}
+        searchedValues={searchedValues}
+        selectedTab={selectedTab}
+        setPartCopy={setPartCopy}
+        setSearchedValues={setSearchedValues}
+        setShowToast={setShowToast}
+        showToast={showToast}
+      />
+      )}
+
+{selectedTab === 1 && (
       <NestTable
         cookieData={cookieData}
         cookieDataKey='laser'
@@ -281,7 +371,9 @@ export const Laser = () => {
         setShowToast={setShowToast}
         showToast={showToast}
       />
+      )}
 
+      {selectedTab === 2 && (
       <MaterialTable
         cookieData={cookieData}
         cookieDataKey='laser'
@@ -296,7 +388,9 @@ export const Laser = () => {
         toggleNeed={toggleNeed}
         toggleVerified={toggleVerified}
       />
+)}
 
+      {selectedTab === 3 && (
       <ProgramTable
         cookieData={cookieData}
         cookieDataKey='laser'
@@ -309,7 +403,29 @@ export const Laser = () => {
         selectedTab={selectedTab}
         setSearchedValues={setSearchedValues}
       />
+      )}
 
+      {selectedTab === 4 && (
+      <NestTable
+        cookieData={cookieData}
+        cookieDataKey='laser'
+        handleMaterialsOpen={handleMaterialsOpen}
+        needsNestingTBR={tbrLaserCompleted}
+        needsNestingFuture={futureLaserCompleted}
+        onAddClick={handleShow}
+        onCloseSnackbar={() => setShowToast(false)}
+        onRefresh={fetchData}
+        partCopy={partCopy}
+        searchedValues={searchedValues}
+        selectedTab={selectedTab}
+        setPartCopy={setPartCopy}
+        setSearchedValues={setSearchedValues}
+        setShowToast={setShowToast}
+        showToast={showToast}
+      />
+      )}
+
+      {selectedTab === 5 && (
       <AllJobsTable
         cookieData={cookieData}
         cookieDataKey='laser'
@@ -327,6 +443,7 @@ export const Laser = () => {
         setShowToast={setShowToast}
         showToast={showToast}
       />
+      )}
     </PageContainer>
   );
 }

@@ -77,6 +77,8 @@ export const Engineering = () => {
         getAllUsers(),
       ]);
 
+      console.log(futureRes)
+
       setSearchedEng(engRes);
 
       setSearchedTBR(tbrRes);
@@ -147,6 +149,8 @@ export const Engineering = () => {
       const [futureRes] = await Promise.all([
         getFutureJobs(),
       ]);
+
+      console.log(futureRes)
 
       setSearchedFuture(futureRes);
       let futureCount = futureRes.filter(row => typeof row.JobNo !== 'undefined' && row.User_Text3 !== 'REPEAT').length;
@@ -465,7 +469,7 @@ export const Engineering = () => {
                               </FormControl>
                             </DataTableCell>
                             :
-                            <DataTableCell>{job.dataValues.engineer}</DataTableCell>
+                            <DataTableCell>{job.dataValues?.engineer ?? ''}</DataTableCell>
                           }
 
                           <DataTableCell>{job.QuoteNo}</DataTableCell>
@@ -497,7 +501,7 @@ export const Engineering = () => {
                               </FormControl>
                             </DataTableCell>
                             :
-                            <DataTableCell>{job.dataValues.jobStatus}</DataTableCell>
+                            <DataTableCell>{job.dataValues?.jobStatus ?? ''}</DataTableCell>
                           }
                         </TableRow>
                       )
@@ -564,8 +568,8 @@ export const Engineering = () => {
                       if (job.User_Text3 != 'REPEAT' && job.User_Text2 != '6. OUTSOURCE') {
                         const rowClass = job.WorkCode == 'HOT' ? 'expedite-row' : '';
                         const qcClass = qcData.includes(job.CustCode) ? 'qc-row' : '';
-                        const dropdownFutureTitle = dropdownFutureTitles[job.JobNo] || job.dataValues.engineer;
-                        const dropdownFutureStatus = dropdownFutureStatuses[job.JobNo] || job.dataValues.jobStatus;
+                        const dropdownFutureTitle = dropdownFutureTitles[job.JobNo] || job.dataValues.engineer || '';
+                        const dropdownFutureStatus = dropdownFutureStatuses[job.JobNo] || job.dataValues.jobStatus || '';
                         rowIndex++;
                         return (
                           <TableRow key={index} sx={{ backgroundColor: rowIndex % 2 === 0 ? '#f0f0f0' : '#fff' }} className={`${rowClass} ${qcClass}`}>
@@ -600,7 +604,7 @@ export const Engineering = () => {
                                 </FormControl>
                               </DataTableCell>
                               :
-                              <DataTableCell>{job.dataValues.engineer}</DataTableCell>
+                              <DataTableCell>{job.dataValues?.engineer ?? ''}</DataTableCell>
                             }
 
                             <DataTableCell>{job.QuoteNo}</DataTableCell>
@@ -632,7 +636,7 @@ export const Engineering = () => {
                                 </FormControl>
                               </DataTableCell>
                               :
-                              <DataTableCell>{job.dataValues.jobStatus}</DataTableCell>
+                              <DataTableCell>{job.dataValues?.jobStatus ?? ''}</DataTableCell>
                             }
                           </TableRow>
                         )

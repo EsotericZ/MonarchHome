@@ -28,8 +28,8 @@ const ProgramTable = ({
   };
 
   return (
-    <Box>
-      {selectedTab === 2 && (
+    // <Box>
+    //   {selectedTab === 2 && (
         <Box sx={{ padding: '12px' }}>
           <TableContainer component={Paper}>
             <Table>
@@ -102,8 +102,8 @@ const ProgramTable = ({
           {cookieData[cookieDataKey] && <AddButton onClick={onAddClick} />}
           <RefreshButton onClick={onRefresh} />
         </Box>
-      )}
-    </Box>
+    //   )}
+    // </Box>
   );
 };
 

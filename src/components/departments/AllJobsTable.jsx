@@ -117,8 +117,8 @@ const AllJobsTable = ({
   };
 
   return (
-    <Box>
-      {selectedTab === 3 && (
+    // <Box>
+    //   {selectedTab === 3 && (
         <Box sx={{ padding: '12px' }}>
           <TableContainer component={Paper}>
             <Table>
@@ -191,8 +191,8 @@ const AllJobsTable = ({
             message={`${partCopy} Copied To Clipboard`}
           />
         </Box>
-      )}
-    </Box>
+    //   )}
+    // </Box>
   );
 };
 

@@ -117,8 +117,8 @@ const NestTable = ({
   };
 
   return (
-    <Box>
-      {selectedTab === 0 && (
+    // <Box>
+    //   {selectedTab === 0 && (
         <Box sx={{ padding: '12px' }}>
           <TableContainer component={Paper}>
             <Table>
@@ -191,8 +191,8 @@ const NestTable = ({
             message={`${partCopy} Copied To Clipboard`}
           />
         </Box>
-      )}
-    </Box>
+    //   )}
+    // </Box>
   );
 };
 
