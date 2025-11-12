@@ -264,69 +264,77 @@ export const Punch = () => {
         tabLabels={['Ready to Nest', 'Material', 'Programs', 'All Jobs']}
       />
 
-      <NestTable
-        cookieData={cookieData}
-        cookieDataKey='punch'
-        handleMaterialsOpen={handleMaterialsOpen}
-        needsNestingFuture={needsNestingFuture}
-        needsNestingTBR={needsNestingTBR}
-        onAddClick={handleShow}
-        onCloseSnackbar={() => setShowToast(false)}
-        onRefresh={fetchData}
-        partCopy={partCopy}
-        searchedValues={searchedValues}
-        selectedTab={selectedTab}
-        setPartCopy={setPartCopy}
-        setSearchedValues={setSearchedValues}
-        setShowToast={setShowToast}
-        showToast={showToast}
-      />
+      {selectedTab === 0 && (
+        <NestTable
+          cookieData={cookieData}
+          cookieDataKey='punch'
+          handleMaterialsOpen={handleMaterialsOpen}
+          needsNestingFuture={needsNestingFuture}
+          needsNestingTBR={needsNestingTBR}
+          onAddClick={handleShow}
+          onCloseSnackbar={() => setShowToast(false)}
+          onRefresh={fetchData}
+          partCopy={partCopy}
+          searchedValues={searchedValues}
+          selectedTab={selectedTab}
+          setPartCopy={setPartCopy}
+          setSearchedValues={setSearchedValues}
+          setShowToast={setShowToast}
+          showToast={showToast}
+        />
+      )}
 
-      <MaterialTable
-        cookieData={cookieData}
-        cookieDataKey='punch'
-        handleUpdateJob={handleUpdateJob}
-        onAddClick={handleShow}
-        onRefresh={fetchData}
-        searchedPrograms={searchedPunchPrograms}
-        searchedValues={searchedValues}
-        selectedTab={selectedTab}
-        setSearchedValues={setSearchedValues}
-        toggleCheck={toggleCheck}
-        toggleNeed={toggleNeed}
-        toggleVerified={toggleVerified}
-      />
+      {selectedTab === 1 && (
+        <MaterialTable
+          cookieData={cookieData}
+          cookieDataKey='punch'
+          handleUpdateJob={handleUpdateJob}
+          onAddClick={handleShow}
+          onRefresh={fetchData}
+          searchedPrograms={searchedPunchPrograms}
+          searchedValues={searchedValues}
+          selectedTab={selectedTab}
+          setSearchedValues={setSearchedValues}
+          toggleCheck={toggleCheck}
+          toggleNeed={toggleNeed}
+          toggleVerified={toggleVerified}
+        />
+      )}
 
-      <ProgramTable
-        cookieData={cookieData}
-        cookieDataKey='punch'
-        handleUpdateJob={handleUpdateJob}
-        handleShowComplete={handleShowComplete}
-        onAddClick={handleShow}
-        onRefresh={fetchData}
-        searchedPrograms={searchedPunchPrograms}
-        searchedValues={searchedValues}
-        selectedTab={selectedTab}
-        setSearchedValues={setSearchedValues}
-      />
+      {selectedTab === 2 && (
+        <ProgramTable
+          cookieData={cookieData}
+          cookieDataKey='punch'
+          handleUpdateJob={handleUpdateJob}
+          handleShowComplete={handleShowComplete}
+          onAddClick={handleShow}
+          onRefresh={fetchData}
+          searchedPrograms={searchedPunchPrograms}
+          searchedValues={searchedValues}
+          selectedTab={selectedTab}
+          setSearchedValues={setSearchedValues}
+        />
+      )}
 
-      <AllJobsTable
-        cookieData={cookieData}
-        cookieDataKey='punch'
-        handleMaterialsOpen={handleMaterialsOpen}
-        onAddClick={handleShow}
-        onCloseSnackbar={() => setShowToast(false)}
-        onRefresh={fetchData}
-        partCopy={partCopy}
-        searchedFR={searchedFR}
-        searchedTBR={searchedTBR}
-        searchedValues={searchedValues}
-        selectedTab={selectedTab}
-        setPartCopy={setPartCopy}
-        setSearchedValues={setSearchedValues}
-        setShowToast={setShowToast}
-        showToast={showToast}
-      />
+      {selectedTab === 3 && (
+        <AllJobsTable
+          cookieData={cookieData}
+          cookieDataKey='punch'
+          handleMaterialsOpen={handleMaterialsOpen}
+          onAddClick={handleShow}
+          onCloseSnackbar={() => setShowToast(false)}
+          onRefresh={fetchData}
+          partCopy={partCopy}
+          searchedFR={searchedFR}
+          searchedTBR={searchedTBR}
+          searchedValues={searchedValues}
+          selectedTab={selectedTab}
+          setPartCopy={setPartCopy}
+          setSearchedValues={setSearchedValues}
+          setShowToast={setShowToast}
+          showToast={showToast}
+        />
+      )}
     </PageContainer>
   );
 }
