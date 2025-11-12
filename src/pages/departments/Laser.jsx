@@ -11,6 +11,7 @@ import MaterialTable from '../../components/departments/MaterialTable';
 import NestTable from '../../components/departments/NestTable';
 import PageContainer from '../../components/shared/PageContainer';
 import ProgramTable from '../../components/departments/ProgramTable';
+import RunTBRTable from '../../components/departments/RunTBRTable';
 
 import getTBRJobs from '../../services/laser/getTBRJobs';
 import getFRJobs from '../../services/laser/getFRJobs';
@@ -98,6 +99,64 @@ export const Laser = () => {
   //     setLoading(false);
   //   }
   // }
+// const fetchData = async () => {
+//   try {
+//     const [tbrJobs, frJobs, laserMaterials, completedLaser] = await Promise.all([
+//       getTBRJobs(),
+//       getFRJobs(),
+//       getAllLaserMaterials(),
+//       getCompletedLaserMaterials()
+//     ]);
+
+//     setSearchedTBR(tbrJobs);
+//     setSearchedFR(frJobs);
+//     setSearchedLaserPrograms(laserMaterials.data);
+
+//     // --- Normalize helpers ---
+//     const splitNos = (s) => {
+//       if (!s) return [];
+//       const str = String(s);
+//       const parts = str.length > 6 ? str.split(' ') : [str];
+//       return parts.map(v => String(v).trim()).filter(Boolean);
+//     };
+
+//     const toJobNoSet = (arr) =>
+//       new Set(arr.flatMap(job => splitNos(job.jobNo)));
+
+//     const laserSet = toJobNoSet(laserMaterials.data);
+//     const completedSet = toJobNoSet(completedLaser.data);
+
+//     const hasLaser = (job) => laserSet.has(String(job.JobNo).trim());
+//     const hasCompleted = (job) => completedSet.has(String(job.JobNo).trim());
+
+//     // ✅ KEEP THESE EXACTLY AS THEY ARE
+//     const needsNestingTBR = tbrJobs.filter(job => !hasLaser(job) && !hasCompleted(job));
+//     const needsNestingFuture = frJobs.filter(job => !hasLaser(job) && !hasCompleted(job));
+//     const tbrLaserOnly = tbrJobs.filter(job => hasLaser(job) && !hasCompleted(job));
+
+//     // ✅ CLOCK JOBS UPDATED: all completed or flagged complete
+//     const isJobComplete = (job) => hasCompleted(job) || !!job.User_Date1;
+
+//     const tbrLaserCompleted = tbrJobs.filter(isJobComplete);
+//     const futureLaserCompleted = frJobs.filter(isJobComplete);
+
+//     // set states
+//     setNeedsNestingTBR(needsNestingTBR);
+//     setNeedsNestingFuture(needsNestingFuture);
+//     setTbrLaserOnly(tbrLaserOnly);
+//     setTbrLaserCompleted(tbrLaserCompleted);
+//     setFutureLaserCompleted(futureLaserCompleted);
+
+//     console.log(tbrLaserOnly)
+
+//     setLoading(false);
+//   } catch (err) {
+//     console.error(err);
+//   } finally {
+//     setLoading(false);
+//   }
+// };
+
 const fetchData = async () => {
   try {
     const [tbrJobs, frJobs, laserMaterials, completedLaser] = await Promise.all([
@@ -111,7 +170,6 @@ const fetchData = async () => {
     setSearchedFR(frJobs);
     setSearchedLaserPrograms(laserMaterials.data);
 
-    // --- Normalize helpers ---
     const splitNos = (s) => {
       if (!s) return [];
       const str = String(s);
@@ -124,22 +182,31 @@ const fetchData = async () => {
 
     const laserSet = toJobNoSet(laserMaterials.data);
     const completedSet = toJobNoSet(completedLaser.data);
+    const verifiedSet = new Set(
+      laserMaterials.data
+        .filter(m => m.verified) // ✅ only those verified in DB
+        .flatMap(m => splitNos(m.jobNo))
+    );
 
     const hasLaser = (job) => laserSet.has(String(job.JobNo).trim());
     const hasCompleted = (job) => completedSet.has(String(job.JobNo).trim());
+    const isVerified = (job) => verifiedSet.has(String(job.JobNo).trim());
 
-    // ✅ KEEP THESE EXACTLY AS THEY ARE
+    // ✅ READY TO NEST
     const needsNestingTBR = tbrJobs.filter(job => !hasLaser(job) && !hasCompleted(job));
     const needsNestingFuture = frJobs.filter(job => !hasLaser(job) && !hasCompleted(job));
-    const tbrLaserOnly = tbrJobs.filter(job => hasLaser(job) && !hasCompleted(job));
 
-    // ✅ CLOCK JOBS UPDATED: all completed or flagged complete
+    // ✅ RUN TBR (not completed but in laser list)
+    const tbrLaserOnly = tbrJobs
+      .filter(job => hasLaser(job) && !hasCompleted(job))
+      .map(job => ({ ...job, Verified: isVerified(job) })); // attach flag
+
+    // ✅ CLOCK JOBS
     const isJobComplete = (job) => hasCompleted(job) || !!job.User_Date1;
-
     const tbrLaserCompleted = tbrJobs.filter(isJobComplete);
     const futureLaserCompleted = frJobs.filter(isJobComplete);
 
-    // set states
+    // ✅ state updates
     setNeedsNestingTBR(needsNestingTBR);
     setNeedsNestingFuture(needsNestingFuture);
     setTbrLaserOnly(tbrLaserOnly);
@@ -153,7 +220,6 @@ const fetchData = async () => {
     setLoading(false);
   }
 };
-
 
 
 
@@ -333,25 +399,23 @@ const fetchData = async () => {
         tabLabels={['Run TBR', 'Ready to Nest', 'Material', 'Programs', 'Clock Jobs', 'All Jobs']}
       />
 
-      {selectedTab === 0 && (
-      <NestTable
-        cookieData={cookieData}
-        cookieDataKey='laser'
-        handleMaterialsOpen={handleMaterialsOpen}
-        needsNestingTBR={tbrLaserOnly}
-        needsNestingFuture={[]}
-        onAddClick={handleShow}
-        onCloseSnackbar={() => setShowToast(false)}
-        onRefresh={fetchData}
-        partCopy={partCopy}
-        searchedValues={searchedValues}
-        selectedTab={selectedTab}
-        setPartCopy={setPartCopy}
-        setSearchedValues={setSearchedValues}
-        setShowToast={setShowToast}
-        showToast={showToast}
-      />
-      )}
+ {selectedTab === 0 && (
+  <RunTBRTable
+    cookieData={cookieData}
+    cookieDataKey='laser'
+    handleMaterialsOpen={handleMaterialsOpen}
+    needsNestingTBR={tbrLaserOnly}
+    onAddClick={handleShow}
+    onCloseSnackbar={() => setShowToast(false)}
+    onRefresh={fetchData}
+    partCopy={partCopy}
+    searchedValues={searchedValues}
+    setPartCopy={setPartCopy}
+    setSearchedValues={setSearchedValues}
+    setShowToast={setShowToast}
+    showToast={showToast}
+  />
+)}
 
 {selectedTab === 1 && (
       <NestTable
