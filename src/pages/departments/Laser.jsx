@@ -64,167 +64,65 @@ export const Laser = () => {
     programNo: '',
   });
 
-  // const fetchData = async () => {
-  //   try {
-  //     const [tbrJobs, frJobs, laserMaterials, completedLaser] = await Promise.all([
-  //       getTBRJobs(),
-  //       getFRJobs(),
-  //       getAllLaserMaterials(),
-  //       getCompletedLaserMaterials()
-  //     ]);
+  const fetchData = async () => {
+    try {
+      const [tbrJobs, frJobs, laserMaterials, completedLaser] = await Promise.all([
+        getTBRJobs(),
+        getFRJobs(),
+        getAllLaserMaterials(),
+        getCompletedLaserMaterials()
+      ]);
 
-  //     setSearchedTBR(tbrJobs);
-  //     setSearchedFR(frJobs);
-  //     setSearchedLaserPrograms(laserMaterials.data);
-  //     console.log(laserMaterials.data)
-  //     console.log(completedLaser.data)
+      setSearchedTBR(tbrJobs);
+      setSearchedFR(frJobs);
+      setSearchedLaserPrograms(laserMaterials.data);
 
-  //     const uniq = [...new Set(laserMaterials.data.flatMap(job => job.jobNo.length > 6 ? job.jobNo.split(' ') : job.jobNo))];
+      const splitNos = (s) => {
+        if (!s) return [];
+        const str = String(s);
+        const parts = str.length > 6 ? str.split(' ') : [str];
+        return parts.map(v => String(v).trim()).filter(Boolean);
+      };
 
-  //     if (uniq.length > 0) {
-  //       let tbrJobsNeeded = tbrJobs.filter(job => !uniq.includes(job.JobNo))
-  //       setNeedsNestingTBR(tbrJobsNeeded);
+      const toJobNoSet = (arr) =>
+        new Set(arr.flatMap(job => splitNos(job.jobNo)));
 
-  //       let futureJobsNeeded = frJobs.filter(job => !uniq.includes(job.JobNo))
-  //       setNeedsNestingFuture(futureJobsNeeded);
-  //     } else {
-  //       setNeedsNestingTBR(tbrJobs);
-  //       setNeedsNestingFuture(frJobs);
-  //     }
+      const laserSet = toJobNoSet(laserMaterials.data);
+      const completedSet = toJobNoSet(completedLaser.data);
+      const verifiedSet = new Set(
+        laserMaterials.data
+          .filter(m => m.verified) 
+          .flatMap(m => splitNos(m.jobNo))
+      );
 
-  //     setLoading(false);
-  //   } catch (err) {
-  //     console.error(err);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // }
-// const fetchData = async () => {
-//   try {
-//     const [tbrJobs, frJobs, laserMaterials, completedLaser] = await Promise.all([
-//       getTBRJobs(),
-//       getFRJobs(),
-//       getAllLaserMaterials(),
-//       getCompletedLaserMaterials()
-//     ]);
+      const hasLaser = (job) => laserSet.has(String(job.JobNo).trim());
+      const hasCompleted = (job) => completedSet.has(String(job.JobNo).trim());
+      const isVerified = (job) => verifiedSet.has(String(job.JobNo).trim());
 
-//     setSearchedTBR(tbrJobs);
-//     setSearchedFR(frJobs);
-//     setSearchedLaserPrograms(laserMaterials.data);
+      const needsNestingTBR = tbrJobs.filter(job => !hasLaser(job) && !hasCompleted(job));
+      const needsNestingFuture = frJobs.filter(job => !hasLaser(job) && !hasCompleted(job));
 
-//     // --- Normalize helpers ---
-//     const splitNos = (s) => {
-//       if (!s) return [];
-//       const str = String(s);
-//       const parts = str.length > 6 ? str.split(' ') : [str];
-//       return parts.map(v => String(v).trim()).filter(Boolean);
-//     };
+      const tbrLaserOnly = tbrJobs
+        .filter(job => hasLaser(job) && !hasCompleted(job))
+        .map(job => ({ ...job, Verified: isVerified(job) }));
 
-//     const toJobNoSet = (arr) =>
-//       new Set(arr.flatMap(job => splitNos(job.jobNo)));
+      const isJobComplete = (job) => hasCompleted(job) || !!job.User_Date1;
+      const tbrLaserCompleted = tbrJobs.filter(isJobComplete);
+      const futureLaserCompleted = frJobs.filter(isJobComplete);
 
-//     const laserSet = toJobNoSet(laserMaterials.data);
-//     const completedSet = toJobNoSet(completedLaser.data);
+      setNeedsNestingTBR(needsNestingTBR);
+      setNeedsNestingFuture(needsNestingFuture);
+      setTbrLaserOnly(tbrLaserOnly);
+      setTbrLaserCompleted(tbrLaserCompleted);
+      setFutureLaserCompleted(futureLaserCompleted);
 
-//     const hasLaser = (job) => laserSet.has(String(job.JobNo).trim());
-//     const hasCompleted = (job) => completedSet.has(String(job.JobNo).trim());
-
-//     // ✅ KEEP THESE EXACTLY AS THEY ARE
-//     const needsNestingTBR = tbrJobs.filter(job => !hasLaser(job) && !hasCompleted(job));
-//     const needsNestingFuture = frJobs.filter(job => !hasLaser(job) && !hasCompleted(job));
-//     const tbrLaserOnly = tbrJobs.filter(job => hasLaser(job) && !hasCompleted(job));
-
-//     // ✅ CLOCK JOBS UPDATED: all completed or flagged complete
-//     const isJobComplete = (job) => hasCompleted(job) || !!job.User_Date1;
-
-//     const tbrLaserCompleted = tbrJobs.filter(isJobComplete);
-//     const futureLaserCompleted = frJobs.filter(isJobComplete);
-
-//     // set states
-//     setNeedsNestingTBR(needsNestingTBR);
-//     setNeedsNestingFuture(needsNestingFuture);
-//     setTbrLaserOnly(tbrLaserOnly);
-//     setTbrLaserCompleted(tbrLaserCompleted);
-//     setFutureLaserCompleted(futureLaserCompleted);
-
-//     console.log(tbrLaserOnly)
-
-//     setLoading(false);
-//   } catch (err) {
-//     console.error(err);
-//   } finally {
-//     setLoading(false);
-//   }
-// };
-
-const fetchData = async () => {
-  try {
-    const [tbrJobs, frJobs, laserMaterials, completedLaser] = await Promise.all([
-      getTBRJobs(),
-      getFRJobs(),
-      getAllLaserMaterials(),
-      getCompletedLaserMaterials()
-    ]);
-
-    setSearchedTBR(tbrJobs);
-    setSearchedFR(frJobs);
-    setSearchedLaserPrograms(laserMaterials.data);
-
-    const splitNos = (s) => {
-      if (!s) return [];
-      const str = String(s);
-      const parts = str.length > 6 ? str.split(' ') : [str];
-      return parts.map(v => String(v).trim()).filter(Boolean);
-    };
-
-    const toJobNoSet = (arr) =>
-      new Set(arr.flatMap(job => splitNos(job.jobNo)));
-
-    const laserSet = toJobNoSet(laserMaterials.data);
-    const completedSet = toJobNoSet(completedLaser.data);
-    const verifiedSet = new Set(
-      laserMaterials.data
-        .filter(m => m.verified) // ✅ only those verified in DB
-        .flatMap(m => splitNos(m.jobNo))
-    );
-
-    const hasLaser = (job) => laserSet.has(String(job.JobNo).trim());
-    const hasCompleted = (job) => completedSet.has(String(job.JobNo).trim());
-    const isVerified = (job) => verifiedSet.has(String(job.JobNo).trim());
-
-    // ✅ READY TO NEST
-    const needsNestingTBR = tbrJobs.filter(job => !hasLaser(job) && !hasCompleted(job));
-    const needsNestingFuture = frJobs.filter(job => !hasLaser(job) && !hasCompleted(job));
-
-    // ✅ RUN TBR (not completed but in laser list)
-    const tbrLaserOnly = tbrJobs
-      .filter(job => hasLaser(job) && !hasCompleted(job))
-      .map(job => ({ ...job, Verified: isVerified(job) })); // attach flag
-
-    // ✅ CLOCK JOBS
-    const isJobComplete = (job) => hasCompleted(job) || !!job.User_Date1;
-    const tbrLaserCompleted = tbrJobs.filter(isJobComplete);
-    const futureLaserCompleted = frJobs.filter(isJobComplete);
-
-    // ✅ state updates
-    setNeedsNestingTBR(needsNestingTBR);
-    setNeedsNestingFuture(needsNestingFuture);
-    setTbrLaserOnly(tbrLaserOnly);
-    setTbrLaserCompleted(tbrLaserCompleted);
-    setFutureLaserCompleted(futureLaserCompleted);
-
-    setLoading(false);
-  } catch (err) {
-    console.error(err);
-  } finally {
-    setLoading(false);
-  }
-};
-
-
-
-
-
+      setLoading(false);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleClose = () => {
     setShow(false);
@@ -399,114 +297,114 @@ const fetchData = async () => {
         tabLabels={['Run TBR', 'Ready to Nest', 'Material', 'Programs', 'Clock Jobs', 'All Jobs']}
       />
 
- {selectedTab === 0 && (
-  <RunTBRTable
-    cookieData={cookieData}
-    cookieDataKey='laser'
-    handleMaterialsOpen={handleMaterialsOpen}
-    needsNestingTBR={tbrLaserOnly}
-    onAddClick={handleShow}
-    onCloseSnackbar={() => setShowToast(false)}
-    onRefresh={fetchData}
-    partCopy={partCopy}
-    searchedValues={searchedValues}
-    setPartCopy={setPartCopy}
-    setSearchedValues={setSearchedValues}
-    setShowToast={setShowToast}
-    showToast={showToast}
-  />
-)}
+      {selectedTab === 0 && (
+        <RunTBRTable
+          cookieData={cookieData}
+          cookieDataKey='laser'
+          handleMaterialsOpen={handleMaterialsOpen}
+          needsNestingTBR={tbrLaserOnly}
+          onAddClick={handleShow}
+          onCloseSnackbar={() => setShowToast(false)}
+          onRefresh={fetchData}
+          partCopy={partCopy}
+          searchedValues={searchedValues}
+          setPartCopy={setPartCopy}
+          setSearchedValues={setSearchedValues}
+          setShowToast={setShowToast}
+          showToast={showToast}
+        />
+      )}
 
-{selectedTab === 1 && (
-      <NestTable
-        cookieData={cookieData}
-        cookieDataKey='laser'
-        handleMaterialsOpen={handleMaterialsOpen}
-        needsNestingFuture={needsNestingFuture}
-        needsNestingTBR={needsNestingTBR}
-        onAddClick={handleShow}
-        onCloseSnackbar={() => setShowToast(false)}
-        onRefresh={fetchData}
-        partCopy={partCopy}
-        searchedValues={searchedValues}
-        selectedTab={selectedTab}
-        setPartCopy={setPartCopy}
-        setSearchedValues={setSearchedValues}
-        setShowToast={setShowToast}
-        showToast={showToast}
-      />
+      {selectedTab === 1 && (
+        <NestTable
+          cookieData={cookieData}
+          cookieDataKey='laser'
+          handleMaterialsOpen={handleMaterialsOpen}
+          needsNestingFuture={needsNestingFuture}
+          needsNestingTBR={needsNestingTBR}
+          onAddClick={handleShow}
+          onCloseSnackbar={() => setShowToast(false)}
+          onRefresh={fetchData}
+          partCopy={partCopy}
+          searchedValues={searchedValues}
+          selectedTab={selectedTab}
+          setPartCopy={setPartCopy}
+          setSearchedValues={setSearchedValues}
+          setShowToast={setShowToast}
+          showToast={showToast}
+        />
       )}
 
       {selectedTab === 2 && (
-      <MaterialTable
-        cookieData={cookieData}
-        cookieDataKey='laser'
-        handleUpdateJob={handleUpdateJob}
-        onAddClick={handleShow}
-        onRefresh={fetchData}
-        searchedPrograms={searchedLaserPrograms}
-        searchedValues={searchedValues}
-        selectedTab={selectedTab}
-        setSearchedValues={setSearchedValues}
-        toggleCheck={toggleCheck}
-        toggleNeed={toggleNeed}
-        toggleVerified={toggleVerified}
-      />
-)}
+        <MaterialTable
+          cookieData={cookieData}
+          cookieDataKey='laser'
+          handleUpdateJob={handleUpdateJob}
+          onAddClick={handleShow}
+          onRefresh={fetchData}
+          searchedPrograms={searchedLaserPrograms}
+          searchedValues={searchedValues}
+          selectedTab={selectedTab}
+          setSearchedValues={setSearchedValues}
+          toggleCheck={toggleCheck}
+          toggleNeed={toggleNeed}
+          toggleVerified={toggleVerified}
+        />
+      )}
 
       {selectedTab === 3 && (
-      <ProgramTable
-        cookieData={cookieData}
-        cookieDataKey='laser'
-        handleUpdateJob={handleUpdateJob}
-        handleShowComplete={handleShowComplete}
-        onAddClick={handleShow}
-        onRefresh={fetchData}
-        searchedPrograms={searchedLaserPrograms}
-        searchedValues={searchedValues}
-        selectedTab={selectedTab}
-        setSearchedValues={setSearchedValues}
-      />
+        <ProgramTable
+          cookieData={cookieData}
+          cookieDataKey='laser'
+          handleUpdateJob={handleUpdateJob}
+          handleShowComplete={handleShowComplete}
+          onAddClick={handleShow}
+          onRefresh={fetchData}
+          searchedPrograms={searchedLaserPrograms}
+          searchedValues={searchedValues}
+          selectedTab={selectedTab}
+          setSearchedValues={setSearchedValues}
+        />
       )}
 
       {selectedTab === 4 && (
-      <NestTable
-        cookieData={cookieData}
-        cookieDataKey='laser'
-        handleMaterialsOpen={handleMaterialsOpen}
-        needsNestingTBR={tbrLaserCompleted}
-        needsNestingFuture={futureLaserCompleted}
-        onAddClick={handleShow}
-        onCloseSnackbar={() => setShowToast(false)}
-        onRefresh={fetchData}
-        partCopy={partCopy}
-        searchedValues={searchedValues}
-        selectedTab={selectedTab}
-        setPartCopy={setPartCopy}
-        setSearchedValues={setSearchedValues}
-        setShowToast={setShowToast}
-        showToast={showToast}
-      />
+        <NestTable
+          cookieData={cookieData}
+          cookieDataKey='laser'
+          handleMaterialsOpen={handleMaterialsOpen}
+          needsNestingTBR={tbrLaserCompleted}
+          needsNestingFuture={futureLaserCompleted}
+          onAddClick={handleShow}
+          onCloseSnackbar={() => setShowToast(false)}
+          onRefresh={fetchData}
+          partCopy={partCopy}
+          searchedValues={searchedValues}
+          selectedTab={selectedTab}
+          setPartCopy={setPartCopy}
+          setSearchedValues={setSearchedValues}
+          setShowToast={setShowToast}
+          showToast={showToast}
+        />
       )}
 
       {selectedTab === 5 && (
-      <AllJobsTable
-        cookieData={cookieData}
-        cookieDataKey='laser'
-        handleMaterialsOpen={handleMaterialsOpen}
-        onAddClick={handleShow}
-        onCloseSnackbar={() => setShowToast(false)}
-        onRefresh={fetchData}
-        partCopy={partCopy}
-        searchedFR={searchedFR}
-        searchedTBR={searchedTBR}
-        searchedValues={searchedValues}
-        selectedTab={selectedTab}
-        setPartCopy={setPartCopy}
-        setSearchedValues={setSearchedValues}
-        setShowToast={setShowToast}
-        showToast={showToast}
-      />
+        <AllJobsTable
+          cookieData={cookieData}
+          cookieDataKey='laser'
+          handleMaterialsOpen={handleMaterialsOpen}
+          onAddClick={handleShow}
+          onCloseSnackbar={() => setShowToast(false)}
+          onRefresh={fetchData}
+          partCopy={partCopy}
+          searchedFR={searchedFR}
+          searchedTBR={searchedTBR}
+          searchedValues={searchedValues}
+          selectedTab={selectedTab}
+          setPartCopy={setPartCopy}
+          setSearchedValues={setSearchedValues}
+          setShowToast={setShowToast}
+          showToast={showToast}
+        />
       )}
     </PageContainer>
   );
