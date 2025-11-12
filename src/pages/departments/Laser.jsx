@@ -83,16 +83,16 @@ export const Laser = () => {
         const parts = str.length > 6 ? str.split(' ') : [str];
         return parts.map(v => String(v).trim()).filter(Boolean);
       };
-
-      const toJobNoSet = (arr) =>
-        new Set(arr.flatMap(job => splitNos(job.jobNo)));
+      const toJobNoSet = (arr) => new Set(arr.flatMap(job => splitNos(job.jobNo)));
 
       const laserSet = toJobNoSet(laserMaterials.data);
       const completedSet = toJobNoSet(completedLaser.data);
+
       const verifiedSet = new Set(
         laserMaterials.data
-          .filter(m => m.verified) 
+          .filter(m => m.verified === true)
           .flatMap(m => splitNos(m.jobNo))
+          .map(j => String(j).trim())
       );
 
       const hasLaser = (job) => laserSet.has(String(job.JobNo).trim());
@@ -106,9 +106,10 @@ export const Laser = () => {
         .filter(job => hasLaser(job) && !hasCompleted(job))
         .map(job => ({ ...job, Verified: isVerified(job) }));
 
-      const isJobComplete = (job) => hasCompleted(job) || !!job.User_Date1;
-      const tbrLaserCompleted = tbrJobs.filter(isJobComplete);
-      const futureLaserCompleted = frJobs.filter(isJobComplete);
+      const isReadyToClock = (job) => hasCompleted(job) && !hasLaser(job);
+
+      const tbrLaserCompleted = tbrJobs.filter(isReadyToClock);
+      const futureLaserCompleted = frJobs.filter(isReadyToClock);
 
       setNeedsNestingTBR(needsNestingTBR);
       setNeedsNestingFuture(needsNestingFuture);
